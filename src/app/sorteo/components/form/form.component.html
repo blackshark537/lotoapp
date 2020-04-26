@@ -1,0 +1,54 @@
+<ion-header>
+  <ion-toolbar>
+
+    <ion-buttons slot="start">
+      <ion-button (click)="dismiss()">
+        <ion-icon name="close"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+
+    <ion-title>
+      Nuevo Sorteo
+    </ion-title>
+    <ion-buttons *ngIf="can_save()" slot="end">
+      <ion-button *ngIf="!edit; else elseBlock" (click)="save()">
+        Guardar
+        <ion-icon [ios]="'save-outline'" [md]="'save-sharp'"></ion-icon>
+      </ion-button>
+      <ng-template #elseBlock>
+        <ion-button (click)="update_one()">
+          Actualizar
+          <!-- <ion-icon [ios]="'save-outline'" [md]="'save-sharp'"></ion-icon> -->
+        </ion-button>
+      </ng-template>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+    <ion-item>
+      <ion-label position="fixed">Loteria</ion-label>
+      <ion-input [(ngModel)]="draw.lottery" placeholder="example: Leidsa"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="fixed">Sorteo</ion-label>
+      <ion-input [(ngModel)]="draw.draw" placeholder="example: Loto pool"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="fixed">Vence</ion-label>
+      <ion-datetime value="{{draw.expiryDate}}" (ionChange)="set_expiryDate($event.target)" display-timezone="utc"></ion-datetime>
+    </ion-item>
+    <ion-item>
+      <ion-label position="fixed">Data</ion-label>
+      <ion-text *ngIf="filename">{{ filename }}</ion-text>
+      <ion-buttons *ngIf="!filename">
+        <ion-button (click)="file.click()">
+          Añadir
+          <ion-icon name="add"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+      <input #file (change)="readfile($event.target)" style="display: none;" type="file">
+    </ion-item>
+  </ion-list>
+</ion-content>

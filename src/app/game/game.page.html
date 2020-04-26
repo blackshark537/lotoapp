@@ -1,0 +1,94 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button routerDirection="root" [routerLink]="['/inicio']">
+        <ion-icon [ios]="'chevron-back-outline'" [md]="'arrow-back-sharp'" ></ion-icon>
+      </ion-button>
+    </ion-buttons>
+
+    <ion-title>game</ion-title>
+    <ion-buttons slot="end" *ngIf="!matdesign()">
+      <ion-button (click)="openAction()">
+        Jugar
+        <ion-icon name="game-controller"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="grid">
+    <ion-grid>
+      <ion-row style="background-color: black; color: whitesmoke;">
+        <ion-col size="12"  size-md="12" class="ion-text-center">
+          <ion-text>Resultados Leidsa</ion-text>
+        </ion-col>
+        <ion-col size="0.7">
+          <ion-text>#No</ion-text>
+        </ion-col>
+        <ion-col size="1.4">
+          <ion-text>primero</ion-text>
+        </ion-col>
+        <ion-col size="1.4">
+          <ion-text>segundo</ion-text>
+        </ion-col>
+        <ion-col size="1.4">
+          <ion-text>tercero</ion-text>
+        </ion-col>
+        <ion-col size="1.4">
+          <ion-text>cuarto</ion-text>
+        </ion-col>
+        <ion-col size="1.4">
+          <ion-text>quinto</ion-text>
+        </ion-col>
+        <ion-col size="1.4">
+          <ion-text>sexto</ion-text>
+        </ion-col>
+        <ion-col size="1.4">
+          <ion-text>l. mas</ion-text>
+        </ion-col>
+        <ion-col size="1.4">
+          <ion-text>s. l. mas</ion-text>
+        </ion-col>
+      </ion-row>
+  
+      <ion-row class="hover">
+        <ion-col size="0.7">
+          <ion-text>1. -</ion-text>
+        </ion-col>
+<!--         <ion-col size="1.4">
+          <ion-text>3</ion-text>
+        </ion-col>
+        <ion-col size="1.4">
+          <ion-text>4</ion-text>
+        </ion-col>
+        <ion-col size="1.4">
+          <ion-text>15</ion-text>
+        </ion-col>
+        <ion-col size="1.4">
+          <ion-text>13</ion-text>
+        </ion-col>
+        <ion-col size="1.4">
+          <ion-text>27</ion-text>
+        </ion-col>
+        <ion-col size="1.4">
+          <ion-text>33</ion-text>
+        </ion-col>
+        <ion-col size="1.4">
+          <ion-text>10</ion-text>
+        </ion-col>
+        <ion-col size="1.4">
+          <ion-text>4</ion-text>
+        </ion-col> -->
+      </ion-row>
+    </ion-grid>
+  </div>
+
+<!-- fab placed to the bottom end -->
+<ion-fab *ngIf="matdesign()" vertical="bottom" horizontal="end" slot="fixed">
+  <ion-fab-button (click)="openAction()">
+    <ion-icon name="add"></ion-icon>
+  </ion-fab-button>
+</ion-fab>
+
+</ion-content>
