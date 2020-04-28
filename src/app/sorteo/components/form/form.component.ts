@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { ModalController, ToastController } from '@ionic/angular';
+import { ModalController, ToastController, Platform } from '@ionic/angular';
 import { Store } from '@ngrx/store';
 import * as EXEL from 'xlsx';
 import {SAVE, EDIT} from 'src/app/actions/admin_draw.action';
@@ -19,6 +19,7 @@ export class FormComponent implements OnInit {
   filename: string;
   labels = ['PRIMERO', 'SEGUNDO', 'TERCERO', 'QUARTO', 'QUINTO', 'SEXTO', 'L.MAS', 'L.S.MAS'];
   constructor(
+    private platform: Platform,
     private toastCtrl: ToastController,
     private modalCtrl: ModalController,
     private store: Store<StoreModel>
@@ -38,7 +39,7 @@ export class FormComponent implements OnInit {
       }
     } else {
       this.store.select('admin_draw').subscribe(resp =>{
-         let new_draw = [...resp.slice(this.index, 1)]
+         let new_draw = [...resp.slice(this.index, this.index+1)];
          this.draw = {...new_draw[0]};
       });
     }
@@ -46,7 +47,11 @@ export class FormComponent implements OnInit {
   }
 
   can_save(): boolean{
-    return this.draw.Data.length === 0 || this.draw.lottery === ''? false : true;
+    return this.draw.Data && this.draw.Data.length === 0 || this.draw.lottery === ''? false : true;
+  }
+
+  matdesign(): boolean{
+    return this.platform.is('android') || this.platform.is('desktop')? true : false;
   }
 
   set_expiryDate(evt){

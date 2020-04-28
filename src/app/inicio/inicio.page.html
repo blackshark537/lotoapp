@@ -15,7 +15,7 @@
           <img src="assets/leidsa.png" style="align-self: center;"/>
           <ion-card-header class="ion-text-center">
             <ion-card-title>{{draw.draw}}</ion-card-title>
-            <ion-card-subtitle>valida hasta sab 25</ion-card-subtitle>
+            <ion-card-subtitle>valida hasta {{draw.expiryDate | date : locale: 'do'}}</ion-card-subtitle>
           </ion-card-header>
         </ion-card>
       </ion-col>

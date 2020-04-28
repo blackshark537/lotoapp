@@ -21,7 +21,7 @@
     <ion-grid>
       <ion-row style="background-color: black; color: whitesmoke;">
         <ion-col size="12"  size-md="12" class="ion-text-center">
-          <ion-text>Resultados Leidsa</ion-text>
+          <ion-text>Resultados {{draw.draw}} {{draw.lottery}}</ion-text>
         </ion-col>
         <ion-col size="0.7">
           <ion-text>#No</ion-text>
@@ -52,34 +52,13 @@
         </ion-col>
       </ion-row>
   
-      <ion-row class="hover">
+      <ion-row class="hover" *ngFor="let row of user_data; index as i">
         <ion-col size="0.7">
-          <ion-text>1. -</ion-text>
+          <ion-text>{{i+1}}. -</ion-text>
         </ion-col>
-<!--         <ion-col size="1.4">
-          <ion-text>3</ion-text>
+        <ion-col size="1.4" *ngFor="let col of row">
+          <ion-text>{{col}}</ion-text>
         </ion-col>
-        <ion-col size="1.4">
-          <ion-text>4</ion-text>
-        </ion-col>
-        <ion-col size="1.4">
-          <ion-text>15</ion-text>
-        </ion-col>
-        <ion-col size="1.4">
-          <ion-text>13</ion-text>
-        </ion-col>
-        <ion-col size="1.4">
-          <ion-text>27</ion-text>
-        </ion-col>
-        <ion-col size="1.4">
-          <ion-text>33</ion-text>
-        </ion-col>
-        <ion-col size="1.4">
-          <ion-text>10</ion-text>
-        </ion-col>
-        <ion-col size="1.4">
-          <ion-text>4</ion-text>
-        </ion-col> -->
       </ion-row>
     </ion-grid>
   </div>

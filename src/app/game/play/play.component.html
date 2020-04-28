@@ -5,9 +5,17 @@
                 <ion-icon name="close"></ion-icon>
             </ion-button>
         </ion-buttons>
-        <ion-title>Sorteo</ion-title>
+        <ion-title>Sorteo {{game}}</ion-title>
     </ion-toolbar>
 </ion-header>
 <ion-content>
     <div id="canvas"></div>
 </ion-content>
+
+<ion-footer>
+    <ion-toolbar *ngIf="saveBtn()">
+        <ion-buttons slot="end">
+            <ion-button (click)="save()">Guardar</ion-button>
+        </ion-buttons>
+    </ion-toolbar>
+</ion-footer>

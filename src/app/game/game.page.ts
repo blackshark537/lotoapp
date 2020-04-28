@@ -1,6 +1,10 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { ModalController, ActionSheetController, Platform } from '@ionic/angular';
 import { PlayComponent } from './play/play.component';
+import { StoreModel } from 'src/app/models/store.model';
+import { Store } from '@ngrx/store';
+import { Draw } from '../models/draw.model';
 
 @Component({
   selector: 'app-game',
@@ -10,14 +14,26 @@ import { PlayComponent } from './play/play.component';
 export class GamePage implements OnInit {
 
   draw_type: string;
+  draw: Draw;
+  numbers_draws: number[] = [];
+  index: number=0;
+  user_data: any[]=[];
 
   constructor(
+    private store: Store<StoreModel>,
+    private activeRoute: ActivatedRoute,
     private modalCtrl: ModalController,
     private platform: Platform,
     private actionSheetController: ActionSheetController) { }
 
   ngOnInit() {
+    this.index = parseInt(this.activeRoute.snapshot.paramMap.get('id'));
     this.draw_type = '';
+    this.store.select('admin_draw').subscribe(resp=>{
+      let d = [...resp.slice(this.index, this.index+1)]
+      this.draw = d[0];
+    });
+    this.normal_draw();
   }
 
   matdesign(): boolean{
@@ -56,21 +72,36 @@ export class GamePage implements OnInit {
   }
 
   openNormal(){
-    console.log('normal');
+    this.normal_draw();
     this.draw_type = 'normal';
     this.openModal();
   }
 
   openCustom(){
-    console.log('personalizado');
+    this.normal_draw();
     this.draw_type = 'personalizado';
     this.openModal();
   }
 
   openRandom(){
-    console.log('random');
+    this.random_draw();
     this.draw_type = 'random';
     this.openModal();
+  }
+
+  async normal_draw(){
+    this.numbers_draws = [];
+    this.draw.Data.map((col: number[]) =>{
+      this.numbers_draws.push(col[Math.floor(Math.random() * col.length)]);
+    });
+  }
+
+  async random_draw(){
+    this.numbers_draws = [];
+    while (this.numbers_draws.length < 8) {
+      if(this.numbers_draws.length < 6) this.numbers_draws.push(Math.floor(Math.random() * 34) +1 );
+      if(this.numbers_draws.length < 8) this.numbers_draws.push(Math.floor(Math.random() * 14) +1 );
+    }
   }
 
   async openModal(){
@@ -78,11 +109,15 @@ export class GamePage implements OnInit {
       component: PlayComponent,
       swipeToClose: false,
       componentProps: {
-        draw: '',
+        draw: this.numbers_draws,
         game: this.draw_type
       }
     });
 
     modal.present();
+    const { data } = await modal.onWillDismiss();
+    if(data.data.length >0) this.user_data.push(data.data);
+    console.log(this.user_data);
+    
   }
 }

@@ -1,6 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input, Output } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { Ball } from './classes/ball';
+import { Tombola } from './classes/tombola';
+import { DrawBall } from './classes/ball_draw';
+
 import * as P5 from 'p5';
 
 @Component({
@@ -8,19 +11,40 @@ import * as P5 from 'p5';
   templateUrl: './play.component.html',
   styleUrls: ['./play.component.scss'],
 })
-export class PlayComponent implements OnInit {
+export class PlayComponent implements OnInit, OnDestroy {
 
-  img: P5.Image;
+  @Input('game') game: string;
+  @Input('draw') draw: number[];
+  @Output('data') data: number[];
+
   balls: Ball[]=[];
+  tombola: Tombola;
+  drawBall: DrawBall;
+  can_save: boolean=false;
 
   constructor(
     private modalCtrl: ModalController
    ) { }
 
   ngOnInit() {
-    const p5 = new P5((p: P5)=>{
+    this.data = [];
+    this.sketch();
+  }
+
+  sketch(){
+    
+    new P5((p: P5)=>{
+      
+      const gvty = p.createVector(0,1);
+      const wind = p.createVector(0.02,0);
+      let loop = false;
+      let img;
+      let playButton;
+      let draw_balls = [];
+
       p.preload = ()=>{
-        this.img = p.loadImage('assets/hover.png');
+        img = p.loadImage('assets/hover.png');
+        playButton = p.loadImage('assets/play.png');
       }
 
       p.setup = ()=>{
@@ -29,44 +53,64 @@ export class PlayComponent implements OnInit {
         p.rectMode(p.CENTER);
         p.textAlign(p.CENTER);
         p.imageMode(p.CENTER);
-        p.image(this.img, p.width/2, p.height/2, 250, 250);
+
         for(let i=0; i<20; i++){
-          this.balls.push(new Ball(i, p));
+          this.balls.push(new Ball(p, i));
         }
+        this.draw.map(val=> draw_balls.push(new Ball(p, val)));
+        this.drawBall = new DrawBall(this.balls[0], p, draw_balls);
+        this.tombola = new Tombola(p, img);
         p.noFill();
-        p.noLoop();
       }
-    }, document.getElementById('canvas'))
-    
-    this.sketch(p5);
+      
+      p.mouseClicked = ()=>{
+        if(p.mouseX > 100 && p.mouseX < 400-100 && p.mouseY > 100 && p.mouseY < 400-100){
+          if(!loop) loop = true;
+          this.drawBall.pick_one();
+        }
+      }
+  
+      p.draw = ()=>{
+        p.background(250);
+        if(loop && !this.drawBall.end_drawing()){
+          this.balls.map((ball: Ball) =>{
+            ball.add_force(gvty);
+            ball.add_force(wind);
+            ball.draw();
+          });
+        }
+        
+        if(this.drawBall.end_drawing()){
+          console.log('Game Over');
+          this.can_save = true;
+          p.noLoop();
+        }
+        this.drawBall.draw();
+        this.tombola.draw();
+        if (!loop) p.image(playButton, p.width/2, p.height/2, 70, 50);
+      }
+
+    }, document.getElementById('canvas'));
   }
 
-  sketch(p: P5){
-    
-    const gvty = p.createVector(0,1);
-    const wind = p.createVector(0.02,0);
-    
-    p.mouseClicked = ()=>{
-      if(p.mouseX > 100 && p.mouseX < 400-100 && p.mouseY > 100 && p.mouseY < 400-100){
-        p.loop();
-      }
-    }
+  saveBtn(): boolean{
+    return this.can_save;
+  }
 
-    p.draw = ()=>{
-      p.background(250);
-      this.balls.map((ball: Ball) =>{
-        ball.add_force(gvty);
-        ball.add_force(wind);
-        ball.draw(p);
-      });
-      p.image(this.img, p.width/2, p.height/2, 250, 250);
-    }
+  save(){
+    this.data = this.draw
+    this.dismiss()
   }
 
   async dismiss() {
     await this.modalCtrl.dismiss({
-      'dismissed': true
+      'dismissed': true,
+      'data': this.data
     });
-  }  
+  }
+
+  ngOnDestroy(){
+    delete this.sketch;
+  }
 
 }
