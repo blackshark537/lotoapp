@@ -20,11 +20,12 @@
         <ion-list>
           <ion-item *ngFor="let draw of draws | async; index as i" (click)="openActions(i, draw)">
             <ion-avatar slot="start" >
-              <img src="assets/leidsa.png" >
+              <!-- <img src="assets/leidsa.png" > -->
+              <ion-icon color="success" size="large" [ios]="'document-outline'" [md]="'document-sharp'"></ion-icon>
             </ion-avatar>
             <ion-label>
               <h2>Loteria: {{ draw.lottery + ' '+ draw.draw}}</h2>
-              <h3>Creada: {{ draw.emitDate}}</h3>
+              <h3>Creada: {{ draw.emitDate | date}}</h3>
               <p>activa: {{ draw.active? 'Si' : 'No'}}</p>
             </ion-label>
             <ion-icon slot="end" [ios]="'chevron-forward-outline'" [md]="'chevron-forward-sharp'"></ion-icon>

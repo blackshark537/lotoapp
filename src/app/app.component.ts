@@ -44,6 +44,11 @@ export class AppComponent implements OnInit {
       title: 'Reciclaje',
       url: '/folder/Reciclaje',
       icon: 'trash'
+    },
+    {
+      title: 'Perfil',
+      url: '/folder/Profile',
+      icon: 'person-circle'
     }
   ];
 

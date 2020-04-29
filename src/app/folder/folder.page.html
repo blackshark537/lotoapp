@@ -4,6 +4,12 @@
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
     <ion-title>{{ folder }}</ion-title>
+    <ion-buttons slot="end" *ngIf="folder === 'Reciclaje'">
+      <ion-button disabled="{{ user.recicle.length === 0 }}" (click)="this.showAlert(true)">
+        Vaciar
+        <ion-icon color="danger" [ios]="'trash-bin-outline'" [md]="'trash-bin-sharp'"></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
@@ -17,7 +23,7 @@
           <div *ngIf="folder === 'Archivadas'; else elseBlock;">
             <ion-item *ngIf="!draw.favorite">
               <ion-avatar slot="start">
-                <img src="assets/leidsa.png">
+                <ion-icon color="warning" size="large" [ios]="'document-outline'" [md]="'document-sharp'"></ion-icon>
               </ion-avatar>
               <ion-label>
                 <h2>Loteria: {{ draw.lottery + ' '+ draw.draw}}</h2>
@@ -29,9 +35,10 @@
           </div>
 
             <ng-template #elseBlock>
-              <ion-item *ngIf="draw.favorite">
+              <ion-item *ngIf="draw.favorite && folder === 'Favoritas'">
                 <ion-avatar slot="start">
-                  <img src="assets/leidsa.png">
+                  <!-- <img src="assets/leidsa.png"> -->
+                  <ion-icon color="tertiary" size="large" [ios]="'document-outline'" [md]="'document-sharp'"></ion-icon>
                 </ion-avatar>
                 <ion-label>
                   <h2>Loteria: {{ draw.lottery + ' '+ draw.draw}}</h2>
@@ -47,13 +54,16 @@
           <div *ngFor="let draw of user.recicle; index as i" (click)="openActions(i, draw)" style="padding: 0; margin: 0;">
             
               <ion-item *ngIf="folder === 'Reciclaje'">
-                <ion-avatar slot="start">
-                  <img src="assets/leidsa.png">
-                </ion-avatar>
+                  <!-- <img src="assets/leidsa.png"> -->
+                  <ion-avatar slot="start">
+                    <ion-icon color="danger" size="large" [ios]="'document-outline'" [md]="'document-sharp'"></ion-icon>
+                  </ion-avatar>
+                  
                 <ion-label>
-                  <h2>Loteria: {{ draw.lottery + ' '+ draw.draw}}</h2>
-                  <h3>Creada: {{ draw.emitDate}}</h3>
-                  <p>activa: {{ draw.active? 'Si' : 'No'}}</p>
+                  <h2>Loteria: {{ draw? draw.lottery + ' '+ draw.draw : ''}}</h2>
+                  <h3>Creada: {{ draw.emitDate | date}}</h3>
+                  <h4>type: {{draw.owner}}</h4>
+                  <p>id: {{ draw._id}}</p>
                 </ion-label>
                 <ion-icon slot="end" [ios]="'chevron-forward-outline'" [md]="'chevron-forward-sharp'"></ion-icon>
               </ion-item>

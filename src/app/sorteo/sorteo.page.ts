@@ -3,6 +3,7 @@ import { Platform, ActionSheetController, ModalController, ToastController } fro
 import { FormComponent } from './components/form/form.component';
 import { Store } from '@ngrx/store';
 import { GET, DEL } from 'src/app/actions/admin_draw.action';
+import { ADMIN_RECICLE } from 'src/app/actions/user.actions';
 import { Draw } from '../models/draw.model';
 import { StoreModel } from '../models/store.model';
 import { Observable } from 'rxjs';
@@ -56,7 +57,7 @@ export class SorteoPage implements OnInit {
           icon: 'trash',
           cssClass: 'delete',
           role: 'destructive',
-          handler: ()=>{ this.del_one(this.selectedIndex) }
+          handler: ()=>{ this.del_one() }
         },
         {
           text: 'cancelar',
@@ -89,13 +90,9 @@ export class SorteoPage implements OnInit {
     this.openModal();
   }
 
-  update_one(){
-    console.log('update', this.draw);
-    
-  }
-
-  async del_one(index: number){
-    await this.store.dispatch(DEL({index}));
+  async del_one(){
+    await this.store.dispatch(ADMIN_RECICLE({draw: this.draw}));
+    await this.store.dispatch(DEL({index: this.selectedIndex}));
     const toast = await this.toastCtrl.create({
       message: 'Enviado a la papelera de reciclaje',
       duration: 4000

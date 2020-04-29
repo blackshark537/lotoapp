@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Platform, ActionSheetController } from '@ionic/angular';
+import { Platform, ActionSheetController, AlertController, ToastController } from '@ionic/angular';
 import { Store } from '@ngrx/store';
 import { StoreModel } from '../models/store.model';
 import { MARK_AS_FAVORITE, RECICLE, DELETE_ONE, EMPTY_TRASHCAN } from '../actions/user.actions';
@@ -22,6 +22,8 @@ export class FolderPage implements OnInit {
   };
   
   constructor(
+    private toastCtrl: ToastController,
+    private alertCtrl: AlertController,
     private actionCtrl: ActionSheetController,
     private platform: Platform,
     private store: Store<StoreModel>,
@@ -49,11 +51,15 @@ export class FolderPage implements OnInit {
       header: 'Acciones',
       buttons:[
         {
+          text: 'abrir',
+          icon: 'open',
+        },
+        {
           text: 'favorito',
           icon: 'heart',
-          handler: () =>{
+          handler: () =>{ 
             this.store.dispatch(MARK_AS_FAVORITE({index}));
-           }
+          }
         },
         {
           text: 'reciclar',
@@ -62,6 +68,7 @@ export class FolderPage implements OnInit {
           role: 'destructive',
           handler: ()=>{ 
             this.store.dispatch(RECICLE({index}));
+            this.showToast('Enviado a la papelera de reciclaje');
           }
         },
         {
@@ -72,7 +79,7 @@ export class FolderPage implements OnInit {
       ]
     };
     if(this.folder != 'Archivadas'){
-      opt.buttons[0].icon='heart-dislike'
+      opt.buttons[1].icon='heart-dislike'
     }
     return opt;
   }
@@ -92,18 +99,14 @@ export class FolderPage implements OnInit {
           text: 'eliminar',
           icon: 'close-circle',
           cssClass: 'delete',
-          handler: () =>{
-            this.store.dispatch(DELETE_ONE({index}));
-           }
+          handler: () =>{ this.showAlert(false, index) }
         },
         {
           text: 'vaciar papelera',
-          icon: 'trash',
+          icon: 'trash-bin',
           cssClass: 'delete',
           role: 'destructive',
-          handler: ()=>{ 
-            this.store.dispatch(EMPTY_TRASHCAN());
-          }
+          handler: ()=>{ this.showAlert(true) }
         },
         {
           text: 'cancelar',
@@ -112,5 +115,41 @@ export class FolderPage implements OnInit {
         }
       ]
     }
+  }
+
+  async showAlert(removeAll:boolean, index?: number){
+    const alert = await this.alertCtrl.create({
+      header: 'Alerta!',
+      message: '<strong>Al eliminar estos archivos no se podran recuperar</strong>',
+      buttons:[
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          cssClass: 'secondary'
+        },
+        {
+          text: 'Ok',
+          cssClass: 'primary',
+          handler: ()=>{ 
+              if(removeAll){
+                this.store.dispatch(EMPTY_TRASHCAN());
+              } else {
+                this.store.dispatch(DELETE_ONE({index}));
+              }
+           }
+        },
+      ]
+    });
+
+    await alert.present();
+  }
+
+  async showToast(msg: string){
+    const toast = await this.toastCtrl.create({
+      message: msg,
+      duration: 4000
+    });
+
+    await toast.present();
   }
 }

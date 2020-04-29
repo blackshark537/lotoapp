@@ -50,8 +50,15 @@ export class GamePage implements OnInit, OnDestroy {
   }
 
   async ngOnDestroy(){
-    this.user_draw.Data=[];
-    this.numbers_draws=[];
+
+  }
+
+  goInicio(){
+    if(this.user_draw.Data.length > 0){
+      this.back()
+   }else {
+    this.router.navigate(['/inicio']);
+   }    
   }
 
   async back(){
@@ -63,27 +70,24 @@ export class GamePage implements OnInit, OnDestroy {
           text: 'Cancel',
           role: 'cancel',
           cssClass: 'secondary',
-          handler: (blah) => {
-            console.log('Confirm Cancel: do not save');
+          handler: () => {
+            /* this.user_draw.Data=[];
+            this.numbers_draws=[]; */
             this.router.navigate(['/inicio']);
           }
         }, {
           text: 'Ok',
-          handler: () => {
-            console.log('Confirm Okay save and exit');
+          handler: async () => {
             this.user_draw.emitDate = new Date(Date.now());
-            this.store.dispatch(ARCHIVE_DRAW({draw: this.user_draw}))
+            this.user_draw.owner = 'user';
+            await this.store.dispatch(ARCHIVE_DRAW({draw: this.user_draw}));
             this.router.navigate(['/inicio']);
           }
         }
       ]
     });
 
-    if(this.user_draw.Data.length > 0){
-      await alert.present();
-    }else{
-      this.router.navigate(['/inicio']);
-    }
+    await alert.present();
   }
 
   matdesign(): boolean{
