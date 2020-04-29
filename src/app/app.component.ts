@@ -3,8 +3,12 @@ import { Component, OnInit } from '@angular/core';
 import { Platform } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
-import {Store} from '@ngrx/store';
+import { StoreModel } from './models/store.model';
+import { UserModel } from './models/user.model';
 import { EXIT } from './actions/admin_draw.action';
+import { Store } from '@ngrx/store';
+import { Observable } from 'rxjs';
+import { SAVE_STATE } from './actions/user.actions';
 
 @Component({
   selector: 'app-root',
@@ -13,6 +17,8 @@ import { EXIT } from './actions/admin_draw.action';
 })
 export class AppComponent implements OnInit {
   
+  user: UserModel;
+
   public appPages = [
     {
       title: 'Inicio',
@@ -42,7 +48,7 @@ export class AppComponent implements OnInit {
   ];
 
   constructor(
-    private store: Store,
+    private store: Store<StoreModel>,
     private platform: Platform,
     private splashScreen: SplashScreen,
     private statusBar: StatusBar
@@ -61,6 +67,11 @@ export class AppComponent implements OnInit {
     addEventListener('beforeunload', (evt)=>{
       evt.preventDefault();
       this.store.dispatch(EXIT());
+      this.store.dispatch(SAVE_STATE());
+    });
+
+    this.store.select('user_state').subscribe(state=>{
+      this.user = {...state};
     });
   }
 }

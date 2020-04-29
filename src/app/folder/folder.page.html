@@ -8,10 +8,60 @@
 </ion-header>
 
 <ion-content >
+  <ion-grid>
+    <ion-row>
+      <ion-col size="12">
+        <ion-list>
+          <div *ngFor="let draw of user.archived; index as i" (click)="openActions(i, draw)"
+          style="padding: 0; margin: 0;">
+          <div *ngIf="folder === 'Archivadas'; else elseBlock;">
+            <ion-item *ngIf="!draw.favorite">
+              <ion-avatar slot="start">
+                <img src="assets/leidsa.png">
+              </ion-avatar>
+              <ion-label>
+                <h2>Loteria: {{ draw.lottery + ' '+ draw.draw}}</h2>
+                <h3>Creada: {{ draw.emitDate}}</h3>
+                <p>activa: {{ draw.active? 'Si' : 'No'}}</p>
+              </ion-label>
+              <ion-icon slot="end" [ios]="'chevron-forward-outline'" [md]="'chevron-forward-sharp'"></ion-icon>
+            </ion-item>
+          </div>
 
-  <div id="container">
-    <ion-text>{{folder}}</ion-text>
-    <p>En fase de desarrollo</p>
-  </div>
-  
+            <ng-template #elseBlock>
+              <ion-item *ngIf="draw.favorite">
+                <ion-avatar slot="start">
+                  <img src="assets/leidsa.png">
+                </ion-avatar>
+                <ion-label>
+                  <h2>Loteria: {{ draw.lottery + ' '+ draw.draw}}</h2>
+                  <h3>Creada: {{ draw.emitDate}}</h3>
+                  <p>activa: {{ draw.active? 'Si' : 'No'}}</p>
+                </ion-label>
+                <ion-icon slot="end" color="danger" [ios]="'heart-outline'" [md]="'heart-sharp'"></ion-icon>
+              </ion-item>
+            </ng-template>
+
+          </div>
+
+          <div *ngFor="let draw of user.recicle; index as i" (click)="openActions(i, draw)" style="padding: 0; margin: 0;">
+            
+              <ion-item *ngIf="folder === 'Reciclaje'">
+                <ion-avatar slot="start">
+                  <img src="assets/leidsa.png">
+                </ion-avatar>
+                <ion-label>
+                  <h2>Loteria: {{ draw.lottery + ' '+ draw.draw}}</h2>
+                  <h3>Creada: {{ draw.emitDate}}</h3>
+                  <p>activa: {{ draw.active? 'Si' : 'No'}}</p>
+                </ion-label>
+                <ion-icon slot="end" [ios]="'chevron-forward-outline'" [md]="'chevron-forward-sharp'"></ion-icon>
+              </ion-item>
+            
+          </div>
+
+        </ion-list>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 </ion-content>

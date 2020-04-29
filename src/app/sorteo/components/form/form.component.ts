@@ -35,7 +35,8 @@ export class FormComponent implements OnInit {
         active: true,
         owner: 'admin',
         expiryDate: new Date(Date.now()),
-        draw: ''
+        draw: '',
+        favorite: false
       }
     } else {
       this.store.select('admin_draw').subscribe(resp =>{

@@ -1,7 +1,7 @@
 <ion-header>
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-button routerDirection="root" [routerLink]="['/inicio']">
+      <ion-button (click)="back()">
         <ion-icon [ios]="'chevron-back-outline'" [md]="'arrow-back-sharp'" ></ion-icon>
       </ion-button>
     </ion-buttons>
@@ -9,7 +9,6 @@
     <ion-title>game</ion-title>
     <ion-buttons slot="end" *ngIf="!matdesign()">
       <ion-button (click)="openAction()">
-        Jugar
         <ion-icon name="game-controller"></ion-icon>
       </ion-button>
     </ion-buttons>
@@ -52,7 +51,7 @@
         </ion-col>
       </ion-row>
   
-      <ion-row class="hover" *ngFor="let row of user_data; index as i">
+      <ion-row class="hover" *ngFor="let row of user_draw.Data; index as i">
         <ion-col size="0.7">
           <ion-text>{{i+1}}. -</ion-text>
         </ion-col>

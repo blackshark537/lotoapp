@@ -4,6 +4,7 @@ export interface Draw{
     draw: string;
     owner: string;
     active: boolean;
+    favorite: boolean;
     Data: any[];    
     emitDate?: Date;
     expiryDate?: Date;

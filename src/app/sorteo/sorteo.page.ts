@@ -52,7 +52,7 @@ export class SorteoPage implements OnInit {
           handler: () =>{ this.edit=true; this.openModal() }
         },
         {
-          text: 'borrar',
+          text: 'reciclar',
           icon: 'trash',
           cssClass: 'delete',
           role: 'destructive',
