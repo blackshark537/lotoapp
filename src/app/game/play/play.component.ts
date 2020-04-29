@@ -15,7 +15,7 @@ export class PlayComponent implements OnInit, OnDestroy {
 
   @Input('game') game: string;
   @Input('draw') draw: number[];
-  @Output('data') data: number[];
+  @Output('data') data: any[];
 
   balls: Ball[]=[];
   tombola: Tombola;
@@ -99,6 +99,7 @@ export class PlayComponent implements OnInit, OnDestroy {
 
   save(){
     this.data = this.draw
+    this.data.push(this.game.length > 6? this.game.slice(0,4) + '...' : this.game);
     this.dismiss()
   }
 

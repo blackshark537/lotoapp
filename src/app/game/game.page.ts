@@ -18,7 +18,7 @@ export class GamePage implements OnInit, OnDestroy {
   draw: Draw;
   numbers_draws: number[] = [];
   index: number=0;
-  //user_data: any[]=[];
+  header: string[]=[];
   user_draw: Draw ={
     Data: [],
     _id: '',
@@ -39,6 +39,7 @@ export class GamePage implements OnInit, OnDestroy {
     private actionSheetController: ActionSheetController) { }
 
   ngOnInit() {
+    this.header = ['primero', 'segundo', 'tercero', 'quarto', 'quinto', 'sexto', 'L.Mas', 'S.L.Mas', 'type']
     this.index = parseInt(this.activeRoute.snapshot.paramMap.get('id'));
     this.draw_type = '';
     this.store.select('admin_draw').subscribe(resp=>{

@@ -25,29 +25,8 @@
         <ion-col size="0.7">
           <ion-text>#No</ion-text>
         </ion-col>
-        <ion-col size="1.4">
-          <ion-text>primero</ion-text>
-        </ion-col>
-        <ion-col size="1.4">
-          <ion-text>segundo</ion-text>
-        </ion-col>
-        <ion-col size="1.4">
-          <ion-text>tercero</ion-text>
-        </ion-col>
-        <ion-col size="1.4">
-          <ion-text>cuarto</ion-text>
-        </ion-col>
-        <ion-col size="1.4">
-          <ion-text>quinto</ion-text>
-        </ion-col>
-        <ion-col size="1.4">
-          <ion-text>sexto</ion-text>
-        </ion-col>
-        <ion-col size="1.4">
-          <ion-text>l. mas</ion-text>
-        </ion-col>
-        <ion-col size="1.4">
-          <ion-text>s. l. mas</ion-text>
+        <ion-col size="1.25" *ngFor="let head of header">
+          <ion-text>{{head}}</ion-text>
         </ion-col>
       </ion-row>
   
@@ -55,8 +34,8 @@
         <ion-col size="0.7">
           <ion-text>{{i+1}}. -</ion-text>
         </ion-col>
-        <ion-col size="1.4" *ngFor="let col of row">
-          <ion-text>{{col}}</ion-text>
+        <ion-col size="1.25" *ngFor="let col of row">
+          <ion-text class="ion-text-center">{{col}}</ion-text>
         </ion-col>
       </ion-row>
     </ion-grid>

@@ -7,7 +7,6 @@ import { StoreModel } from './models/store.model';
 import { UserModel } from './models/user.model';
 import { EXIT } from './actions/admin_draw.action';
 import { Store } from '@ngrx/store';
-import { Observable } from 'rxjs';
 import { SAVE_STATE } from './actions/user.actions';
 
 @Component({
@@ -45,11 +44,11 @@ export class AppComponent implements OnInit {
       url: '/folder/Reciclaje',
       icon: 'trash'
     },
-    {
+/*     {
       title: 'Perfil',
       url: '/folder/Profile',
       icon: 'person-circle'
-    }
+    } */
   ];
 
   constructor(

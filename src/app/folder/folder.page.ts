@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Platform, ActionSheetController, AlertController, ToastController } from '@ionic/angular';
-import { Store } from '@ngrx/store';
+import { Store, select } from '@ngrx/store';
 import { StoreModel } from '../models/store.model';
-import { MARK_AS_FAVORITE, RECICLE, DELETE_ONE, EMPTY_TRASHCAN } from '../actions/user.actions';
+import { MARK_AS_FAVORITE, RECICLE, DELETE_ONE, EMPTY_TRASHCAN, ARCHIVE_DRAW } from '../actions/user.actions';
+import { SAVE } from '../actions/admin_draw.action'
 import { UserModel } from '../models/user.model';
 import { Draw } from '../models/draw.model';
 
@@ -14,7 +15,10 @@ import { Draw } from '../models/draw.model';
 })
 export class FolderPage implements OnInit {
   public folder: string;
-  user: UserModel = {
+  public detail: boolean;
+  public draw: Draw;
+  public indexSelected: number;
+  public user: UserModel = {
     archived: [],
     recicle: [],
     name: '',
@@ -34,31 +38,47 @@ export class FolderPage implements OnInit {
   }
 
   ngOnInit() {
+    this.detail  = false;
+    //this.indexSelected = 0;
     this.folder = this.activatedRoute.snapshot.paramMap.get('id');
     this.store.select('user_state').subscribe(state=>{
       this.user = {...state};
     });
   }
 
-  async openActions(index: number, draw: Draw){
+  async openFolder(index: number, draw: Draw){
+    this.indexSelected = index;
+    this.draw = draw;
+    this.detail = true;
+  }
+  
+  async openActions(index: number){
     const options = this.folder === 'Reciclaje'? this.recicleOptions(index) : this.normalOptions(index);
     const actionSheet = await this.actionCtrl.create(options);
     await actionSheet.present();
+  }
+
+  async restore(index){
+    if(this.user.recicle[index].owner === 'user') await this.store.dispatch(ARCHIVE_DRAW({draw: this.user.recicle[index]}));
+    if(this.user.recicle[index].owner === 'admin') await this.store.dispatch(SAVE(this.user.recicle[index]));
+    await this.store.dispatch(DELETE_ONE({index})); 
   }
 
   normalOptions(index){
     let opt = {
       header: 'Acciones',
       buttons:[
-        {
-          text: 'abrir',
-          icon: 'open',
-        },
+/*         {
+          text: 'cerrar carpeta',
+          icon: 'remove-circle',
+          handler: ()=> this.detail = false
+        }, */
         {
           text: 'favorito',
           icon: 'heart',
           handler: () =>{ 
             this.store.dispatch(MARK_AS_FAVORITE({index}));
+            this.detail = !this.detail;
           }
         },
         {
@@ -69,6 +89,7 @@ export class FolderPage implements OnInit {
           handler: ()=>{ 
             this.store.dispatch(RECICLE({index}));
             this.showToast('Enviado a la papelera de reciclaje');
+            this.detail = !this.detail;
           }
         },
         {
@@ -78,9 +99,7 @@ export class FolderPage implements OnInit {
         }
       ]
     };
-    if(this.folder != 'Archivadas'){
-      opt.buttons[1].icon='heart-dislike'
-    }
+    if(this.folder != 'Archivadas') opt.buttons[0].icon='heart-dislike';
     return opt;
   }
 
@@ -92,7 +111,7 @@ export class FolderPage implements OnInit {
           text: 'restaurar',
           icon: 'push',
           handler: () =>{
-            console.log('restaurar !!!');
+            this.restore(index);
            }
         },
         {
