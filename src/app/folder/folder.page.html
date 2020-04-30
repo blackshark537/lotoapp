@@ -1,5 +1,5 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
+<ion-header [translucent]="true" >
+  <ion-toolbar color="tertiary" >
     <ion-buttons slot="start">
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
@@ -11,17 +11,18 @@
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
+  <ion-searchbar *ngIf="folder != 'Reciclaje'" animated></ion-searchbar>
 </ion-header>
 
 <ion-content>
   <ion-grid>
     <ion-row>
-      <ion-col size="{{ detail? '6' : '12'}}">
+      <ion-col size="{{ detail? '0.5' : '12'}}" size-md>
         <ion-list>
           <div *ngFor="let draw of user.archived; index as i" (click)="openFolder(i, draw)"
             style="padding: 0; margin: 0;">
             <div *ngIf="folder === 'Archivadas'; else elseBlock;">
-              <ion-item *ngIf="!draw.favorite">
+              <ion-item color="{{indexSelected === i? 'light' : ''}}" *ngIf="!draw.favorite">
                 <ion-avatar slot="start">
                   <ion-icon *ngIf="indexSelected === i && detail; else closeBlock" color="warning" size="large" [ios]="'folder-open-outline'" [md]="'folder-open-sharp'"></ion-icon>
                   <ng-template #closeBlock>
@@ -38,7 +39,7 @@
             </div>
 
             <ng-template #elseBlock>
-              <ion-item *ngIf="draw.favorite && folder === 'Favoritas'">
+              <ion-item color="{{indexSelected === i? 'light' : ''}}" *ngIf="draw.favorite && folder === 'Favoritas'">
                 <ion-avatar slot="start">
                   <!-- <img src="assets/leidsa.png"> -->
                   <ion-icon *ngIf="indexSelected === i && detail; else closeBlock" color="warning" size="large" [ios]="'folder-open-outline'" [md]="'folder-open-sharp'"></ion-icon>
@@ -58,7 +59,7 @@
 
           </div>
 
-          <div *ngFor="let draw of user.recicle; index as i" (click)="openActions(i, draw)"
+          <div *ngFor="let draw of user.recicle; index as i" (click)="openActions(i)"
             style="padding: 0; margin: 0;">
             <ion-item *ngIf="folder === 'Reciclaje'">
               <!-- <img src="assets/leidsa.png"> -->
@@ -81,21 +82,24 @@
 
         </ion-list>
       </ion-col>
-      <ion-col *ngIf="detail" size="6">
+      <ion-col *ngIf="detail" size="11.5" size-md>
         <ion-list>
           <ion-item>
             <ion-avatar>
               <ion-icon color="danger" size="large" [ios]="'document-outline'"
                   [md]="'document-sharp'"></ion-icon>
             </ion-avatar>
-            <ion-label (click)="openActions(indexSelected, draw)" *ngIf="draw != undefined && folder != 'Reciclaje'">
+            <ion-label *ngIf="draw != undefined && folder != 'Reciclaje'">
               <ion-toolbar>
                 <h2>{{ draw? draw.lottery + ' '+ draw.draw : ''}}</h2>
                 <h3>Vence: {{ draw.expiryDate | date}}</h3>
                 <p>id: {{ draw._id}}</p>
                 <ion-buttons slot="end">
-                  <ion-button>
-                    <ion-icon name="chevron-up-outline"></ion-icon>
+                  <ion-button (click)="openActions(indexSelected)">
+                    <ion-icon [ios]="'ellipsis-horizontal-circle-sharp'" [md]="'ellipsis-vertical-sharp'"></ion-icon>
+                  </ion-button>
+                  <ion-button (click)="detail = false;">
+                    <ion-icon name="close-circle-outline"></ion-icon>
                   </ion-button>
                 </ion-buttons>
               </ion-toolbar>

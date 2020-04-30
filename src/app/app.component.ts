@@ -17,31 +17,37 @@ import { SAVE_STATE } from './actions/user.actions';
 export class AppComponent implements OnInit {
   
   user: UserModel;
+  selectedIndex:number;
 
   public appPages = [
     {
       title: 'Inicio',
       url: '/inicio',
+      style: 'primary',
       icon: 'home'
     },
     {
       title: 'Sorteos',
       url: '/sorteos',
+      style: 'success',
       icon: 'apps'
     },
     {
       title: 'Archivadas',
       url: '/folder/Archivadas',
+      style: 'warning',
       icon: 'archive'
     },
     {
       title: 'Favoritas',
       url: '/folder/Favoritas',
+      style: 'tertiary',
       icon: 'heart'
     },
     {
       title: 'Reciclaje',
       url: '/folder/Reciclaje',
+      style: 'danger',
       icon: 'trash'
     },
 /*     {

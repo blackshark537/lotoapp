@@ -1,6 +1,4 @@
-ion-menu-button {
-  color: var(--ion-color-primary);
-}
+
 
 #container {
   text-align: center;
@@ -31,6 +29,14 @@ ion-content ion-toolbar {
   --background: transparent;
 }
 
+.selected {
+  --background: rgba(var(--ion-color-medium-rgb), 0.14);
+}
+
 .card-hover:hover{
   cursor: pointer;
+}
+
+ion-item :hover {
+  --background: --ion-color-light-rgb
 }
