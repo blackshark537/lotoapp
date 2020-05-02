@@ -9,13 +9,25 @@
     </ion-toolbar>
 </ion-header>
 <ion-content>
-    <div id="canvas"></div>
+    <div #canvas id="canvas"></div>
+
+    <div id="container" *ngIf="can_save">
+        <strong class="capitalize" color="primary">
+            Sorteo Terminado
+        </strong>
+        <p>Los número agraciados son:</p>
+        <p>{{draw}}</p>
+        <p>
+          <ion-icon name="game-controller"></ion-icon>
+          Presione Aceptar para continuar.
+        </p>
+      </div>
 </ion-content>
 
 <ion-footer>
     <ion-toolbar *ngIf="saveBtn()">
         <ion-buttons slot="end">
-            <ion-button (click)="save()">Guardar</ion-button>
+            <ion-button (click)="save()">Aceptar</ion-button>
         </ion-buttons>
     </ion-toolbar>
 </ion-footer>

@@ -67,6 +67,7 @@ export class FolderPage implements OnInit {
   normalOptions(index){
     let opt = {
       header: 'Acciones',
+      translucent: true,
       buttons:[
 /*         {
           text: 'cerrar carpeta',
@@ -106,6 +107,7 @@ export class FolderPage implements OnInit {
   recicleOptions(index){
     return {
       header: 'Acciones',
+      translucent: true,
       buttons:[
         {
           text: 'restaurar',

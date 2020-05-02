@@ -1,9 +1,8 @@
-import { Component, OnInit, OnDestroy, Input, Output } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input, Output, ViewChild } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { Ball } from './classes/ball';
 import { Tombola } from './classes/tombola';
 import { DrawBall } from './classes/ball_draw';
-
 import * as P5 from 'p5';
 
 @Component({
@@ -34,21 +33,23 @@ export class PlayComponent implements OnInit, OnDestroy {
   sketch(){
     
     new P5((p: P5)=>{
-      
+
       const gvty = p.createVector(0,1);
       const wind = p.createVector(0.02,0);
       let loop = false;
       let img;
       let playButton;
       let draw_balls = [];
-
+      let myFont;
+      
       p.preload = ()=>{
         img = p.loadImage('assets/hover.png');
         playButton = p.loadImage('assets/play.png');
+        myFont = p.loadFont('assets/Inconsolata-Condensed.otf');
       }
 
       p.setup = ()=>{
-        p.createCanvas(400,400);
+        p.createCanvas(400,400, p.WEBGL);
         p.ellipseMode(p.CENTER);
         p.rectMode(p.CENTER);
         p.textAlign(p.CENTER);
@@ -60,17 +61,25 @@ export class PlayComponent implements OnInit, OnDestroy {
         this.draw.map(val=> draw_balls.push(new Ball(p, val)));
         this.drawBall = new DrawBall(this.balls[0], p, draw_balls);
         this.tombola = new Tombola(p, img);
+        p.frameRate(60);
+        p.textFont(myFont, 18);
         p.noFill();
       }
       
       p.mouseClicked = ()=>{
+        if(loop)this.drawBall.pick_one();
         if(p.mouseX > 100 && p.mouseX < 400-100 && p.mouseY > 100 && p.mouseY < 400-100){
           if(!loop) loop = true;
-          this.drawBall.pick_one();
         }
+      }
+
+      p.keyPressed = ()=>{
+        if(p.keyCode === 32 && loop)this.drawBall.pick_one();
+        if(!loop) loop = true;
       }
   
       p.draw = ()=>{
+        p.translate(-200, -200);
         p.background(250);
         if(loop && !this.drawBall.end_drawing()){
           this.balls.map((ball: Ball) =>{
@@ -83,11 +92,18 @@ export class PlayComponent implements OnInit, OnDestroy {
         if(this.drawBall.end_drawing()){
           console.log('Game Over');
           this.can_save = true;
-          p.noLoop();
+          p.remove();
         }
+
         this.drawBall.draw();
         this.tombola.draw();
-        if (!loop) p.image(playButton, p.width/2, p.height/2, 70, 50);
+        if (!loop){
+          p.image(playButton, p.width/2, p.height/2, 70, 50);
+          //p.text('Press play button or key Enter to start', p.width/2, 20);
+        } else {
+          p.text('Press key Enter to draw a ball', p.width/2, 20);
+        }
+        
       }
 
     }, document.getElementById('canvas'));
@@ -99,7 +115,7 @@ export class PlayComponent implements OnInit, OnDestroy {
 
   save(){
     this.data = this.draw
-    this.data.push(this.game.length > 6? this.game.slice(0,4) + '...' : this.game);
+    this.data.push(this.game);
     this.dismiss()
   }
 
@@ -111,7 +127,7 @@ export class PlayComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(){
-    delete this.sketch;
+    
   }
 
 }

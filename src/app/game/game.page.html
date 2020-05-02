@@ -23,19 +23,19 @@
           <ion-text>Resultados {{draw.draw}} {{draw.lottery}}</ion-text>
         </ion-col>
         <ion-col size="0.7">
-          <ion-text>#No</ion-text>
+          <p class="ion-text-center">#No</p>
         </ion-col>
         <ion-col size="1.25" *ngFor="let head of header">
-          <ion-text>{{head}}</ion-text>
+          <p  class="ion-text-center">{{head}}</p>
         </ion-col>
       </ion-row>
   
-      <ion-row class="hover" *ngFor="let row of user_draw.Data; index as i">
+      <ion-row class="{{i%2 === 0? 'hover' : ''}}" *ngFor="let row of user_draw.Data; index as i;">
         <ion-col size="0.7">
-          <ion-text>{{i+1}}. -</ion-text>
+          <p class="ion-text-center truncate-text">{{i+1}}) </p>
         </ion-col>
         <ion-col size="1.25" *ngFor="let col of row">
-          <ion-text class="ion-text-center">{{col}}</ion-text>
+          <p class="ion-text-center truncate-text">{{col}}</p>
         </ion-col>
       </ion-row>
     </ion-grid>

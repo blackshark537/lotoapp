@@ -107,7 +107,7 @@
           </ion-item>
           <ion-item *ngFor="let rows of draw.Data; index as i">
             <ion-icon name="heart-circle-outline"></ion-icon>
-            <p *ngFor="let col of rows;">
+            <p *ngFor="let col of rows;index as i" class="{{ i > rows.length-2? 'truncate-text' : ''}}">
               {{' - ' + col}}
             </p>
           </ion-item>

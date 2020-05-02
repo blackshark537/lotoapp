@@ -15,7 +15,7 @@ export class Ball{
     this.r = 20;
     this.vel = p.createVector(0,5);
   }
-  
+
   add_force(force: p5.Vector){
     this.vel.add(force)
     this.ball.add(this.vel)
@@ -27,18 +27,26 @@ export class Ball{
   
   draw(){
     this.p.fill(250,200,10); //ball color
+    this.p.noStroke();
     this.p.ellipse(this.ball.x, this.ball.y, this.r);
+    this.p.stroke(0);
     this.p.fill(0);
-    this.p.text(this.num+1, this.ball.x, this.ball.y+5)
+    //this.p.strokeWeight(1.5);
+    this.p.text(this.num+1, this.ball.x, this.ball.y+5);
+    //this.p.strokeWeight(1);
     this.p.noFill();
     this.edges();
   }
 
   _draw(pos: { tex: number; x: number; y: number;}){
     this.p.fill(250,200,10); //ball color
+    this.p.noStroke();
     this.p.ellipse(pos.x, pos.y, this.r);
+    this.p.stroke(0);
     this.p.fill(0);
-    this.p.text(pos.tex, pos.x, pos.y+5)
+    //this.p.strokeWeight(1.5);
+    this.p.text(pos.tex, pos.x, pos.y+5);
+    //this.p.strokeWeight(1);
     this.p.noFill();
   }
   

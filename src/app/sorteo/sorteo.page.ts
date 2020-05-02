@@ -46,6 +46,7 @@ export class SorteoPage implements OnInit {
 
     const actionSheet = await this.actionController.create({
       header: 'Acciones',
+      translucent: true,
       buttons:[
         {
           text: 'editar',

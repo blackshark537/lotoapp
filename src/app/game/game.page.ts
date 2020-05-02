@@ -102,7 +102,6 @@ export class GamePage implements OnInit, OnDestroy {
         {
           icon: 'cash',
           text: 'Normal',
-          role: 'destructive',
           handler: ()=>{this.openNormal()}
         },
         {
@@ -113,6 +112,7 @@ export class GamePage implements OnInit, OnDestroy {
         {
           icon: 'shuffle',
           text: 'Aleatorio',
+          role: 'destructive',
           handler: ()=>{this.openRandom()}
         },
         {
@@ -143,7 +143,7 @@ export class GamePage implements OnInit, OnDestroy {
   async openRandom(){
     this.numbers_draws = [];
     await this.random_draw();
-    this.draw_type = 'random';
+    this.draw_type = 'aleatorio';
     this.openModal();
   }
 
