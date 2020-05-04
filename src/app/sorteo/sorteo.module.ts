@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
+import { MomentModule } from 'ngx-moment';
 
 import { SorteoPageRoutingModule } from './sorteo-routing.module';
 
@@ -13,6 +14,11 @@ import { FormComponent } from './components/form/form.component'
   entryComponents:[FormComponent],
   imports: [
     CommonModule,
+    MomentModule.forRoot({
+      relativeTimeThresholdOptions: {
+        'm': 59
+      }
+    }),
     FormsModule,
     IonicModule,
     SorteoPageRoutingModule

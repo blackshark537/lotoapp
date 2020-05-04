@@ -25,8 +25,8 @@
         <ion-col size="0.7">
           <p class="ion-text-center">#No</p>
         </ion-col>
-        <ion-col size="1.25" *ngFor="let head of header">
-          <p  class="ion-text-center">{{head}}</p>
+        <ion-col size="1.25" *ngFor="let head of header; index as i">
+          <p *ngIf="draw.Data.length > i"  class="ion-text-center">{{head}}</p>
         </ion-col>
       </ion-row>
   
@@ -34,7 +34,7 @@
         <ion-col size="0.7">
           <p class="ion-text-center truncate-text">{{i+1}}) </p>
         </ion-col>
-        <ion-col size="1.25" *ngFor="let col of row">
+        <ion-col size="1.25" *ngFor="let col of row; index as i">
           <p class="ion-text-center truncate-text">{{col}}</p>
         </ion-col>
       </ion-row>

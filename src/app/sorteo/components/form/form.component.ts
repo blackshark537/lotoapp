@@ -15,6 +15,8 @@ export class FormComponent implements OnInit {
   @Input('edit') edit: boolean;
   @Input('index') index: number;
 
+  ballsqty: number;
+
   draw: Draw;
   filename: string;
   labels = ['PRIMERO', 'SEGUNDO', 'TERCERO', 'QUARTO', 'QUINTO', 'SEXTO', 'L.MAS', 'L.S.MAS'];
@@ -77,12 +79,11 @@ export class FormComponent implements OnInit {
 
       let col;
       this.draw.Data = [];
-      this.labels.map(ball =>{
+      for (let i = 0; i < this.ballsqty; i++) {
         col = [];
-        jsonData['data'].map(val => col.push(val[ball]));
+        jsonData['data'].map(val => col.push(val[this.labels[i]]));
         this.draw.Data.push(col);
-      });
-      
+      } 
     }
 
     if(file.type === type){

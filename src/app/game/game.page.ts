@@ -39,7 +39,7 @@ export class GamePage implements OnInit, OnDestroy {
     private actionSheetController: ActionSheetController) { }
 
   ngOnInit() {
-    this.header = ['primero', 'segundo', 'tercero', 'quarto', 'quinto', 'sexto', 'L.Mas', 'S.L.Mas', 'type']
+    this.header = ['primero', 'segundo', 'tercero', 'quarto', 'quinto', 'sexto', 'L.Mas', 'S.L.Mas']
     this.index = parseInt(this.activeRoute.snapshot.paramMap.get('id'));
     this.draw_type = '';
     this.store.select('admin_draw').subscribe(resp=>{
@@ -152,14 +152,14 @@ export class GamePage implements OnInit, OnDestroy {
       this.numbers_draws.push(col[Math.floor(Math.random() * col.length)]);
     });
     this.numbers_draws.filter((value, i)=> this.numbers_draws.indexOf(value) != i);
-    if(this.numbers_draws.length != 8) this.normal_draw();
+    if(this.numbers_draws.length != this.draw.Data.length) this.normal_draw();
   }
 
   async random_draw(){
     if(this.numbers_draws.length < 6) this.numbers_draws.push(Math.floor(Math.random() * 34) +1 );
     if(this.numbers_draws.length < 8) this.numbers_draws.push(Math.floor(Math.random() * 14) +1 );
     await this.numbers_draws.filter((value, i)=> this.numbers_draws.indexOf(value) === i);
-    if(this.numbers_draws.length != 8) this.random_draw();
+    if(this.numbers_draws.length != this.draw.Data.length) this.random_draw();
   }
 
   async openModal(){

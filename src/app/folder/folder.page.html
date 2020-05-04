@@ -22,7 +22,7 @@
           <div *ngFor="let draw of user.archived; index as i" (click)="openFolder(i, draw)"
             style="padding: 0; margin: 0;">
             <div *ngIf="folder === 'Archivadas'; else elseBlock;">
-              <ion-item color="{{indexSelected === i? 'light' : ''}}" *ngIf="!draw.favorite">
+              <ion-item button color="{{indexSelected === i? 'light' : ''}}" *ngIf="!draw.favorite">
                 <ion-avatar slot="start">
                   <ion-icon *ngIf="indexSelected === i && detail; else closeBlock" color="warning" size="large" [ios]="'folder-open-outline'" [md]="'folder-open-sharp'"></ion-icon>
                   <ng-template #closeBlock>
@@ -31,15 +31,14 @@
                 </ion-avatar>
                 <ion-label>
                   <h2>Loteria: {{ draw.lottery + ' '+ draw.draw}}</h2>
-                  <h3>Creada: {{ draw.emitDate | date}}</h3>
+                  <h3>Creada: {{ draw.emitDate | amLocale: 'es-do' | amTimeAgo}}</h3>
                   <p>activa: {{ draw.active? 'Si' : 'No'}}</p>
                 </ion-label>
-                <ion-icon slot="end" [ios]="'chevron-forward-outline'" [md]="'chevron-forward-sharp'"></ion-icon>
               </ion-item>
             </div>
 
             <ng-template #elseBlock>
-              <ion-item color="{{indexSelected === i? 'light' : ''}}" *ngIf="draw.favorite && folder === 'Favoritas'">
+              <ion-item button color="{{indexSelected === i? 'light' : ''}}" *ngIf="draw.favorite && folder === 'Favoritas'">
                 <ion-avatar slot="start">
                   <!-- <img src="assets/leidsa.png"> -->
                   <ion-icon *ngIf="indexSelected === i && detail; else closeBlock" color="warning" size="large" [ios]="'folder-open-outline'" [md]="'folder-open-sharp'"></ion-icon>
@@ -49,11 +48,10 @@
                 </ion-avatar>
                 <ion-label>
                   <h2>Loteria: {{ draw.lottery + ' '+ draw.draw}}</h2>
-                  <h3>Creada: {{ draw.emitDate | date}}</h3>
+                  <h3>Creada: {{ draw.emitDate | amLocale: 'es-do' | amTimeAgo}}</h3>
                   <p>activa: {{ draw.active? 'Si' : 'No'}}</p>
                 </ion-label>
                 <ion-icon slot="end" color="danger" [ios]="'heart-outline'" [md]="'heart-sharp'"></ion-icon>
-                <ion-icon slot="end" [ios]="'chevron-forward-outline'" [md]="'chevron-forward-sharp'"></ion-icon>
               </ion-item>
             </ng-template>
 
@@ -61,7 +59,7 @@
 
           <div *ngFor="let draw of user.recicle; index as i" (click)="openActions(i)"
             style="padding: 0; margin: 0;">
-            <ion-item *ngIf="folder === 'Reciclaje'">
+            <ion-item button detail="true" *ngIf="folder === 'Reciclaje'">
               <!-- <img src="assets/leidsa.png"> -->
               <ion-avatar slot="start">
                 <ion-icon *ngIf="draw.owner === 'user'" color="danger" size="large" [ios]="'folder-outline'"
@@ -72,11 +70,10 @@
 
               <ion-label>
                 <h2>Loteria: {{ draw? draw.lottery + ' '+ draw.draw : ''}}</h2>
-                <h3>Creada: {{ draw.emitDate | date}}</h3>
+                <h3>Creada: {{ draw.emitDate | amLocale: 'es-do' | amTimeAgo}}</h3>
                 <h4>type: {{draw.owner === 'user'? 'folder' : 'document'}}</h4>
                 <p>id: {{ draw._id}}</p>
               </ion-label>
-              <ion-icon slot="end" [ios]="'chevron-forward-outline'" [md]="'chevron-forward-sharp'"></ion-icon>
             </ion-item>
           </div>
 
@@ -84,7 +81,7 @@
       </ion-col>
       <ion-col *ngIf="detail" size="11.5" size-md>
         <ion-list>
-          <ion-item>
+          <ion-item button detail="true">
             <ion-avatar>
               <ion-icon color="danger" size="large" [ios]="'document-outline'"
                   [md]="'document-sharp'"></ion-icon>
@@ -105,7 +102,7 @@
               </ion-toolbar>
             </ion-label>
           </ion-item>
-          <ion-item *ngFor="let rows of draw.Data; index as i">
+          <ion-item button detail="true" *ngFor="let rows of draw.Data; index as i">
             <ion-icon name="heart-circle-outline"></ion-icon>
             <p *ngFor="let col of rows;index as i" class="{{ i > rows.length-2? 'truncate-text' : ''}}">
               {{' - ' + col}}

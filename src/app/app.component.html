@@ -12,9 +12,28 @@
               <ion-label>{{ p.title }}</ion-label>
             </ion-item>
           </ion-menu-toggle>
-          <ion-item (click)="selectedIndex = 6" [class.selected]="selectedIndex == 6" >
+          <ion-item button lines="none" (click)="selectedIndex = 6" [class.selected]="selectedIndex == 6" >
             <ion-icon slot="start" [ios]="'exit-outline'" [md]="'exit-sharp'" ></ion-icon>
             <ion-label>Salir</ion-label>
+          </ion-item>
+        </ion-list>
+
+        <ion-list>
+          <ion-item>
+            <ion-text>Etiquetas</ion-text>
+          </ion-item>
+
+          <ion-item lines="none">
+            <ion-icon slot="start" color="success" name="cash-outline"></ion-icon>
+            <ion-label>Normal</ion-label>
+          </ion-item>
+          <ion-item lines="none">
+            <ion-icon slot="start" color="warning" name="construct-outline"></ion-icon>
+            <ion-label>Personalizado</ion-label>
+          </ion-item>
+          <ion-item lines="none">
+            <ion-icon slot="start" color="danger" name="shuffle-outline"></ion-icon>
+            <ion-label>Random</ion-label>
           </ion-item>
         </ion-list>
 

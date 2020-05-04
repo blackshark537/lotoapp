@@ -7,8 +7,8 @@ import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
-import { environment } from '../environments/environment';
 
+import { environment } from '../environments/environment';
 import { reducerDraw } from './reducers/admin_draw.reducer';
 import { UserReducer } from './reducers/user_state.reducer'
 

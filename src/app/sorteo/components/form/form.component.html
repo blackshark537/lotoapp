@@ -29,15 +29,19 @@
   <ion-list>
     <ion-item>
       <ion-label position="fixed">Loteria</ion-label>
-      <ion-input [(ngModel)]="draw.lottery" placeholder="example: Leidsa"></ion-input>
+      <ion-input [(ngModel)]="draw.lottery" placeholder="example: Leidsa" required="true"></ion-input>
     </ion-item>
     <ion-item>
       <ion-label position="fixed">Sorteo</ion-label>
-      <ion-input [(ngModel)]="draw.draw" placeholder="example: Loto pool"></ion-input>
+      <ion-input [(ngModel)]="draw.draw" placeholder="example: Loto pool" required="true"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label slot="start" position="fixed">Cantidad de bolas</ion-label>
+      <ion-input [(ngModel)]="ballsqty" type="number" required="true"></ion-input>
     </ion-item>
     <ion-item>
       <ion-label position="fixed">Vence</ion-label>
-      <ion-datetime value="{{draw.expiryDate}}" (ionChange)="set_expiryDate($event.target)" display-timezone="utc"></ion-datetime>
+      <ion-datetime value="{{draw.expiryDate}}" (ionChange)="set_expiryDate($event.target)" required="true" display-timezone="utc"></ion-datetime>
     </ion-item>
     <ion-item>
       <ion-label position="fixed">Data</ion-label>
