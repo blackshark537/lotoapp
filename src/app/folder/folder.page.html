@@ -89,7 +89,8 @@
             <ion-label *ngIf="draw != undefined && folder != 'Reciclaje'">
               <ion-toolbar>
                 <h2>{{ draw? draw.lottery + ' '+ draw.draw : ''}}</h2>
-                <h3>Vence: {{ draw.expiryDate | date}}</h3>
+                <h3>Creada: {{ draw.emitDate | amLocale: 'es-do' | amTimeAgo}}</h3>
+                <h3>{{dateNow > dateExp? 'Venció':'Vence'}}: {{ draw.expiryDate | amLocale: 'es-do' | amTimeAgo}}</h3>
                 <p>id: {{ draw._id}}</p>
                 <ion-buttons slot="end">
                   <ion-button (click)="openActions(indexSelected)">

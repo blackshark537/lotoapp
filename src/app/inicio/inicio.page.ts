@@ -10,6 +10,7 @@ import { Store } from '@ngrx/store';
   styleUrls: ['./inicio.page.scss'],
 })
 export class InicioPage implements OnInit {
+  dateNow=new Date(Date.now());
 
   draws$: Observable<Draw[]>
 
@@ -19,6 +20,10 @@ export class InicioPage implements OnInit {
 
   ngOnInit() {
     this.draws$ = this.store.select('admin_draw')
+  }
+
+  date(expiryDate){
+    return new Date(expiryDate);
   }
 
 }

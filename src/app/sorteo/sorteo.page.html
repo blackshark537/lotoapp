@@ -27,6 +27,7 @@
             <ion-label>
               <h2>Loteria: {{ draw.lottery + ' '+ draw.draw}}</h2>
               <h3>Creada: {{ draw.emitDate | amLocale: 'es-do' | amTimeAgo}}</h3>
+              <h3>Se desabilitará en {{draw.expiryDate | amLocale: 'es-do' | amTimeAgo}}</h3>
               <p>activa: {{ draw.active? 'Si' : 'No'}}</p>
             </ion-label>
           </ion-item>

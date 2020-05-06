@@ -11,11 +11,11 @@
   <ion-grid>
     <ion-row>
       <ion-col size="12" size-md="4" *ngFor="let draw of draws$ | async; index as i;">
-        <ion-card type="button" class="card-hover" [routerLink]="['/game', i]">
+        <ion-card [disabled]="dateNow > date(draw.expiryDate)" type="button" class="card-hover" [routerLink]="['/game', i]">
           <img src="assets/leidsa.png" style="align-self: center;"/>
           <ion-card-header class="ion-text-center">
             <ion-card-title>{{draw.draw}}</ion-card-title>
-            <ion-card-subtitle>Se eliminara en {{draw.expiryDate | amLocale: 'es-do' | amTimeAgo}}</ion-card-subtitle>
+            <ion-card-subtitle>Se desabilitará en {{draw.expiryDate | amLocale: 'es-do' | amTimeAgo}}</ion-card-subtitle>
           </ion-card-header>
         </ion-card>
       </ion-col>

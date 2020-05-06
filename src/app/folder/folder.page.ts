@@ -18,6 +18,8 @@ export class FolderPage implements OnInit {
   public detail: boolean;
   public draw: Draw;
   public indexSelected: number;
+  public dateNow = new Date(Date.now());
+  public dateExp;
   public user: UserModel = {
     archived: [],
     recicle: [],
@@ -43,6 +45,10 @@ export class FolderPage implements OnInit {
     this.folder = this.activatedRoute.snapshot.paramMap.get('id');
     this.store.select('user_state').subscribe(state=>{
       this.user = {...state};
+      this.user.archived = [...state.archived];
+      this.user.recicle = [...state.recicle];
+      /* this.user.archived.reverse();
+      this.user.recicle.reverse(); */
     });
   }
 
@@ -50,6 +56,7 @@ export class FolderPage implements OnInit {
     this.indexSelected = index;
     this.draw = draw;
     this.detail = true;
+    this.dateExp = new Date(draw.expiryDate);
   }
   
   async openActions(index: number){

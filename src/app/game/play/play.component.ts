@@ -16,23 +16,26 @@ export class PlayComponent implements OnInit, OnDestroy {
   @Input('draw') draw: number[];
   @Output('data') data: any[];
 
+  graphic = 'WebGL'
   balls: Ball[]=[];
   tombola: Tombola;
   drawBall: DrawBall;
   can_save: boolean=false;
+  canvas;
 
   constructor(
     private modalCtrl: ModalController
    ) { }
 
   ngOnInit() {
+    if(this.canvas) this.canvas.remove();
     this.data = [];
     this.sketch();
   }
 
   sketch(){
     
-    new P5((p: P5)=>{
+    this.canvas = new P5((p: P5)=>{
 
       const gvty = p.createVector(0,1);
       const wind = p.createVector(0.02,0);
@@ -49,7 +52,8 @@ export class PlayComponent implements OnInit, OnDestroy {
       }
 
       p.setup = ()=>{
-        p.createCanvas(400,400, p.WEBGL);
+        if(this.graphic === '2D') p.createCanvas(400,400, p.P2D);
+        if(this.graphic === 'WebGL') p.createCanvas(400,400, p.WEBGL);
         p.ellipseMode(p.CENTER);
         p.rectMode(p.CENTER);
         p.textAlign(p.CENTER);
@@ -79,7 +83,7 @@ export class PlayComponent implements OnInit, OnDestroy {
       }
   
       p.draw = ()=>{
-        p.translate(-200, -200);
+        if(this.graphic === 'WebGL') p.translate(-200, -200);
         p.background(250);
         if(loop && !this.drawBall.end_drawing()){
           this.balls.map((ball: Ball) =>{
