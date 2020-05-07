@@ -19,7 +19,7 @@
     <ion-row>
       <ion-col size="12">
         <ion-list>
-          <ion-item  button detail="true" *ngFor="let draw of draws | async; index as i" (click)="openActions(i, draw)">
+          <ion-item  button detail="true" *ngFor="let draw of draw$ | async; index as i" (click)="openActions(i, draw)">
             <ion-avatar slot="start" >
               <!-- <img src="assets/leidsa.png" > -->
               <ion-icon color="success" size="large" [ios]="'document-outline'" [md]="'document-sharp'"></ion-icon>
@@ -27,7 +27,7 @@
             <ion-label>
               <h2>Loteria: {{ draw.lottery + ' '+ draw.draw}}</h2>
               <h3>Creada: {{ draw.emitDate | amLocale: 'es-do' | amTimeAgo}}</h3>
-              <h3>Se desabilitará en {{draw.expiryDate | amLocale: 'es-do' | amTimeAgo}}</h3>
+              <h3>{{currDate > expDate(draw.expiryDate)? 'Expiró ' : 'Expirará '}} {{draw.expiryDate | amLocale: 'es-do' | amTimeAgo}}</h3>
               <p>activa: {{ draw.active? 'Si' : 'No'}}</p>
             </ion-label>
           </ion-item>

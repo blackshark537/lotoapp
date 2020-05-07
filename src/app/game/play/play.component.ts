@@ -38,7 +38,7 @@ export class PlayComponent implements OnInit, OnDestroy {
     this.canvas = new P5((p: P5)=>{
 
       const gvty = p.createVector(0,1);
-      const wind = p.createVector(0.02,0);
+      const wind = p.createVector(0.01,0);
       let loop = false;
       let img;
       let playButton;
@@ -52,7 +52,7 @@ export class PlayComponent implements OnInit, OnDestroy {
       }
 
       p.setup = ()=>{
-        if(this.graphic === '2D') p.createCanvas(400,400, p.P2D);
+        if(this.graphic === '2D') p.createCanvas(400,400);
         if(this.graphic === 'WebGL') p.createCanvas(400,400, p.WEBGL);
         p.ellipseMode(p.CENTER);
         p.rectMode(p.CENTER);
@@ -65,7 +65,7 @@ export class PlayComponent implements OnInit, OnDestroy {
         this.draw.map(val=> draw_balls.push(new Ball(p, val)));
         this.drawBall = new DrawBall(this.balls[0], p, draw_balls);
         this.tombola = new Tombola(p, img);
-        p.frameRate(60);
+        //p.frameRate(60);
         p.textFont(myFont, 18);
         p.noFill();
       }
@@ -83,18 +83,20 @@ export class PlayComponent implements OnInit, OnDestroy {
       }
   
       p.draw = ()=>{
-        if(this.graphic === 'WebGL') p.translate(-200, -200);
+        //if(this.graphic === 'WebGL') p.translate(-200, -200);
         p.background(250);
+        p.directionalLight(255,255,30,1,1,-1);
+        p.ambientLight(255);
         if(loop && !this.drawBall.end_drawing()){
           this.balls.map((ball: Ball) =>{
-            ball.add_force(gvty);
-            ball.add_force(wind);
+            ball.force = gvty;
+            ball.force = wind;
             ball.draw();
           });
         }
         
         if(this.drawBall.end_drawing()){
-          console.log('Game Over');
+          //console.log('Game Over');
           this.can_save = true;
           p.remove();
         }
@@ -102,7 +104,10 @@ export class PlayComponent implements OnInit, OnDestroy {
         this.drawBall.draw();
         this.tombola.draw();
         if (!loop){
-          p.image(playButton, p.width/2, p.height/2, 70, 50);
+          //p.image(playButton, 0, 0, 70, 50);
+          p.noStroke();
+          p.texture(playButton)
+          p.plane(70,50)
           //p.text('Press play button or key Enter to start', p.width/2, 20);
         } else {
           p.text('Press key Enter to draw a ball', p.width/2, 20);
@@ -124,6 +129,7 @@ export class PlayComponent implements OnInit, OnDestroy {
   }
 
   async dismiss() {
+    if(this.canvas) this.canvas.remove();
     await this.modalCtrl.dismiss({
       'dismissed': true,
       'data': this.data

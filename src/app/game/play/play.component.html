@@ -6,13 +6,13 @@
             </ion-button>
         </ion-buttons>
         <ion-title>Sorteo {{game}}</ion-title>
-        <ion-item slot="start" lines="none">
+        <!-- <ion-item slot="start" lines="none">
             <ion-label>{{graphic | titlecase}}</ion-label>
             <ion-select [(ngModel)]="graphic" (ionChange)="ngOnInit()" interface="popover">
               <ion-select-option value="2D">2D</ion-select-option>
               <ion-select-option value="WebGL">WebGL</ion-select-option>
             </ion-select>
-        </ion-item>
+        </ion-item> -->
     </ion-toolbar>
 </ion-header>
 <ion-content>
@@ -23,7 +23,7 @@
             Sorteo Terminado
         </strong>
         <p>Los número agraciados son:</p>
-        <p>{{draw}}</p>
+        <p style="color: #eb445a;">{{draw}}</p>
         <p>
           <ion-icon name="game-controller"></ion-icon>
           Presione Aceptar para continuar.

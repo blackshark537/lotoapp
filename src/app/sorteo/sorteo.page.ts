@@ -16,9 +16,10 @@ import { Observable } from 'rxjs';
 export class SorteoPage implements OnInit {
 
   selectedIndex: number
-  draws: Observable<Draw[]>;
+  draw$: Observable<Draw[]>;
   draw: Draw;
   edit: boolean;
+  currDate = new Date(Date.now());
 
   constructor(
     private platform: Platform,
@@ -31,12 +32,16 @@ export class SorteoPage implements OnInit {
 
   ngOnInit() {
     this.edit= false;
-    this.draws = this.store.select('admin_draw');
+    this.draw$ = this.store.select('admin_draw');
     this.store.dispatch(GET());
   }
 
   matdesign(): boolean{
     return this.platform.is('android') || this.platform.is('desktop')? true : false;
+  }
+
+  expDate(date){
+    return new Date(date);
   }
 
   async openActions(index: number, draw: Draw){
