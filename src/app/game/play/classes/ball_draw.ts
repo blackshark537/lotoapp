@@ -10,14 +10,12 @@ export class DrawBall{
     private can_withdraw: boolean=false;
 
     constructor(
-        private ball: Ball,
         private p: p5,
         private data?: Ball[]
     ){ }
 
     draw(){
         this.p.push();
-        //this.p.translate(this.p.width/2, this.p.height/2);
         if (this.can_withdraw) {
             this.x = this.p.sin(this.angle) * this.radius;
             if (this.x > 0) this.y = this.p.cos(this.angle) * (this.radius * -1);
@@ -43,7 +41,7 @@ export class DrawBall{
         }
     }
 
-    end_drawing(): boolean{
+    get end_drawing(): boolean{
         return this.index === this.data.length? true : false;
     }
 

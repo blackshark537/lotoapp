@@ -28,28 +28,28 @@
 <ion-content>
   <ion-list>
     <ion-item>
-      <ion-label position="fixed">Loteria</ion-label>
+      <ion-label position="fixed">Loteria:</ion-label>
       <ion-input [(ngModel)]="draw.lottery" placeholder="example: Leidsa" required="true"></ion-input>
     </ion-item>
     <ion-item>
-      <ion-label position="fixed">Sorteo</ion-label>
+      <ion-label position="fixed">Sorteo:</ion-label>
       <ion-input [(ngModel)]="draw.draw" placeholder="example: Loto pool" required="true"></ion-input>
     </ion-item>
     <ion-item>
-      <ion-label slot="start" position="fixed">Cantidad de bolas</ion-label>
-      <ion-input [(ngModel)]="ballsqty" type="number" required="true"></ion-input>
+      <ion-label position="fixed">Bolas:</ion-label>
+      <ion-input [(ngModel)]="ballsqty" type="number" required="true" placeholder="Cantidad de bolas del sorteo"></ion-input>
     </ion-item>
     <ion-item>
-      <ion-label position="fixed">Vence</ion-label>
+      <ion-label position="fixed">Vence:</ion-label>
       <ion-datetime value="{{draw.expiryDate}}" (ionChange)="set_expiryDate($event.target)" required="true" display-timezone="utc"></ion-datetime>
     </ion-item>
     <ion-item>
-      <ion-label position="fixed">Data</ion-label>
+      <ion-label position="fixed">Archivo:</ion-label>
       <ion-text *ngIf="filename">{{ filename }}</ion-text>
       <ion-buttons *ngIf="!filename">
         <ion-button (click)="file.click()">
           Añadir
-          <ion-icon name="add"></ion-icon>
+          <ion-icon [ios]="'document-attach-outline'" [ios]="'document-attach-sharp'"></ion-icon>
         </ion-button>
       </ion-buttons>
       <input #file (change)="readfile($event.target)" style="display: none;" type="file">
@@ -63,7 +63,7 @@
       
       <ion-button (click)="dismiss()">Cancelar</ion-button>
 
-      <ion-button disabled="{{!can_save() && !edit}}" *ngIf="!edit; else elseBlock" (click)="save()">
+      <ion-button *ngIf="!edit; else elseBlock" (click)="save()">
         Guardar
         <ion-icon [ios]="'save-outline'" [md]="'save-sharp'"></ion-icon>
       </ion-button>

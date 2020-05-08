@@ -16,7 +16,6 @@ export class PlayComponent implements OnInit, OnDestroy {
   @Input('draw') draw: number[];
   @Output('data') data: any[];
 
-  graphic = 'WebGL'
   balls: Ball[]=[];
   tombola: Tombola;
   drawBall: DrawBall;
@@ -37,7 +36,7 @@ export class PlayComponent implements OnInit, OnDestroy {
     
     this.canvas = new P5((p: P5)=>{
 
-      const gvty = p.createVector(0,1);
+      const gvty = p.createVector(0,0.8);
       const wind = p.createVector(0.01,0);
       let loop = false;
       let img;
@@ -52,8 +51,7 @@ export class PlayComponent implements OnInit, OnDestroy {
       }
 
       p.setup = ()=>{
-        if(this.graphic === '2D') p.createCanvas(400,400);
-        if(this.graphic === 'WebGL') p.createCanvas(400,400, p.WEBGL);
+        p.createCanvas(400,400, p.WEBGL);
         p.ellipseMode(p.CENTER);
         p.rectMode(p.CENTER);
         p.textAlign(p.CENTER);
@@ -63,9 +61,9 @@ export class PlayComponent implements OnInit, OnDestroy {
           this.balls.push(new Ball(p, i));
         }
         this.draw.map(val=> draw_balls.push(new Ball(p, val)));
-        this.drawBall = new DrawBall(this.balls[0], p, draw_balls);
+        this.drawBall = new DrawBall( p, draw_balls);
         this.tombola = new Tombola(p, img);
-        //p.frameRate(60);
+        p.frameRate(60);
         p.textFont(myFont, 18);
         p.noFill();
       }
@@ -83,11 +81,12 @@ export class PlayComponent implements OnInit, OnDestroy {
       }
   
       p.draw = ()=>{
-        //if(this.graphic === 'WebGL') p.translate(-200, -200);
+        
         p.background(250);
         p.directionalLight(255,255,30,1,1,-1);
         p.ambientLight(255);
-        if(loop && !this.drawBall.end_drawing()){
+        
+        if(loop && !this.drawBall.end_drawing){
           this.balls.map((ball: Ball) =>{
             ball.force = gvty;
             ball.force = wind;
@@ -95,8 +94,7 @@ export class PlayComponent implements OnInit, OnDestroy {
           });
         }
         
-        if(this.drawBall.end_drawing()){
-          //console.log('Game Over');
+        if(this.drawBall.end_drawing){          
           this.can_save = true;
           p.remove();
         }
@@ -104,15 +102,14 @@ export class PlayComponent implements OnInit, OnDestroy {
         this.drawBall.draw();
         this.tombola.draw();
         if (!loop){
-          //p.image(playButton, 0, 0, 70, 50);
+          p.push();
+          p.translate(0,0,40);
           p.noStroke();
           p.texture(playButton)
           p.plane(70,50)
-          //p.text('Press play button or key Enter to start', p.width/2, 20);
-        } else {
-          p.text('Press key Enter to draw a ball', p.width/2, 20);
-        }
-        
+          p.pop();
+        } 
+
       }
 
     }, document.getElementById('canvas'));

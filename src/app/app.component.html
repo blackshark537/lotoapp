@@ -7,12 +7,13 @@
           <ion-note>{{user? user.name : ''}}</ion-note>
 
           <ion-menu-toggle auto-hide="false" *ngFor="let p of appPages; let i = index">
-            <ion-item (click)="selectedIndex = i" [routerLink]="[p.url]" routerLinkActive="selected" >
+            <ion-item [disabled]="is_game_route" (click)="selectedIndex = i" [routerLink]="[p.url]" routerLinkActive="selected" >
               <ion-icon color="{{p.style}}" slot="start" [ios]="p.icon + '-outline'" [md]="p.icon + '-sharp'"></ion-icon>
               <ion-label>{{ p.title }}</ion-label>
             </ion-item>
           </ion-menu-toggle>
-          <ion-item button lines="none" (click)="selectedIndex = 6" [class.selected]="selectedIndex == 6" >
+
+          <ion-item [disabled]="is_game_route" button lines="none" (click)="selectedIndex = 6" [class.selected]="selectedIndex == 6" >
             <ion-icon slot="start" [ios]="'exit-outline'" [md]="'exit-sharp'" ></ion-icon>
             <ion-label>Salir</ion-label>
           </ion-item>
