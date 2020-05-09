@@ -23,6 +23,7 @@ export class GamePage implements OnInit, OnDestroy {
     Data: [],
     _id: '',
     active: false,
+    ballsqty: null,
     draw: '',
     favorite: false,
     lottery: '',
@@ -152,14 +153,13 @@ export class GamePage implements OnInit, OnDestroy {
       this.numbers_draws.push(col[Math.floor(Math.random() * col.length)]);
     });
     this.numbers_draws.filter((value, i)=> this.numbers_draws.indexOf(value) != i);
-    if(this.numbers_draws.length != this.draw.Data.length) this.normal_draw();
+    if(this.numbers_draws.length != this.draw.ballsqty) this.normal_draw();
   }
 
   async random_draw(){
-    if(this.numbers_draws.length < 6) this.numbers_draws.push(Math.floor(Math.random() * 34) +1 );
-    if(this.numbers_draws.length < 8) this.numbers_draws.push(Math.floor(Math.random() * 14) +1 );
+    this.numbers_draws.push(Math.floor(Math.random() * 34) +1 );
     await this.numbers_draws.filter((value, i)=> this.numbers_draws.indexOf(value) === i);
-    if(this.numbers_draws.length != this.draw.Data.length) this.random_draw();
+    if(this.numbers_draws.length != this.draw.ballsqty) this.random_draw();
   }
 
   async openModal(){

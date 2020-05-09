@@ -26,7 +26,7 @@ export class DrawBall{
                 this.can_withdraw = false;
                 this.index += 1;
             }
-            this.angle += 0.05;
+            this.angle += 0.07;
         }
         this.withdraw();
         this.p.pop();

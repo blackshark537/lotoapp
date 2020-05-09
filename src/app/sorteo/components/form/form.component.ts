@@ -5,6 +5,7 @@ import * as EXEL from 'xlsx';
 import {SAVE, EDIT} from 'src/app/actions/admin_draw.action';
 import { Draw } from 'src/app/models/draw.model';
 import { StoreModel } from 'src/app/models/store.model';
+import { FormBuilder, FormGroup, Validators} from '@angular/forms';
 
 @Component({
   selector: 'app-form',
@@ -14,51 +15,80 @@ import { StoreModel } from 'src/app/models/store.model';
 export class FormComponent implements OnInit {
   @Input('edit') edit: boolean;
   @Input('index') index: number;
+  @Input('Draw') Draw: Draw;
 
-  ballsqty: number;
-
-  draw: Draw;
-  filename: string;
+  drawForm: FormGroup;
   labels = ['PRIMERO', 'SEGUNDO', 'TERCERO', 'QUARTO', 'QUINTO', 'SEXTO', 'L.MAS', 'L.S.MAS'];
+
   constructor(
+    private fb: FormBuilder,
     private platform: Platform,
     private toastCtrl: ToastController,
     private modalCtrl: ModalController,
     private store: Store<StoreModel>
   ) { }
 
-  ngOnInit() {
+  async ngOnInit() {
     
-    if(!this.edit){
-      this.draw = {
-        _id: '',
-        lottery: '',
+    if(this.edit){
+      this.drawForm = this.fb.group({
+        _id: this.Draw._id,
+        lottery: [this.Draw.lottery, Validators.required],
         Data: [],
+        filename: this.Draw.filename,
+        active: this.Draw.active,
+        owner: this.Draw.owner,
+        emitDate: this.Draw.emitDate,
+        expiryDate: this.Draw.expiryDate,
+        draw: [this.Draw.draw, Validators.required],
+        ballsqty: [this.Draw.ballsqty, Validators.required],
+        favorite: this.Draw.favorite
+      });
+    } else {
+      this.drawForm = this.fb.group({
+        _id: '',
+        lottery: ['', Validators.required],
+        Data: [],
+        filename: '',
         active: true,
         owner: 'admin',
-        expiryDate: new Date(Date.now()),
-        draw: '',
+        emitDate: null,
+        expiryDate: null,
+        draw: ['', Validators.required],
+        ballsqty: [null, Validators.required],
         favorite: false
-      }
-    } else {
-      this.store.select('admin_draw').subscribe(resp =>{
-         let new_draw = [...resp.slice(this.index, this.index+1)];
-         this.draw = {...new_draw[0]};
       });
     }
-    
+
+    this.drawForm.controls['Data'].setValue(this.Draw.Data);
   }
 
-  can_save(): boolean{
-    return this.draw.Data && this.draw.Data.length === 0 || this.draw.lottery === ''? false : true;
+  get lottery(){
+    return this.drawForm.get('lottery');
   }
 
-  matdesign(): boolean{
+  get draw_name(){
+    return this.drawForm.get('draw');
+  }
+
+  get expiryDate(){
+    return this.drawForm.get('expiryDate');
+  }
+
+  get filename(){
+    return this.drawForm.get('filename');
+  }
+
+  get balls_qty(){
+    return this.drawForm.get('ballsqty');
+  }
+
+  get matdesign(): boolean{
     return this.platform.is('android') || this.platform.is('desktop')? true : false;
   }
 
   set_expiryDate(evt){
-    this.draw.expiryDate = new Date(evt.value);
+    this.drawForm.setValue({ expiryDate:  new Date(evt.value)})
   }
 
   async readfile(evt){
@@ -77,17 +107,18 @@ export class FormComponent implements OnInit {
         return initial;
       }, {});
 
-      let col;
-      this.draw.Data = [];
-      for (let i = 0; i < this.ballsqty; i++) {
+      let col = [];
+      let row = [];
+      for (let i = 0; i < this.balls_qty.value; i++) {
         col = [];
         jsonData['data'].map(val => col.push(val[this.labels[i]]));
-        this.draw.Data.push(col);
-      } 
+        row.push(col);
+      }
+      this.drawForm.controls['Data'].setValue(row);
     }
 
     if(file.type === type){
-      this.filename = file.name;
+      this.drawForm.controls['filename'].setValue(file.name);
       reader.readAsBinaryString(file);
     } else {
       const toast = await this.toastCtrl.create({
@@ -99,15 +130,15 @@ export class FormComponent implements OnInit {
   }
 
   async save(){
-    this.draw._id = await this.generate_id();
-    this.draw.emitDate = new Date(Date.now());
-    this.store.dispatch(SAVE(this.draw));
+    this.drawForm.controls['_id'].setValue(this._id);
+    this.drawForm.controls['emitDate'].setValue(new Date(Date.now()));
+    this.store.dispatch(SAVE(this.drawForm.value));
     this.dismiss();
   }
 
   async update_one(){
-    this.draw.emitDate = new Date(Date.now());
-    this.store.dispatch(EDIT({index: this.index, Draw: this.draw}));
+    this.drawForm.controls['emitDate'].setValue(new Date(Date.now()));
+    this.store.dispatch(EDIT({index: this.index, Draw: this.drawForm.value}));
     this.dismiss();
   }
 
@@ -117,7 +148,7 @@ export class FormComponent implements OnInit {
     });
   }
 
-  async generate_id(): Promise<string>{
+  get _id(): string{
     let id = '';
     const string_list = 'QWERTYUIOPASDFGHJKLZXCVBNMqwertyuiopasdfghjklzxcvbnm0123456789';
     for(let i=0; i<20; i++){

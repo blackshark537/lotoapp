@@ -36,7 +36,7 @@ export class PlayComponent implements OnInit, OnDestroy {
     
     this.canvas = new P5((p: P5)=>{
 
-      const gvty = p.createVector(0,0.8);
+      const gvty = p.createVector(0,0.9);
       const wind = p.createVector(0.01,0);
       let loop = false;
       let img;

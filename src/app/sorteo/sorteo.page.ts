@@ -84,7 +84,7 @@ export class SorteoPage implements OnInit {
       componentProps: {
         edit: this.edit,
         index: this.selectedIndex,
-        draw: this.draw
+        Draw: {...this.draw}
       }
     });
 

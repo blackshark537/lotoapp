@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
 import { MomentModule } from 'ngx-moment';
@@ -20,6 +20,7 @@ import { FormComponent } from './components/form/form.component'
       }
     }),
     FormsModule,
+    ReactiveFormsModule,
     IonicModule,
     SorteoPageRoutingModule
   ],
