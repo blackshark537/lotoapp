@@ -11,21 +11,21 @@
 <ion-content>
     <div #canvas id="canvas"></div>
 
-    <div id="container" *ngIf="can_save">
+    <!-- <div id="container" *ngIf="can_save">
         <strong class="capitalize" color="primary">
             Sorteo Terminado
         </strong>
-        <p>Los número agraciados son:</p>
+        <p>Los número elegidos son:</p>
         <p ><strong style="color: #eb445a;" *ngFor="let d of draw; index as i">{{i >= draw.length-1? d : d + ' - '}}</strong></p>
         <p>
           <ion-icon name="game-controller"></ion-icon>
           Presione Aceptar para continuar.
         </p>
-      </div>
+      </div> -->
 </ion-content>
 
 <ion-footer>
-    <ion-toolbar *ngIf="saveBtn()">
+    <ion-toolbar *ngIf="saveBtn">
         <ion-buttons slot="end">
             <ion-button (click)="save()">Aceptar</ion-button>
         </ion-buttons>

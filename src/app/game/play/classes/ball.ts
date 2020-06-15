@@ -6,6 +6,7 @@ export class Ball{
   private r: number;
   private pg
   private angle = 0;
+  ball_type = 0;
 
   constructor(
     private p: p5,
@@ -20,11 +21,18 @@ export class Ball{
     this.pg.ellipseMode(this.pg.CENTER);
   }
 
-  get textura() {
-    this.pg.fill(255,200,0);
+  get textura2() {
+    if(this.ball_type == 0) this.pg.fill(255,200,0);
+    if(this.ball_type == 1) {this.pg.fill(255,0,0)};
+    if(this.ball_type == 2) this.pg.fill(0,0,255);
     this.pg.noStroke();
     this.pg.ellipse(25,25,25);
-    this.pg.fill(0);
+
+    if(this.ball_type == 0){ 
+      this.pg.fill(0)
+    } else {
+      this.pg.fill(250);
+    }
     this.pg.stroke(0);
     this.pg.text(this.num, 25, 28);
     this.pg.text('_', 25, 30);
@@ -45,7 +53,7 @@ export class Ball{
     this.p.noStroke();
     this.p.translate(this.ball.x, this.ball.y, 0);
     this.p.rotateZ(this.angle*-1);
-    this.p.texture(this.textura);
+    this.p.texture(this.textura2);
     this.p.plane(this.r);
     this.angle +=0.1;
     this.edges_3d();
@@ -56,8 +64,8 @@ export class Ball{
     this.p.push();
     this.p.noStroke();
     this.p.translate(pos.x, pos.y);
-    this.p.rotateZ(this.angle*-1);
-    this.p.texture(this.textura);
+    //this.p.rotateZ(this.angle*-1);
+    this.p.texture(this.textura2);
     this.p.plane(this.r);
     this.angle+=0.1;
     this.p.pop();

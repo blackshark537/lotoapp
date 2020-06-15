@@ -25,6 +25,12 @@ export class DrawBall{
             } else {
                 this.can_withdraw = false;
                 this.index += 1;
+                if(this.index == 6){
+                    this.data[this.index].ball_type = 1;
+                }
+                if( this.index == 7){
+                    this.data[this.index].ball_type = 2;
+                }
             }
             this.angle += 0.07;
         }

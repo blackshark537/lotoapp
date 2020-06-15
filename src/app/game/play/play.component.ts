@@ -59,7 +59,8 @@ export class PlayComponent implements OnInit, OnDestroy {
 
         for(let i=0; i<20; i++){
           this.balls.push(new Ball(p, i));
-        }
+        };
+        
         this.draw.map(val=> draw_balls.push(new Ball(p, val)));
         this.drawBall = new DrawBall( p, draw_balls);
         this.tombola = new Tombola(p, img);
@@ -96,7 +97,7 @@ export class PlayComponent implements OnInit, OnDestroy {
         
         if(this.drawBall.end_drawing){          
           this.can_save = true;
-          p.remove();
+          //p.remove(); */
         }
 
         this.drawBall.draw();
@@ -115,7 +116,7 @@ export class PlayComponent implements OnInit, OnDestroy {
     }, document.getElementById('canvas'));
   }
 
-  saveBtn(): boolean{
+  get saveBtn(): boolean{
     return this.can_save;
   }
 

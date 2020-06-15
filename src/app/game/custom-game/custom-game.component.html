@@ -1,0 +1,48 @@
+<ion-header>
+  <ion-toolbar>
+      <ion-buttons slot="end">
+          <ion-button (click)="dismiss()" >
+              <ion-icon name="close"></ion-icon>
+          </ion-button>
+      </ion-buttons>
+      <ion-title>Sorteo personalizado</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+    <ion-list>
+      <ion-item>
+        <ion-label>Bola</ion-label>
+        <ion-select placeholder="Select One" (ionChange)="setIndex($event.target.value)">
+          <ion-select-option *ngFor="let head of header; index as i" value="{{i}}">{{head | titlecase}}</ion-select-option>
+        </ion-select>
+      </ion-item>
+      <ion-item>
+        <ion-label>Numeros</ion-label>
+        <ion-select placeholder="Select One" multiple="true" interface="alert" (ionChange)="setNumbers($event.target.value)">
+          <ion-select-option *ngFor="let ball of draw.Data[index_selected]; index as i" value="{{ball}}">{{ball}}</ion-select-option>
+        </ion-select>
+      </ion-item>
+    </ion-list>
+
+    <div class="t-container">
+      <table class="table">
+        <thead class="thead">
+          <tr>
+            <th>#No</th>
+            <th *ngFor="let head of header; index as i" class="{{draw.ballsqty > i?'' : 'd-none'}}">
+              {{ head | titlecase}}
+            </th>
+          </tr>
+        </thead>
+        <tbody class="tbody">
+          <tr *ngFor="let row of user_draw.Data; index as i;">
+            <td>{{i+1 + ')'}}</td>
+            <td *ngFor="let col of row; index as i">
+              {{col}}
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+</ion-content>

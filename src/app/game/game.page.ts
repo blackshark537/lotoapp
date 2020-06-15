@@ -2,6 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ModalController, AlertController, ActionSheetController, Platform } from '@ionic/angular';
 import { PlayComponent } from './play/play.component';
+import { CustomGameComponent } from './custom-game/custom-game.component';
 import { StoreModel } from 'src/app/models/store.model';
 import { Store } from '@ngrx/store';
 import { Draw } from '../models/draw.model';
@@ -16,6 +17,7 @@ export class GamePage implements OnInit, OnDestroy {
 
   draw_type: string;
   draw: Draw;
+  price = 15;
   numbers_draws: number[] = [];
   index: number=0;
   header: string[]=[];
@@ -40,7 +42,7 @@ export class GamePage implements OnInit, OnDestroy {
     private actionSheetController: ActionSheetController) { }
 
   ngOnInit() {
-    this.header = ['primero', 'segundo', 'tercero', 'quarto', 'quinto', 'sexto', 'L.Mas', 'S.L.Mas']
+    this.header = ['primero', 'segundo', 'tercero', 'quarto', 'quinto', 'sexto', 'Loto Mas', 'Super Mas']
     this.index = parseInt(this.activeRoute.snapshot.paramMap.get('id'));
     this.draw_type = '';
     this.store.select('admin_draw').subscribe(resp=>{
@@ -102,17 +104,17 @@ export class GamePage implements OnInit, OnDestroy {
       buttons:[
         {
           icon: 'cash',
-          text: 'Normal',
+          text: 'Sorteo Platinum',
           handler: ()=>{this.openNormal()}
         },
         {
           icon: 'construct',
-          text: 'Personalizado',
+          text: 'Sorteo Gold',
           handler: ()=>{this.openCustom()}
         },
         {
           icon: 'shuffle',
-          text: 'Aleatorio',
+          text: 'Sorteo por la maquina',
           role: 'destructive',
           handler: ()=>{this.openRandom()}
         },
@@ -130,21 +132,21 @@ export class GamePage implements OnInit, OnDestroy {
   async openNormal(){
     this.numbers_draws = [];
     await this.normal_draw();
-    this.draw_type = 'normal';
+    this.draw_type = 'Sorteo Platinum';
     this.openModal();
   }
 
   async openCustom(){
     this.numbers_draws = [];
-    await this.normal_draw();
-    this.draw_type = 'personalizado';
-    this.openModal();
+    //await this.normal_draw();
+    this.draw_type = 'Sorteo Gold';
+    this.openCustomGameModal();
   }
 
   async openRandom(){
     this.numbers_draws = [];
     await this.random_draw();
-    this.draw_type = 'aleatorio';
+    this.draw_type = 'Sorteo por la maquina';
     this.openModal();
   }
 
@@ -172,9 +174,22 @@ export class GamePage implements OnInit, OnDestroy {
       }
     });
 
-    modal.present();
+    await modal.present();
     const { data } = await modal.onWillDismiss();
     if(data.data.length >0) this.user_draw.Data.push(data.data);
  
+  }
+
+  async openCustomGameModal(){
+    const modal = await this.modalCtrl.create({
+      component: CustomGameComponent,
+      swipeToClose: true,
+      animated: true,
+      componentProps:{
+        draw: this.draw
+      }
+    });
+
+    await modal.present();
   }
 }

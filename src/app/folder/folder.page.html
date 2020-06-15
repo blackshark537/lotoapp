@@ -97,7 +97,7 @@
                     <ion-icon [ios]="'ellipsis-horizontal-circle-sharp'" [md]="'ellipsis-vertical-sharp'"></ion-icon>
                   </ion-button>
                   <ion-button (click)="detail = false;">
-                    <ion-icon name="close-circle-outline"></ion-icon>
+                    <ion-icon color="danger" name="close-circle-outline"></ion-icon>
                   </ion-button>
                 </ion-buttons>
               </ion-toolbar>
@@ -106,7 +106,10 @@
           <ion-item button detail="true" *ngFor="let rows of draw.Data; index as i">
             <ion-icon name="heart-circle-outline"></ion-icon>
             <p *ngFor="let col of rows;index as i" class="{{ i > rows.length-2? 'truncate-text' : ''}}">
-              {{' - ' + col}}
+              {{' - ' + col }}
+              <ion-icon *ngIf="rows[i] == 'normal'" slot="start" color="success" name="cash-outline"></ion-icon>
+              <ion-icon *ngIf="rows[i] == 'personalizado'" slot="start" color="warning" name="construct-outline"></ion-icon>
+              <ion-icon *ngIf="rows[i] == 'aleatorio'" slot="start" color="danger" name="shuffle-outline"></ion-icon>
             </p>
           </ion-item>
         </ion-list>

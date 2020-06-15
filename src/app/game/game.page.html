@@ -7,39 +7,56 @@
       </ion-button>
     </ion-buttons>
 
-    <ion-title>game</ion-title>
-    <ion-buttons slot="end" *ngIf="!matdesign()">
-      <ion-button (click)="openAction()">
+    <ion-title>Game</ion-title>
+    <ion-buttons slot="end" >
+        <p class="credit">Credito Inicial: $0.00 </p>
+        <p class="credit">Debito: $0.00 </p>
+        <p class="credit">Credito Final: $0.00 </p>
+      <!-- <ion-button (click)="openAction()" *ngIf="!matdesign()">
         <ion-icon name="game-controller"></ion-icon>
-      </ion-button>
+      </ion-button> -->
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <div class="grid">
-    <ion-grid>
-      <ion-row style="background-color: black; color: whitesmoke;">
-        <ion-col size="12"  size-md="12" class="ion-text-center">
-          <ion-text>Resultados {{draw.draw}} {{draw.lottery}}</ion-text>
-        </ion-col>
-        <ion-col size="0.7">
-          <p class="ion-text-center">#No</p>
-        </ion-col>
-        <ion-col size="1.25" *ngFor="let head of header; index as i">
-          <p *ngIf="draw.Data.length > i"  class="ion-text-center">{{head}}</p>
-        </ion-col>
-      </ion-row>
-  
-      <ion-row class="{{i%2 === 0? 'hover' : ''}}" *ngFor="let row of user_draw.Data; index as i;">
-        <ion-col size="0.7">
-          <p class="ion-text-center truncate-text">{{i+1}}) </p>
-        </ion-col>
-        <ion-col size="1.25" *ngFor="let col of row; index as i">
-          <p class="ion-text-center truncate-text">{{col}}</p>
-        </ion-col>
-      </ion-row>
-    </ion-grid>
+  <h4>
+    Reporte de números seleccionados para el sorteo del {{draw.expiryDate | date: 'mediumDate'}} a las 8:55pm
+  </h4>
+  <div class="t-container">
+    <table class="table">
+      <thead class="thead">
+        <tr>
+          <th class="normal">
+            #No
+          </th>
+          <th *ngFor="let head of header; index as i" 
+          class="{{
+            i < draw.ballsqty && draw.ballsqty == 5? 'normal' :
+            draw.ballsqty == 8 && i < draw.ballsqty-2? 'normal' :
+            i == 6 && draw.ballsqty == 8? 'lmas' :
+            draw.ballsqty == 8 && i == 7? 'slmas' : 'd-none'}}">
+              {{ head | uppercase}}
+
+          </th>
+          <th class="normal">
+              Modo
+          </th>
+          <th class="normal">
+            creditos
+          </th>
+        </tr>
+      </thead>
+      <tbody class="tbody">
+        <tr *ngFor="let row of user_draw.Data; index as i;">
+          <td>{{i+1 + ')'}}</td>
+          <td *ngFor="let col of row; index as i">
+            {{col}}
+          </td>
+          <td>-{{price | currency}}</td>
+        </tr>
+      </tbody>
+    </table>
   </div>
 
 <!-- fab placed to the bottom end -->
