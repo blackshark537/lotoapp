@@ -1,8 +1,8 @@
 <ion-header>
   <ion-toolbar>
       <ion-buttons slot="end">
-          <ion-button (click)="dismiss()" >
-              <ion-icon name="close"></ion-icon>
+          <ion-button (click)="dismiss()">
+              <ion-icon color="danger" name="close"></ion-icon>
           </ion-button>
       </ion-buttons>
       <ion-title>Sorteo personalizado</ion-title>
@@ -29,20 +29,28 @@
       <table class="table">
         <thead class="thead">
           <tr>
-            <th>#No</th>
-            <th *ngFor="let head of header; index as i" class="{{draw.ballsqty > i?'' : 'd-none'}}">
-              {{ head | titlecase}}
+            <th >
+              BOLAS
             </th>
+            <th>NUMEROS</th>
           </tr>
         </thead>
         <tbody class="tbody">
-          <tr *ngFor="let row of user_draw.Data; index as i;">
-            <td>{{i+1 + ')'}}</td>
-            <td *ngFor="let col of row; index as i">
-              {{col}}
+          <tr *ngFor="let head of header; index as i;">
+            <td class="{{head == 'L.MAS'? 'lmas' : head == 'S.L.MAS'? 'slmas' : 'thead'}}">{{head}}</td>
+            <td >
+              {{user_draw.Data[i]}}
             </td>
           </tr>
         </tbody>
       </table>
     </div>
 </ion-content>
+<ion-footer>
+  <ion-toolbar>
+    <ion-buttons slot="end">
+      <ion-button (click)="dismiss()">Cancelar</ion-button>
+      <ion-button (click)="lestdraw()">Sortear</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-footer>

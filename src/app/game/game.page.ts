@@ -31,6 +31,7 @@ export class GamePage implements OnInit, OnDestroy {
     lottery: '',
     owner: ''
   };
+  Data = [];
 
   constructor(
     private store: Store<StoreModel>,
@@ -42,7 +43,6 @@ export class GamePage implements OnInit, OnDestroy {
     private actionSheetController: ActionSheetController) { }
 
   ngOnInit() {
-    this.header = ['primero', 'segundo', 'tercero', 'quarto', 'quinto', 'sexto', 'Loto Mas', 'Super Mas']
     this.index = parseInt(this.activeRoute.snapshot.paramMap.get('id'));
     this.draw_type = '';
     this.store.select('admin_draw').subscribe(resp=>{
@@ -50,6 +50,10 @@ export class GamePage implements OnInit, OnDestroy {
       this.draw = {...d[0]};
       this.user_draw = {...d[0]};
       this.user_draw.Data = [];
+    });
+    let headers = ['PRIMERO', 'SEGUNDO', 'TERCERO', 'QUARTO', 'QUINTO', 'SEXTO', 'L.MAS', 'S.L.MAS'];
+    headers.map((head, i)=>{
+      if(i < this.draw.ballsqty) this.header.push(head);
     });
   }
 
@@ -131,43 +135,92 @@ export class GamePage implements OnInit, OnDestroy {
 
   async openNormal(){
     this.numbers_draws = [];
-    await this.normal_draw();
+    await this.normal_draw(0);
     this.draw_type = 'Sorteo Platinum';
     this.openModal();
   }
 
   async openCustom(){
     this.numbers_draws = [];
-    //await this.normal_draw();
     this.draw_type = 'Sorteo Gold';
-    this.openCustomGameModal();
+    await this.openCustomGameModal();
+    try{
+      await this.custom_draw(0);
+      await this.openModal();
+    } catch(error){
+      await this.errorAlert('Demasiados numeros repetidos\n' + error);
+    }
   }
 
   async openRandom(){
     this.numbers_draws = [];
-    await this.random_draw();
     this.draw_type = 'Sorteo por la maquina';
+    try{
+      await this.random_draw();
+    } catch(error){
+      this.errorAlert(error);
+    }
     this.openModal();
   }
 
-  async normal_draw(){
-    this.draw.Data.map((col: number[]) =>{
-      this.numbers_draws.push(col[Math.floor(Math.random() * col.length)]);
-    });
-    this.numbers_draws.filter((value, i)=> this.numbers_draws.indexOf(value) != i);
-    if(this.numbers_draws.length != this.draw.ballsqty) this.normal_draw();
+  async normal_draw(index: number){
+    if(this.numbers_draws.length === this.draw.ballsqty) return 0;
+    let num = await this.pick_one(this.draw.Data[index]);
+    let exist = await this.exist(num);
+    if(!exist){
+      this.numbers_draws.push(num);
+      this.normal_draw(index++);
+    } else {
+      this.normal_draw(index);
+    }
+  }
+
+  async custom_draw(index: number){
+    if(this.numbers_draws.length === this.draw.ballsqty) return 0;
+    let num = await this.pick_one(this.Data[index]);
+    let exist = await this.exist(num);
+    if(!exist){
+      this.numbers_draws.push(num);
+      this.custom_draw(index+=1);
+    } else {
+      this.custom_draw(index);
+    }
   }
 
   async random_draw(){
-    this.numbers_draws.push(Math.floor(Math.random() * 34) +1 );
-    await this.numbers_draws.filter((value, i)=> this.numbers_draws.indexOf(value) === i);
-    if(this.numbers_draws.length != this.draw.ballsqty) this.random_draw();
+    if(this.numbers_draws.length === this.draw.ballsqty) return 0;
+    let num = await this.pick_random();
+    let exist = await this.exist(num);
+    if(!exist) this.numbers_draws.push(num);
+    this.random_draw();
+  }
+
+  async pick_one(list: any[]) {
+    return list[Math.floor(Math.random() * list.length)];
+  }
+
+  async pick_random() {
+    if(this.numbers_draws.length <= 5){
+      return Math.floor(Math.random() * 34) +1
+    } else {
+      return Math.floor(Math.random() * 14) +1
+    }
+
+  }
+
+  async exist(num: number){
+    let confirm = false;
+    await this.numbers_draws.map(val =>{
+      if(val === num) confirm = true;
+    });
+    return confirm;
   }
 
   async openModal(){
     const modal = await this.modalCtrl.create({
       component: PlayComponent,
       swipeToClose: false,
+      backdropDismiss: false,
       componentProps: {
         draw: this.numbers_draws,
         game: this.draw_type
@@ -185,11 +238,34 @@ export class GamePage implements OnInit, OnDestroy {
       component: CustomGameComponent,
       swipeToClose: true,
       animated: true,
+      backdropDismiss: false,
       componentProps:{
         draw: this.draw
       }
     });
 
     await modal.present();
+    const { data } = await modal.onWillDismiss();
+    if(data.data.length > 0 ){
+       this.Data = data.data;
+    }
+  }
+
+  async errorAlert(msg: string){
+    const alerta = await this.alertCtrl.create({
+      animated: true,
+      header: 'Error',
+      message: msg,
+      translucent: true,
+      buttons: [{
+        text: "Cancelar",
+        role: 'cancel'
+      },{
+        text: "Ok",
+        role: 'cancel'
+      }]
+    });
+
+    alerta.present();
   }
 }

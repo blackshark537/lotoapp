@@ -7,7 +7,7 @@
       </ion-button>
     </ion-buttons>
 
-    <ion-title>Game</ion-title>
+    <!-- <ion-title>Game</ion-title> -->
     <ion-buttons slot="end" >
         <p class="credit">Credito Inicial: $0.00 </p>
         <p class="credit">Debito: $0.00 </p>
@@ -21,7 +21,7 @@
 
 <ion-content>
   <h4>
-    Reporte de números seleccionados para el sorteo del {{draw.expiryDate | date: 'mediumDate'}} a las 8:55pm
+    Reporte de números seleccionados para el sorteo del {{draw.expiryDate | date :'mediumDate' : '-0400' : 'es-do' }} a las 8:55pm
   </h4>
   <div class="t-container">
     <table class="table">
@@ -31,12 +31,8 @@
             #No
           </th>
           <th *ngFor="let head of header; index as i" 
-          class="{{
-            i < draw.ballsqty && draw.ballsqty == 5? 'normal' :
-            draw.ballsqty == 8 && i < draw.ballsqty-2? 'normal' :
-            i == 6 && draw.ballsqty == 8? 'lmas' :
-            draw.ballsqty == 8 && i == 7? 'slmas' : 'd-none'}}">
-              {{ head | uppercase}}
+          class="{{head == 'L.MAS'? 'lmas' : head == 'S.L.MAS'? 'slmas' : 'normal'}}">
+              {{ head }}
 
           </th>
           <th class="normal">
@@ -49,7 +45,7 @@
       </thead>
       <tbody class="tbody">
         <tr *ngFor="let row of user_draw.Data; index as i;">
-          <td>{{i+1 + ')'}}</td>
+          <td style="background-color: blanchedalmond;">{{i+1 + '.-'}}</td>
           <td *ngFor="let col of row; index as i">
             {{col}}
           </td>
@@ -60,7 +56,7 @@
   </div>
 
 <!-- fab placed to the bottom end -->
-<ion-fab *ngIf="matdesign()" vertical="bottom" horizontal="end" slot="fixed">
+<ion-fab  vertical="bottom" horizontal="end" slot="fixed">
   <ion-fab-button (click)="openAction()">
     <ion-icon name="add"></ion-icon>
   </ion-fab-button>

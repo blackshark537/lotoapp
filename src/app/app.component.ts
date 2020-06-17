@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-
-import { ActivatedRoute, Router } from '@angular/router';
+import { registerLocaleData } from '@angular/common'
+import localeEs from '@angular/common/locales/es'
+import { Router } from '@angular/router';
 import { Platform } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
@@ -9,6 +10,8 @@ import { UserModel } from './models/user.model';
 import { EXIT } from './actions/admin_draw.action';
 import { Store } from '@ngrx/store';
 import { SAVE_STATE } from './actions/user.actions';
+
+registerLocaleData(localeEs, 'es-do')
 
 @Component({
   selector: 'app-root',

@@ -115,6 +115,7 @@ export class FormComponent implements OnInit {
         row.push(col);
       }
       this.drawForm.controls['Data'].setValue(row);
+
     }
 
     if(file.type === type){
