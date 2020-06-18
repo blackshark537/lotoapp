@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy, Input, Output, ViewChild } from '@angular/core';
-import { ModalController } from '@ionic/angular';
+import { ModalController, AlertController } from '@ionic/angular';
 import { Ball } from './classes/ball';
 import { Tombola } from './classes/tombola';
 import { DrawBall } from './classes/ball_draw';
@@ -20,10 +20,12 @@ export class PlayComponent implements OnInit, OnDestroy {
   tombola: Tombola;
   drawBall: DrawBall;
   can_save: boolean=false;
+  goforit: boolean = false;
   canvas;
 
   constructor(
-    private modalCtrl: ModalController
+    private modalCtrl: ModalController,
+    private alertCtrl: AlertController
    ) { }
 
   ngOnInit() {
@@ -43,7 +45,8 @@ export class PlayComponent implements OnInit, OnDestroy {
       let playButton;
       let draw_balls = [];
       let myFont;
-      
+      let x, y;
+
       p.preload = ()=>{
         img = p.loadImage('assets/hover.png');
         playButton = p.loadImage('assets/play.png');
@@ -51,12 +54,13 @@ export class PlayComponent implements OnInit, OnDestroy {
       }
 
       p.setup = ()=>{
-        p.createCanvas(400,400, p.WEBGL);
+        p.createCanvas(400,400);
         p.ellipseMode(p.CENTER);
         p.rectMode(p.CENTER);
         p.textAlign(p.CENTER);
         p.imageMode(p.CENTER);
-
+        x = p.width;
+        y = p.height;
         for(let i=0; i<20; i++){
           this.balls.push(new Ball(p, i));
         };
@@ -84,8 +88,21 @@ export class PlayComponent implements OnInit, OnDestroy {
       p.draw = ()=>{
         
         p.background(250);
-        p.directionalLight(255,255,30,1,1,-1);
-        p.ambientLight(255);
+        //p.directionalLight(255,255,30,1,1,-1);
+        //p.ambientLight(255);
+
+/*         if(loop && this.drawBall.draw_super && !this.goforit){
+          p.noLoop();
+          this.ask_for_slmas();
+          if(this.goforit){
+            this.goforit = true;
+            p.loop();
+          } else {
+            this.draw[this.draw.length-1] = null;
+            this.draw[this.draw.length-2] = null;
+            this.can_save = true;
+          }
+        } */
         
         if(loop && !this.drawBall.end_drawing){
           this.balls.map((ball: Ball) =>{
@@ -104,10 +121,11 @@ export class PlayComponent implements OnInit, OnDestroy {
         this.tombola.draw();
         if (!loop){
           p.push();
-          p.translate(0,0,40);
+          p.translate(x/2,y/2);
           p.noStroke();
-          p.texture(playButton)
-          p.plane(70,50)
+          /* p.texture(playButton)
+          p.plane(70,50) */
+          p.image(playButton,0,0, 70, 50)
           p.pop();
         } 
 
@@ -124,6 +142,30 @@ export class PlayComponent implements OnInit, OnDestroy {
     this.data = this.draw
     this.data.push(this.game);
     this.dismiss()
+  }
+
+  get ask_for_slmas(){
+    return confirm('quieres continuar con super mas');
+  }
+
+  async show_alert(msg){
+    const alerta = await this.alertCtrl.create({
+      animated: true,
+      translucent: true,
+      backdropDismiss: false,
+      header: "Alerta!",
+      message: msg,
+      buttons: [{
+        text: "Cancelar",
+        role: 'cancel',
+        handler: () => this.goforit = false
+      },{
+        text: "Ok",
+        handler: () => this.goforit = true
+      }]
+    });
+
+    await alerta.present();
   }
 
   async dismiss() {

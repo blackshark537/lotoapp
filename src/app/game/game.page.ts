@@ -23,13 +23,13 @@ export class GamePage implements OnInit, OnDestroy {
   header: string[]=[];
   user_draw: Draw ={
     Data: [],
-    _id: '',
+    _id: null,
     active: false,
     ballsqty: null,
-    draw: '',
+    draw: null,
     favorite: false,
-    lottery: '',
-    owner: ''
+    lottery: null,
+    owner: null
   };
   Data = [];
 

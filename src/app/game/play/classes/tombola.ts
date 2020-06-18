@@ -5,9 +5,13 @@ export class Tombola{
     private p: p5;
     private pg;
     private basketImg: p5.Image;
+    private x;
+    private y;
 
     constructor(p: p5, basket: p5.Image, stand?: p5.Image){
         this.p = p;
+        this.x = p.width;
+        this.y = p.height;
         this.basketImg = basket;
         this.pg = p.createGraphics(300,300);
         this.pg.textAlign(this.pg.CENTER);
@@ -29,13 +33,15 @@ export class Tombola{
     }
     draw(){
         this.p.push();
-        this.p.translate(0,0,30);
-        this.p.texture(this.basketImg);
+        //this.p.translate(this.x/2, this.y/2,30);
+        /* this.p.texture(this.basketImg);
         this.p.noStroke();
-        this.p.plane(300,300);
-        this.p.translate(0,0,0);
-        this.p.texture(this.basket_base);
-        this.p.plane(300,300);
+        this.p.plane(300,300); */
+        this.p.image(this.basketImg,this.x/2, this.y/2,330,330);
+        //this.p.translate(this.x/2, this.y/2);
+        /* this.p.texture(this.basket_base);
+        this.p.plane(300,300); */
+        this.p.image(this.basket_base,this.x/2, this.y/2,330,330);
         this.p.pop();
     }
 }

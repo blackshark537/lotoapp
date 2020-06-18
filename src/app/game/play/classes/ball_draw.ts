@@ -51,6 +51,10 @@ export class DrawBall{
         return this.index === this.data.length? true : false;
     }
 
+    get draw_super(){
+        return this.index === 6? true : false;
+    }
+
     private withdraw(){
         this.data.map((ball, i)=>{
             if(i < this.index) ball._draw({ tex: ball.numero, x: -140+(i*25), y: 150});

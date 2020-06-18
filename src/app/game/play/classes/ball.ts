@@ -12,7 +12,6 @@ export class Ball{
     private p: p5,
     private num?: number
   ){
-
     this.ball = p.createVector(p.random(-70,70), p.random(-70,30), 0);
     this.r = 50;
     this.vel = p.createVector(0,5);
@@ -23,7 +22,7 @@ export class Ball{
 
   get textura2() {
     if(this.ball_type == 0) this.pg.fill(255,200,0);
-    if(this.ball_type == 1) {this.pg.fill(255,0,0)};
+    if(this.ball_type == 1) this.pg.fill(255,0,0);
     if(this.ball_type == 2) this.pg.fill(0,0,255);
     this.pg.noStroke();
     this.pg.ellipse(25,25,25);
@@ -51,11 +50,13 @@ export class Ball{
   draw(){
     this.p.push();
     this.p.noStroke();
-    this.p.translate(this.ball.x, this.ball.y, 0);
-    this.p.rotateZ(this.angle*-1);
+    this.p.translate(this.p.width/2, this.p.height/2);
+    /* this.p.rotateZ(this.angle*-1);
     this.p.texture(this.textura2);
     this.p.plane(this.r);
-    this.angle +=0.1;
+     */
+    this.p.image(this.textura2,this.ball.x, this.ball.y);
+    //this.angle +=0.1;
     this.edges_3d();
     this.p.pop();
   }
@@ -63,11 +64,12 @@ export class Ball{
   _draw(pos: { tex: number; x: number; y: number;}){
     this.p.push();
     this.p.noStroke();
-    this.p.translate(pos.x, pos.y);
+    this.p.translate(this.p.width/2, this.p.height/2);
     //this.p.rotateZ(this.angle*-1);
-    this.p.texture(this.textura2);
-    this.p.plane(this.r);
-    this.angle+=0.1;
+    //this.p.texture(this.textura2);
+    //this.p.plane(this.r);
+    this.p.image(this.textura2, pos.x, pos.y);
+    //this.angle+=0.1;
     this.p.pop();
   }
   
