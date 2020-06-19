@@ -16,7 +16,9 @@ export class FileViewerPage implements OnInit {
   draw: Draw;
   index: number;
   header: string[] = [];
-  
+  public dateNow = new Date(Date.now());
+  public dateExp;
+
   constructor(
     private toastCtrl: ToastController,
     private actionCtrl: ActionSheetController,
@@ -30,6 +32,7 @@ export class FileViewerPage implements OnInit {
     this.store.select('user_state').subscribe(resp=>{
       let d = {...resp}
       this.draw = d.archived[this.index];
+      this.dateExp = this.draw.expiryDate;
     });
     let headers = ['PRIMERO', 'SEGUNDO', 'TERCERO', 'QUARTO', 'QUINTO', 'SEXTO', 'L.MAS', 'S.L.MAS'];
     headers.map((head, i)=>{
