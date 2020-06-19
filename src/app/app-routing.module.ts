@@ -22,6 +22,10 @@ const routes: Routes = [
   {
     path: 'game/:id',
     loadChildren: () => import('./game/game.module').then( m => m.GamePageModule)
+  },
+  {
+    path: 'file/:id',
+    loadChildren: () => import('./file-viewer/file-viewer.module').then( m => m.FileViewerPageModule)
   }
 ];
 

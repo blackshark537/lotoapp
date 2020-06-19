@@ -1,0 +1,60 @@
+<ion-header [translucent]="true">
+  <ion-toolbar color="tertiary">
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>Archivo</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="openActions()">
+        <ion-icon [ios]="'ellipsis-vertical-circle-sharp'" [md]="'ellipsis-vertical-sharp'"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-item lines="none">
+    <ion-avatar>
+      <ion-icon color="danger" size="large" [ios]="'document-outline'"
+          [md]="'document-sharp'"></ion-icon>
+    </ion-avatar>
+    <ion-label *ngIf="draw != undefined ">
+        <h2>{{ draw? draw.lottery + ' '+ draw.draw : ''}}</h2>
+        <h3>Creada: {{ draw.emitDate | amLocale: 'es-do' | amTimeAgo}}</h3>
+        <h3>{{dateNow > dateExp? 'Venció':'Vence'}}: {{ draw.expiryDate | amLocale: 'es-do' | amTimeAgo}}</h3>
+        <p>id: {{ draw._id}}</p>
+    </ion-label>
+  </ion-item>
+
+  <div class="t-container">
+    <table class="table">
+      <thead class="thead">
+        <tr>
+          <th class="normal">
+            #No
+          </th>
+          <th *ngFor="let head of header; index as i" 
+          class="{{head == 'L.MAS'? 'lmas' : head == 'S.L.MAS'? 'slmas' : 'normal'}}">
+              {{ head }}
+
+          </th>
+          <th class="normal">
+              Modo
+          </th>
+          <th class="normal">
+            creditos
+          </th>
+        </tr>
+      </thead>
+      <tbody class="tbody">
+        <tr *ngFor="let row of draw.Data; index as i;">
+          <td style="background-color: blanchedalmond;">{{i+1 + '.-'}}</td>
+          <td *ngFor="let col of row; index as i">
+            {{col}}
+          </td>
+          <td>-{{price | currency}}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</ion-content>

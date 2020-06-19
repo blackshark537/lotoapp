@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Platform, ActionSheetController, AlertController, ToastController } from '@ionic/angular';
-import { Store, select } from '@ngrx/store';
+import { Store } from '@ngrx/store';
 import { StoreModel } from '../models/store.model';
 import { MARK_AS_FAVORITE, RECICLE, DELETE_ONE, EMPTY_TRASHCAN, ARCHIVE_DRAW } from '../actions/user.actions';
 import { SAVE } from '../actions/admin_draw.action'
@@ -33,7 +33,8 @@ export class FolderPage implements OnInit {
     private actionCtrl: ActionSheetController,
     private platform: Platform,
     private store: Store<StoreModel>,
-    private activatedRoute: ActivatedRoute) { }
+    private activatedRoute: ActivatedRoute,
+    private router: Router) { }
 
   matdesign(): boolean{
     return this.platform.is('android') || this.platform.is('desktop')? true : false;
@@ -41,22 +42,21 @@ export class FolderPage implements OnInit {
 
   ngOnInit() {
     this.detail  = false;
-    //this.indexSelected = 0;
+    
     this.folder = this.activatedRoute.snapshot.paramMap.get('id');
     this.store.select('user_state').subscribe(state=>{
       this.user = {...state};
       this.user.archived = [...state.archived];
       this.user.recicle = [...state.recicle];
-      /* this.user.archived.reverse();
-      this.user.recicle.reverse(); */
     });
   }
 
   async openFolder(index: number, draw: Draw){
     this.indexSelected = index;
-    this.draw = draw;
+    /* this.draw = draw;
     this.detail = true;
-    this.dateExp = new Date(draw.expiryDate);
+    this.dateExp = new Date(draw.expiryDate); */
+    this.router.navigate(['/file', index]);
   }
   
   async openActions(index: number){
@@ -75,13 +75,7 @@ export class FolderPage implements OnInit {
     let opt = {
       header: 'Acciones',
       translucent: true,
-      buttons:[
-/*         {
-          text: 'cerrar carpeta',
-          icon: 'remove-circle',
-          handler: ()=> this.detail = false
-        }, */
-        {
+      buttons:[{
           text: 'favorito',
           icon: 'heart',
           handler: () =>{ 

@@ -45,3 +45,25 @@ ion-content ion-toolbar {
 ion-item :hover {
   --background: --ion-color-light-rgb
 }
+
+ion-item {
+  --padding-start: 10px;
+  --padding-end: 10px;
+  border-radius: 4px;
+  }
+  
+  ion-item.selected {
+  --background: rgba(var(--ion-color-primary-rgb), 0.14);
+  }
+  
+  ion-item.selected ion-icon {
+  color: var(--ion-color-primary);
+  }
+  
+  ion-item ion-icon {
+  color: #616e7e;
+  }
+  
+  ion-item ion-label {
+  font-weight: 500;
+}

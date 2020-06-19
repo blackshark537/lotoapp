@@ -72,15 +72,13 @@ export class GamePage implements OnInit, OnDestroy {
   async back(){
     const alert = await this.alertCtrl.create({
       header: 'Mensage!',
-      message: '<strong>Deseas guardar antes de salir</strong>!!!',
+      message: '<strong>Deseas guardar esta partida</strong>!!!',
       buttons: [
         {
           text: 'Cancel',
           role: 'cancel',
           cssClass: 'secondary',
           handler: () => {
-            /* this.user_draw.Data=[];
-            this.numbers_draws=[]; */
             this.router.navigate(['/inicio']);
           }
         }, {

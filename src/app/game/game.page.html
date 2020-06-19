@@ -1,10 +1,11 @@
 <ion-header [translucent]="true">
   <ion-toolbar color="tertiary" >
     <ion-buttons slot="start">
-      <ion-button (click)="goInicio()">
+      <!-- <ion-button (click)="goInicio()">
         <ion-icon [ios]="'chevron-back-outline'" [md]="'arrow-back-sharp'" ></ion-icon>
         Atrás
-      </ion-button>
+      </ion-button> -->
+      <ion-back-button (click)="goInicio()"></ion-back-button>
     </ion-buttons>
 
     <!-- <ion-title>Game</ion-title> -->
