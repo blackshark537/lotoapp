@@ -4,7 +4,7 @@
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
     <ion-title>Sorteos</ion-title>
-    <ion-buttons *ngIf="!matdesign()" slot="end">
+    <ion-buttons *ngIf="!matdesign" slot="end">
       <ion-button (click)="new_one()">
         Nuevo
         <ion-icon name="add"></ion-icon>
@@ -25,7 +25,7 @@
               <ion-icon color="success" size="large" [ios]="'document-outline'" [md]="'document-sharp'"></ion-icon>
             </ion-avatar>
             <ion-label>
-              <h2>Loteria: {{ draw.lottery + ' '+ draw.draw}}</h2>
+              <h2>Lotería: {{ draw.lottery + ' '+ draw.draw}}</h2>
               <h3>Creada: {{ draw.emitDate | amLocale: 'es-do' | amTimeAgo}}</h3>
               <h3>{{currDate > expDate(draw.expiryDate)? 'Expiró ' : 'Expirará '}} {{draw.expiryDate | amLocale: 'es-do' | amTimeAgo}}</h3>
               <p>activa: {{ draw.active? 'Si' : 'No'}}</p>
@@ -37,7 +37,7 @@
   </ion-grid>
   
   <!-- fab placed to the bottom end -->
-  <ion-fab *ngIf="matdesign()" vertical="bottom" horizontal="end" slot="fixed">
+  <ion-fab *ngIf="matdesign" vertical="bottom" horizontal="end" slot="fixed">
     <ion-fab-button (click)="new_one()">
       <ion-icon name="add"></ion-icon>
     </ion-fab-button>

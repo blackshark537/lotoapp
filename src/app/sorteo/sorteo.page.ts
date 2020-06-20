@@ -36,7 +36,7 @@ export class SorteoPage implements OnInit {
     this.store.dispatch(GET());
   }
 
-  matdesign(): boolean{
+  get matdesign(): boolean{
     return this.platform.is('android') || this.platform.is('desktop')? true : false;
   }
 
@@ -100,10 +100,20 @@ export class SorteoPage implements OnInit {
     await this.store.dispatch(ADMIN_RECICLE({draw: this.draw}));
     await this.store.dispatch(DEL({index: this.selectedIndex}));
     const toast = await this.toastCtrl.create({
-      message: 'Enviado a la papelera de reciclaje',
+      message: 'Enviado a la papelera de reciclaje!',
+      position: 'top',
+      buttons:[
+        {
+          icon: 'close',
+          side: 'end',
+          role: 'cancel'
+        }
+      ],
+      animated: true,
+      translucent: true,
       duration: 4000
     });
-
+    this.matdesign? toast.position = 'bottom' : toast.position = 'top';
     await toast.present();
   }
 }

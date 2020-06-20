@@ -14,7 +14,7 @@ import { Draw } from '../models/draw.model';
   styleUrls: ['./folder.page.scss'],
 })
 export class FolderPage implements OnInit {
-  alertSound = new Audio();
+  private alertSound = new Audio();
   public folder: string;
   public detail: boolean;
   public draw: Draw;
@@ -23,7 +23,7 @@ export class FolderPage implements OnInit {
   public dateExp;
   public user: UserModel = {
     archived: [],
-    recicle: [],
+    recycle: [],
     name: '',
     password: ''
   };
@@ -37,38 +37,45 @@ export class FolderPage implements OnInit {
     private activatedRoute: ActivatedRoute,
     private router: Router) { }
 
-  matdesign(): boolean{
+  //check if the platform is Android
+  get matdesign(): boolean{
     return this.platform.is('android') || this.platform.is('desktop')? true : false;
   }
 
   ngOnInit() {
-    this.detail  = false;
-    
     this.folder = this.activatedRoute.snapshot.paramMap.get('id');
     this.store.select('user_state').subscribe(state=>{
       this.user = {...state};
       this.user.archived = [...state.archived];
-      this.user.recicle = [...state.recicle];
+      this.user.recycle = [...state.recycle];
     });
   }
 
-  async openFolder(index: number, draw: Draw){
-    this.indexSelected = index;
-    /* this.draw = draw;
-    this.detail = true;
-    this.dateExp = new Date(draw.expiryDate); */
-    this.router.navigate(['/file', index]);
+  // one click to select a folder OR double click to open the selected folder
+  async openFolder(index: number){
+    if(this.indexSelected === index){
+      this.router.navigate(['/file', index]);
+    }else{
+      this.indexSelected = index;
+    }
   }
   
-  async openActions(index: number){
-    const options = this.folder === 'Reciclaje'? this.recicleOptions(index) : this.normalOptions(index);
+  //open the actionSheet
+  async openActions(index?: number){
+    const options = this.isRecycle? this.recicleOptions(index) : this.normalOptions(this.indexSelected);
     const actionSheet = await this.actionCtrl.create(options);
     await actionSheet.present();
   }
 
+  //check if the page is the recycle page
+  get isRecycle(){
+    return this.folder === 'Reciclaje'? true : false;
+  }
+
+  //Restore data from recycle bin
   async restore(index){
-    if(this.user.recicle[index].owner === 'user') await this.store.dispatch(ARCHIVE_DRAW({draw: this.user.recicle[index]}));
-    if(this.user.recicle[index].owner === 'admin') await this.store.dispatch(SAVE(this.user.recicle[index]));
+    if(this.user.recycle[index].owner === 'user') await this.store.dispatch(ARCHIVE_DRAW({draw: this.user.recycle[index]}));
+    if(this.user.recycle[index].owner === 'admin') await this.store.dispatch(SAVE(this.user.recycle[index]));
     await this.store.dispatch(DELETE_ONE({index})); 
   }
 
@@ -76,23 +83,31 @@ export class FolderPage implements OnInit {
     let opt = {
       header: 'Acciones',
       translucent: true,
-      buttons:[{
-          text: 'favorito',
-          icon: 'heart',
+      buttons:[
+        {
+          text: 'Abrir',
+          icon: 'open',
           handler: () =>{ 
-            this.store.dispatch(MARK_AS_FAVORITE({index}));
-            this.detail = !this.detail;
+            this.openFolder(this.indexSelected)
           }
         },
         {
-          text: 'reciclar',
+          text: 'Favorito',
+          icon: 'heart',
+          handler: () =>{ 
+            this.store.dispatch(MARK_AS_FAVORITE({index}));
+            this.folder === 'Archivadas'? this.showToast('Enviado a favoritas!') :
+            this.showToast('Enviado a archivadas!');
+          }
+        },
+        {
+          text: 'Reciclar',
           icon: 'trash',
           cssClass: 'delete',
           role: 'destructive',
           handler: ()=>{ 
             this.store.dispatch(RECICLE({index}));
-            this.showToast('Enviado a la papelera de reciclaje');
-            this.detail = !this.detail;
+            this.showToast('Enviado a la papelera de reciclaje!');
           }
         },
         {
@@ -102,7 +117,7 @@ export class FolderPage implements OnInit {
         }
       ]
     };
-    if(this.folder != 'Archivadas') opt.buttons[0].icon='heart-dislike';
+    if(this.folder != 'Archivadas') opt.buttons[1].icon='heart-dislike';
     return opt;
   }
 
@@ -116,6 +131,7 @@ export class FolderPage implements OnInit {
           icon: 'push',
           handler: () =>{
             this.restore(index);
+            this.showToast('Objeto resturado!');
            }
         },
         {
@@ -159,8 +175,10 @@ export class FolderPage implements OnInit {
           handler: ()=>{ 
               if(removeAll){
                 this.store.dispatch(EMPTY_TRASHCAN());
+                this.showToast('Objetos eliminados!');
               } else {
                 this.store.dispatch(DELETE_ONE({index}));
+                this.showToast('Objeto eliminado!');
               }
            }
         },
@@ -178,10 +196,21 @@ export class FolderPage implements OnInit {
 
   async showToast(msg: string){
     const toast = await this.toastCtrl.create({
+      position: 'top',
+      buttons:[
+        {
+          icon: 'close',
+          side: 'end',
+          role: 'cancel'
+        }
+      ],
       message: msg,
+      animated: true,
+      translucent: true,
       duration: 4000
     });
 
+    this.matdesign? toast.position = 'bottom' : toast.position = 'top';
     await toast.present();
   }
 }

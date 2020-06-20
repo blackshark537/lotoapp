@@ -4,7 +4,7 @@ import { StoreModel } from '../models/store.model';
 import { Store } from '@ngrx/store';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MARK_AS_FAVORITE, RECICLE } from '../actions/user.actions';
-import { ActionSheetController, AlertController, ToastController } from '@ionic/angular';
+import { ActionSheetController, ToastController, Platform } from '@ionic/angular';
 
 @Component({
   selector: 'app-file-viewer',
@@ -24,20 +24,28 @@ export class FileViewerPage implements OnInit {
     private actionCtrl: ActionSheetController,
     private store: Store<StoreModel>,
     private activeRoute: ActivatedRoute,
+    private platform: Platform,
     private router: Router
   ) { }
 
-  ngOnInit() {
+  async ngOnInit() {
     this.index = parseInt(this.activeRoute.snapshot.paramMap.get('id'));
-    this.store.select('user_state').subscribe(resp=>{
+    
+    await this.store.select('user_state').subscribe(resp=>{
       let d = {...resp}
       this.draw = d.archived[this.index];
-      this.dateExp = this.draw.expiryDate;
-      let headers = ['PRIMERO', 'SEGUNDO', 'TERCERO', 'QUARTO', 'QUINTO', 'SEXTO', 'L.MAS', 'S.L.MAS'];
-      headers.map((head, i)=>{
-        if(i < this.draw.ballsqty) this.header.push(head);
-      });
     });
+
+    let headers = ['PRIMERO', 'SEGUNDO', 'TERCERO', 'QUARTO', 'QUINTO', 'SEXTO', 'L.MAS', 'S.L.MAS'];
+    headers.map((head, i)=>{
+      if(i < this.draw.ballsqty) this.header.push(head);
+    });
+    this.dateExp = this.draw.expiryDate;
+  }
+
+  //check if the platform is Android
+  get matdesign(): boolean{
+    return this.platform.is('android') || this.platform.is('desktop')? true : false;
   }
 
   async openActions(){
@@ -76,15 +84,27 @@ export class FileViewerPage implements OnInit {
         }
       ]
     };
+
+    if(this.draw.favorite) opt.buttons[0].icon='heart-dislike'
     return opt;
   }
 
   async showToast(msg: string){
     const toast = await this.toastCtrl.create({
+      position: 'top',
+      buttons:[
+        {
+          icon: 'close',
+          side: 'end',
+          role: 'cancel'
+        }
+      ],
       message: msg,
+      animated: true,
+      translucent: true,
       duration: 4000
     });
-
+    this.matdesign? toast.position = 'bottom' : toast.position = 'top';
     await toast.present();
   }
 

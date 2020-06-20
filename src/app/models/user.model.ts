@@ -4,6 +4,6 @@ export interface UserModel{
     name: string;
     password: string;
     archived: Draw[];
-    recicle: Draw[];
+    recycle: Draw[];
     image?: string;
 }

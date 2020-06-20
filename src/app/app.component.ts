@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { registerLocaleData } from '@angular/common'
-import localeEs from '@angular/common/locales/es'
+import localeEs from '@angular/common/locales/es-DO'
 import { Router } from '@angular/router';
 import { Platform } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
@@ -11,7 +11,7 @@ import { EXIT } from './actions/admin_draw.action';
 import { Store } from '@ngrx/store';
 import { SAVE_STATE } from './actions/user.actions';
 
-registerLocaleData(localeEs, 'es-do')
+registerLocaleData(localeEs, 'es-Do')
 
 @Component({
   selector: 'app-root',
@@ -27,7 +27,7 @@ export class AppComponent implements OnInit {
     {
       title: 'Inicio',
       url: '/inicio',
-      style: 'primary',
+      style: 'tertiary',
       icon: 'home'
     },
     {
@@ -49,21 +49,21 @@ export class AppComponent implements OnInit {
       icon: 'heart'
     },
     {
+      title: 'Configuración',
+      url: '/config',
+      style: 'primary',
+      icon: 'settings'
+    },
+    {
       title: 'Reciclaje',
       url: '/folder/Reciclaje',
       style: 'danger',
       icon: 'trash'
-    },
-/*     {
-      title: 'Perfil',
-      url: '/folder/Profile',
-      icon: 'person-circle'
-    } */
+    }
   ];
 
   constructor(
     private store: Store<StoreModel>,
-    private router: Router,
     private platform: Platform,
     private splashScreen: SplashScreen,
     private statusBar: StatusBar

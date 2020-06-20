@@ -26,6 +26,10 @@ const routes: Routes = [
   {
     path: 'file/:id',
     loadChildren: () => import('./file-viewer/file-viewer.module').then( m => m.FileViewerPageModule)
+  },
+  {
+    path: 'config',
+    loadChildren: () => import('./config/config.module').then( m => m.ConfigPageModule)
   }
 ];
 

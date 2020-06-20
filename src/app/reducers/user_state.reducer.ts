@@ -5,8 +5,8 @@ import { GET, ARCHIVE_DRAW, MARK_AS_FAVORITE, RECICLE, DELETE_ONE, EMPTY_TRASHCA
 export const user_state: UserModel = JSON.parse(localStorage.getItem('user_data')) || {
     archived: [],
     name: 'Administrador',
-    password: '',
-    recicle: [],
+    password: null,
+    recycle: [],
 }
 
 export const userReducer = createReducer(user_state,
@@ -30,7 +30,7 @@ export const userReducer = createReducer(user_state,
     on(RECICLE, (state, {index})=>{
         let new_state = {...state}; //remove readonly state
         let new_archive = [...new_state.archived]; //remove readonly archive
-        new_state.recicle = [...new_state.recicle, new_state.archived[index]]; //move archive to recicle
+        new_state.recycle = [...new_state.recycle, new_state.archived[index]]; //move archive to recicle
         let new_data = [...new_archive.slice(0, index), ...new_archive.slice(index +1)]; //delete archive
         new_archive=new_data;
         new_state.archived = new_archive;
@@ -39,18 +39,18 @@ export const userReducer = createReducer(user_state,
     }),
     on(ADMIN_RECICLE, (state, {draw})=>{
         let new_state = {...state};
-        new_state.recicle = [...new_state.recicle, draw];
+        new_state.recycle = [...new_state.recycle, draw];
         return new_state;
     }),
     on(DELETE_ONE, (state, {index})=>{
         let new_state = {...state}; //remove readonly state
-        let new_recicle = [...new_state.recicle.slice(0, index), ...new_state.recicle.slice(index+1)]; //remove readonly recicle
-        new_state.recicle = new_recicle;
+        let new_recicle = [...new_state.recycle.slice(0, index), ...new_state.recycle.slice(index+1)]; //remove readonly recicle
+        new_state.recycle = new_recicle;
         return {...new_state};
     }),
     on(EMPTY_TRASHCAN, (state)=>{
         let new_state = {...state};
-        new_state.recicle = [];
+        new_state.recycle = [];
         return {...new_state};
     }),
     on(SAVE_STATE, state=>{

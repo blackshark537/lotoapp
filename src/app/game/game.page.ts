@@ -56,6 +56,7 @@ export class GamePage implements OnInit, OnDestroy {
     headers.map((head, i)=>{
       if(i < this.draw.ballsqty) this.header.push(head);
     });
+
   }
 
   async ngOnDestroy(){
@@ -86,10 +87,7 @@ export class GamePage implements OnInit, OnDestroy {
         }, {
           text: 'Ok',
           handler: async () => {
-            this.user_draw.emitDate = new Date(Date.now());
-            this.user_draw.owner = 'user';
-            await this.store.dispatch(ARCHIVE_DRAW({draw: this.user_draw}));
-            this.router.navigate(['/inicio']);
+            this.save_draw();
           }
         }
       ]
@@ -102,6 +100,13 @@ export class GamePage implements OnInit, OnDestroy {
         this.errorSound.play();
       }
     });
+  }
+
+  async save_draw(){
+    this.user_draw.emitDate = new Date(Date.now());
+    this.user_draw.owner = 'user';
+    await this.store.dispatch(ARCHIVE_DRAW({draw: this.user_draw}));
+    this.router.navigate(['/inicio']);
   }
 
   matdesign(): boolean{
@@ -154,7 +159,11 @@ export class GamePage implements OnInit, OnDestroy {
       await this.custom_draw(0);
       await this.openModal();
     } catch(error){
-      await this.errorAlert('Demasiados numeros repetidos\n' + error);
+      if(error){
+        await this.errorAlert( error);
+      } else {
+        await this.errorAlert('Demasiados números repetidos\n');
+      }
     }
   }
 
