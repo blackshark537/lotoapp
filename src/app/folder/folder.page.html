@@ -30,7 +30,7 @@
                   </ng-template>
                 </ion-avatar>
                 <ion-label>
-                  <h2>Loteria: {{ draw.lottery + ' '+ draw.draw}}</h2>
+                  <h2>Lotería: {{ draw.lottery + ' '+ draw.draw}}</h2>
                   <h3>Creada: {{ draw.emitDate | amLocale: 'es-do' | amTimeAgo}}</h3>
                   <p>activa: {{ draw.active? 'Si' : 'No'}}</p>
                 </ion-label>
@@ -47,7 +47,7 @@
                   </ng-template>
                 </ion-avatar>
                 <ion-label>
-                  <h2>Loteria: {{ draw.lottery + ' '+ draw.draw}}</h2>
+                  <h2>Lotería: {{ draw.lottery + ' '+ draw.draw}}</h2>
                   <h3>Creada: {{ draw.emitDate | amLocale: 'es-do' | amTimeAgo}}</h3>
                   <p>activa: {{ draw.active? 'Si' : 'No'}}</p>
                 </ion-label>
@@ -69,7 +69,7 @@
               </ion-avatar>
 
               <ion-label>
-                <h2>Loteria: {{ draw? draw.lottery + ' '+ draw.draw : ''}}</h2>
+                <h2>Lotería: {{ draw? draw.lottery + ' '+ draw.draw : ''}}</h2>
                 <h3>Creada: {{ draw.emitDate | amLocale: 'es-do' | amTimeAgo}}</h3>
                 <h4>type: {{draw.owner === 'user'? 'folder' : 'document'}}</h4>
                 <p>id: {{ draw._id}}</p>

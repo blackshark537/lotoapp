@@ -16,11 +16,13 @@ export class PlayComponent implements OnInit, OnDestroy {
   @Input('draw') draw: number[];
   @Output('data') data: any[];
 
+  soundApi = new Audio();
   balls: Ball[]=[];
   tombola: Tombola;
   drawBall: DrawBall;
   can_save: boolean=false;
   goforit: boolean = false;
+  finished: boolean = false;
   canvas;
 
   constructor(
@@ -51,6 +53,7 @@ export class PlayComponent implements OnInit, OnDestroy {
         img = p.loadImage('assets/hover.png');
         playButton = p.loadImage('assets/play.png');
         myFont = p.loadFont('assets/Inconsolata-Condensed.otf');
+        this.soundApi.src = 'assets/key_pressed.wav';
       }
 
       p.setup = ()=>{
@@ -59,10 +62,11 @@ export class PlayComponent implements OnInit, OnDestroy {
         p.rectMode(p.CENTER);
         p.textAlign(p.CENTER);
         p.imageMode(p.CENTER);
+        this.soundApi.volume = 1;
         x = p.width;
         y = p.height;
-        for(let i=0; i<20; i++){
-          this.balls.push(new Ball(p, i));
+        for(let i=0; i<15; i++){
+          this.balls.push(new Ball(p, i+15));
         };
         
         this.draw.map(val=> draw_balls.push(new Ball(p, val)));
@@ -74,14 +78,20 @@ export class PlayComponent implements OnInit, OnDestroy {
       }
       
       p.mouseClicked = ()=>{
-        if(loop)this.drawBall.pick_one();
+        if(loop){
+          this.drawBall.pick_one();
+          this.keyPressed();
+        }
         if(p.mouseX > 100 && p.mouseX < 400-100 && p.mouseY > 100 && p.mouseY < 400-100){
           if(!loop) loop = true;
         }
       }
 
       p.keyPressed = ()=>{
-        if(p.keyCode === 32 && loop)this.drawBall.pick_one();
+        if(p.keyCode === 32 && loop){
+          this.drawBall.pick_one();
+          this.keyPressed();
+        }
         if(!loop) loop = true;
       }
   
@@ -90,31 +100,25 @@ export class PlayComponent implements OnInit, OnDestroy {
         p.background(250);
         //p.directionalLight(255,255,30,1,1,-1);
         //p.ambientLight(255);
-
-/*         if(loop && this.drawBall.draw_super && !this.goforit){
-          p.noLoop();
-          this.ask_for_slmas();
-          if(this.goforit){
-            this.goforit = true;
-            p.loop();
-          } else {
-            this.draw[this.draw.length-1] = null;
-            this.draw[this.draw.length-2] = null;
-            this.can_save = true;
+        if(this.drawBall.end_drawing){          
+          p.remove();
+          if(!this.finished){
+            this.soundApi.volume = 0.5;
+            this.soundApi.src = 'assets/game_won.wav'
+            this.soundApi.onloadeddata = () =>{
+              this.soundApi.play();
+              this.can_save = true;
+              this.finished = true;
+            }
           }
-        } */
-        
+        }
+
         if(loop && !this.drawBall.end_drawing){
           this.balls.map((ball: Ball) =>{
             ball.force = gvty;
             ball.force = wind;
             ball.draw();
           });
-        }
-        
-        if(this.drawBall.end_drawing){          
-          this.can_save = true;
-          //p.remove(); */
         }
 
         this.drawBall.draw();
@@ -136,6 +140,10 @@ export class PlayComponent implements OnInit, OnDestroy {
 
   get saveBtn(): boolean{
     return this.can_save;
+  }
+
+  keyPressed(){
+    if(!this.finished)this.soundApi.play();
   }
 
   save(){

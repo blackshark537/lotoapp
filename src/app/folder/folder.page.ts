@@ -14,6 +14,7 @@ import { Draw } from '../models/draw.model';
   styleUrls: ['./folder.page.scss'],
 })
 export class FolderPage implements OnInit {
+  alertSound = new Audio();
   public folder: string;
   public detail: boolean;
   public draw: Draw;
@@ -143,6 +144,9 @@ export class FolderPage implements OnInit {
     const alert = await this.alertCtrl.create({
       header: 'Alerta!',
       message: '<strong>Al eliminar estos archivos no se podran recuperar</strong>',
+      animated: true,
+      backdropDismiss: false,
+      translucent: true,
       buttons:[
         {
           text: 'Cancel',
@@ -163,7 +167,13 @@ export class FolderPage implements OnInit {
       ]
     });
 
-    await alert.present();
+    alert.present().then(()=>{
+      this.alertSound.src = 'assets/notify.mp3'
+      this.alertSound.volume = 1;
+      this.alertSound.onloadeddata  = ()=>{
+        this.alertSound.play();
+      }
+    });
   }
 
   async showToast(msg: string){

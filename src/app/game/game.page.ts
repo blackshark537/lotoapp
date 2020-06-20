@@ -15,6 +15,7 @@ import { ARCHIVE_DRAW } from '../actions/user.actions';
 })
 export class GamePage implements OnInit, OnDestroy {
 
+  errorSound = new Audio();
   draw_type: string;
   draw: Draw;
   price = 15;
@@ -58,21 +59,22 @@ export class GamePage implements OnInit, OnDestroy {
   }
 
   async ngOnDestroy(){
-
+    if(this.user_draw.Data.length > 0){
+      this.back();
+    }
   }
 
   goInicio(){
-    if(this.user_draw.Data.length > 0){
-      this.back()
-   }else {
     this.router.navigate(['/inicio']);
-   }    
   }
 
   async back(){
     const alert = await this.alertCtrl.create({
+      animated: true,
+      backdropDismiss: false,
+      translucent: true,
       header: 'Mensage!',
-      message: '<strong>Deseas guardar esta partida</strong>!!!',
+      message: '<strong>Deseas guardar la partida</strong>!!!',
       buttons: [
         {
           text: 'Cancel',
@@ -93,7 +95,13 @@ export class GamePage implements OnInit, OnDestroy {
       ]
     });
 
-    await alert.present();
+    alert.present().then(() =>{
+      this.errorSound.src = 'assets/notify.mp3'
+      this.errorSound.volume = 1;
+      this.errorSound.onloadeddata  = ()=>{
+        this.errorSound.play();
+      }
+    });
   }
 
   matdesign(): boolean{
@@ -252,6 +260,7 @@ export class GamePage implements OnInit, OnDestroy {
   async errorAlert(msg: string){
     const alerta = await this.alertCtrl.create({
       animated: true,
+      backdropDismiss: false,
       header: 'Error',
       message: msg,
       translucent: true,
@@ -264,6 +273,12 @@ export class GamePage implements OnInit, OnDestroy {
       }]
     });
 
-    alerta.present();
+    alerta.present().then(()=>{
+      this.errorSound.src = 'assets/error.wav'
+      this.errorSound.volume = 1;
+      this.errorSound.onloadeddata  = ()=>{
+        this.errorSound.play();
+      }
+    });
   }
 }

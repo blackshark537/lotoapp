@@ -33,10 +33,10 @@ export class FileViewerPage implements OnInit {
       let d = {...resp}
       this.draw = d.archived[this.index];
       this.dateExp = this.draw.expiryDate;
-    });
-    let headers = ['PRIMERO', 'SEGUNDO', 'TERCERO', 'QUARTO', 'QUINTO', 'SEXTO', 'L.MAS', 'S.L.MAS'];
-    headers.map((head, i)=>{
-      if(i < this.draw.ballsqty) this.header.push(head);
+      let headers = ['PRIMERO', 'SEGUNDO', 'TERCERO', 'QUARTO', 'QUINTO', 'SEXTO', 'L.MAS', 'S.L.MAS'];
+      headers.map((head, i)=>{
+        if(i < this.draw.ballsqty) this.header.push(head);
+      });
     });
   }
 

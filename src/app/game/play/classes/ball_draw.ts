@@ -8,11 +8,15 @@ export class DrawBall{
     private radius:number=150;
     private index: number=0;
     private can_withdraw: boolean=false;
+    private audio = new Audio();
+    private finished = false;
 
     constructor(
         private p: p5,
         private data?: Ball[]
-    ){ }
+    ){ 
+        this.audio.src = "assets/notify2.wav";
+    }
 
     draw(){
         this.p.push();
@@ -25,12 +29,15 @@ export class DrawBall{
             } else {
                 this.can_withdraw = false;
                 this.index += 1;
+                this.audio.volume = 0.5;
+                this.audio.play();
                 if(this.index == 6){
                     this.data[this.index].ball_type = 1;
                 }
                 if( this.index == 7){
                     this.data[this.index].ball_type = 2;
                 }
+                
             }
             this.angle += 0.07;
         }
