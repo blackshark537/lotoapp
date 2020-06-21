@@ -16,9 +16,72 @@ export class FormComponent implements OnInit {
   @Input('edit') edit: boolean;
   @Input('index') index: number;
   @Input('Draw') Draw: Draw;
-
+  
   drawForm: FormGroup;
-  labels = ['PRIMERO', 'SEGUNDO', 'TERCERO', 'QUARTO', 'QUINTO', 'SEXTO', 'L.MAS', 'L.S.MAS'];
+  labels = ['PRIMERO', 'SEGUNDO', 'TERCERO', 'QUARTO', 'QUINTO', 'SEXTO', 'L.Más', 'L.S.Más'];
+  LotteryChoosed: any = [];
+  lotteryModel = [
+    {
+      lottery: 'Leidsa',
+      draws: [
+        {
+          name: 'Loto, Loto Más y Súper Más',
+          balls_qty: 8,
+          img: 'assets/leidsa.png'
+        },
+        {
+          name: 'Loto Pool',
+          balls_qty: 5,
+          img: 'assets/loto-pool.png'
+        },
+        {
+          name: 'Quiniela Pale',
+          balls_qty: 3,
+          img: 'assets/quiniela-pale.png'
+        },
+        {
+          name: 'Pega 3 Más',
+          balls_qty: 3,
+          img: 'assets/pega-mas.png'
+        }
+      ]
+    },
+    {
+      lottery: 'Nacional',
+      draws: [
+        {
+          name: 'Nacional',
+          balls_qty: 3,
+          img: 'assets/loteria-nacional.png'
+        },
+        {
+          name: 'Ganamás',
+          balls_qty: 3,
+          img: 'assets/loteria-nacional-gana-mas.png'
+        }
+      ]
+    },
+    {
+      lottery: 'Real',
+      draws: [
+        {
+          name: 'Real',
+          balls_qty: 3,
+          img: 'assets/loteria-real.png'
+        }
+      ]
+    },
+    {
+      lottery: 'Loteka',
+      draws: [
+        {
+          name: 'Quiniela',
+          balls_qty: 3,
+          img: 'assets/loteka.png'
+        }
+      ]
+    }
+  ];
 
   constructor(
     private fb: FormBuilder,
@@ -42,7 +105,8 @@ export class FormComponent implements OnInit {
         expiryDate: this.Draw.expiryDate,
         draw: [this.Draw.draw, Validators.required],
         ballsqty: [this.Draw.ballsqty, Validators.required],
-        favorite: this.Draw.favorite
+        favorite: this.Draw.favorite,
+        img: this.Draw.img
       });
     } else {
       this.drawForm = this.fb.group({
@@ -56,7 +120,8 @@ export class FormComponent implements OnInit {
         expiryDate: null,
         draw: ['', Validators.required],
         ballsqty: [null, Validators.required],
-        favorite: false
+        favorite: false,
+        img: null
       });
     }
 
@@ -89,6 +154,20 @@ export class FormComponent implements OnInit {
 
   set_expiryDate(evt){
     this.drawForm.setValue({ expiryDate:  new Date(evt.value)})
+  }
+
+  setDraw(value){
+    let draw = JSON.parse(value);
+    console.log(draw);
+    this.drawForm.controls['draw'].setValue(draw.name);
+    this.drawForm.controls['ballsqty'].setValue(draw.balls_qty);
+    this.drawForm.controls['img'].setValue(draw.img);
+  }
+
+  setLottery(value){
+    let model = JSON.parse(value);
+    this.drawForm.controls['lottery'].setValue(model.lottery);
+    this.LotteryChoosed = model;
   }
 
   async readfile(evt){

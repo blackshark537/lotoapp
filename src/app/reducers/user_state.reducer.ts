@@ -5,6 +5,10 @@ import { GET, ARCHIVE_DRAW, MARK_AS_FAVORITE, RECICLE, DELETE_ONE, EMPTY_TRASHCA
 export const user_state: UserModel = JSON.parse(localStorage.getItem('user_data')) || {
     archived: [],
     name: 'Administrador',
+    credits: 0,
+    gender: 'male',
+    lastName:'',
+    phone: null,
     password: null,
     recycle: [],
 }

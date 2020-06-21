@@ -7,6 +7,7 @@ export interface Draw{
     filename?: string;
     favorite: boolean;
     ballsqty: number;
+    img?: string;
     Data: any[];    
     emitDate?: Date;
     expiryDate?: Date;

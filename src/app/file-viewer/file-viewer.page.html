@@ -14,9 +14,10 @@
 
 <ion-content>
   <ion-item lines="none">
-    <ion-avatar>
+    <ion-avatar slot="start">
       <ion-icon color="danger" size="large" [ios]="'document-outline'"
           [md]="'document-sharp'"></ion-icon>
+        <!-- <img [src]="draw.img" alt="logo"> -->
     </ion-avatar>
     <ion-label *ngIf="draw != undefined ">
         <h2>{{ draw? draw.lottery + ' '+ draw.draw : ''}}</h2>
@@ -48,7 +49,7 @@
       </thead>
       <tbody class="tbody">
         <tr *ngFor="let row of draw.Data; index as i;">
-          <td style="background-color: blanchedalmond;">{{i+1 + '.-'}}</td>
+          <td style="background-color: blanchedalmond; color: black;">{{i+1 + '.-'}}</td>
           <td *ngFor="let col of row; index as i">
             {{col}}
           </td>

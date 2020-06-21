@@ -30,18 +30,23 @@
     <ion-list>
       <ion-item>
         <ion-label color="{{lottery.invalid && lottery.touched? 'danger': 'dark'}}"
-         position="floating">Lotería: {{lottery.invalid && lottery.touched? ' requerido': ''}}</ion-label>
-        <ion-input formControlName="lottery" required="true"></ion-input>
+        position="floating">Lotería: {{lottery.invalid && lottery.touched? ' requerido': ''}}</ion-label>
+        <ion-select (ionChange)="setLottery($event.target.value)">
+          <ion-select-option *ngFor="let model of lotteryModel;" value="{{model | json}}">{{model.lottery}}</ion-select-option>
+        </ion-select>
       </ion-item>
       <ion-item>
         <ion-label color="{{draw_name.invalid && draw_name.touched? 'danger': 'dark'}}"
          position="floating">Sorteo:{{draw_name.invalid && draw_name.touched? ' requerido': ''}}</ion-label>
-        <ion-input formControlName="draw" required="true"></ion-input>
+        <!-- <ion-input formControlName="draw" required="true"></ion-input> -->
+        <ion-select (ionChange)="setDraw($event.target.value)">
+          <ion-select-option *ngFor="let draw of LotteryChoosed.draws;" value="{{draw | json}}">{{draw.name}}</ion-select-option>
+        </ion-select>
       </ion-item>
       <ion-item>
         <ion-label color="{{balls_qty.invalid && balls_qty.touched? 'danger': 'dark'}}"
          position="floating">Bolas:{{balls_qty.invalid && balls_qty.touched? ' requerido': ''}}</ion-label>
-        <ion-input formControlName="ballsqty" type="number" required="true"></ion-input>
+        <ion-input formControlName="ballsqty" type="number" readonly required="true"></ion-input>
       </ion-item>
       <ion-item>
         <ion-label color="{{expiryDate.invalid && expiryDate.touched? 'danger': 'dark'}}"
