@@ -37,6 +37,12 @@ export class AppComponent implements OnInit {
       icon: 'apps'
     },
     {
+      title: 'Usuarios',
+      url: '/users',
+      style: 'medium',
+      icon: 'person'
+    },
+    {
       title: 'Archivadas',
       url: '/folder/Archivadas',
       style: 'warning',

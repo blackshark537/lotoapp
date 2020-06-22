@@ -4,6 +4,12 @@
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
     <ion-title>Inicio</ion-title>
+    <ion-buttons slot="end" >
+      <p class="credit">Créditos totales: $0.00 </p>
+      <ion-button color="warning">
+        comprar
+      </ion-button>
+  </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
@@ -12,7 +18,7 @@
     <ion-row>
       <ion-col size="12" size-md="4" *ngFor="let draw of draws$ | async; index as i;">
         <ion-card [disabled]="dateNow > date(draw.expiryDate)" type="button" class="card-hover" [routerLink]="['/game', i]">
-          <img [src]="draw.img" style="align-self: center; width: 300px; height: 100px;"/>
+          <img [src]="draw.img" class="{{draw.draw === 'Loto, Loto Más y Súper Más'? 'lmas' : 'others'}}"/>
           <ion-card-header class="ion-text-center">
             <ion-card-title>{{draw.draw}}</ion-card-title>
             <ion-card-subtitle>{{dateNow > date(draw.expiryDate)? 'Expiró ' : 'Expirará '}} {{draw.expiryDate | amLocale: 'es-do' | amTimeAgo}}</ion-card-subtitle>

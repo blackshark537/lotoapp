@@ -30,6 +30,10 @@ const routes: Routes = [
   {
     path: 'config',
     loadChildren: () => import('./config/config.module').then( m => m.ConfigPageModule)
+  },
+  {
+    path: 'users',
+    loadChildren: () => import('./users/users.module').then( m => m.UsersPageModule)
   }
 ];
 

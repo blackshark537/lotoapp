@@ -27,21 +27,25 @@ export class FormComponent implements OnInit {
         {
           name: 'Loto, Loto Más y Súper Más',
           balls_qty: 8,
+          max_values: 38,
           img: 'assets/leidsa.png'
         },
         {
           name: 'Loto Pool',
           balls_qty: 5,
+          max_values: 31,
           img: 'assets/loto-pool.png'
         },
         {
           name: 'Quiniela Pale',
           balls_qty: 3,
+          max_values: 99,
           img: 'assets/quiniela-pale.png'
         },
         {
           name: 'Pega 3 Más',
           balls_qty: 3,
+          max_values: 51,
           img: 'assets/pega-mas.png'
         }
       ]
@@ -52,11 +56,13 @@ export class FormComponent implements OnInit {
         {
           name: 'Nacional',
           balls_qty: 3,
+          max_values: 99,
           img: 'assets/loteria-nacional.png'
         },
         {
           name: 'Ganamás',
           balls_qty: 3,
+          max_values: 99,
           img: 'assets/loteria-nacional-gana-mas.png'
         }
       ]
@@ -67,6 +73,7 @@ export class FormComponent implements OnInit {
         {
           name: 'Real',
           balls_qty: 3,
+          max_values: 99,
           img: 'assets/loteria-real.png'
         }
       ]
@@ -77,6 +84,7 @@ export class FormComponent implements OnInit {
         {
           name: 'Quiniela',
           balls_qty: 3,
+          max_values: 99,
           img: 'assets/loteka.png'
         }
       ]
