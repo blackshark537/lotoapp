@@ -8,6 +8,6 @@ export interface UserModel{
     credits?: number;
     password: string;
     archived: Draw[];
-    recycle: Draw[];
+    recycle: any[];
     image?: string;
 }

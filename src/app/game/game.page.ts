@@ -5,7 +5,7 @@ import { PlayComponent } from './play/play.component';
 import { CustomGameComponent } from './custom-game/custom-game.component';
 import { StoreModel } from 'src/app/models/store.model';
 import { Store } from '@ngrx/store';
-import { Draw } from '../models/draw.model';
+import { Draw, AdminDraw } from '../models/draw.model';
 import { ARCHIVE_DRAW } from '../actions/user.actions';
 
 @Component({
@@ -17,7 +17,7 @@ export class GamePage implements OnInit, OnDestroy {
 
   errorSound = new Audio();
   draw_type: string;
-  draw: Draw;
+  draw: AdminDraw;
   price = 15;
   numbers_draws: number[] = [];
   index: number=0;
@@ -49,8 +49,11 @@ export class GamePage implements OnInit, OnDestroy {
     this.store.select('admin_draw').subscribe(resp=>{
       let d = [...resp.slice(this.index, this.index+1)]
       this.draw = {...d[0]};
-      this.user_draw = {...d[0]};
+      let draw2: any = {...d[0]};
+      this.user_draw = draw2;
       this.user_draw.Data = [];
+      console.log(this.user_draw);
+      
     });
     let headers = ['PRIMERO', 'SEGUNDO', 'TERCERO', 'QUARTO', 'QUINTO', 'SEXTO', 'L.MAS', 'S.L.MAS'];
     headers.map((head, i)=>{
@@ -146,15 +149,23 @@ export class GamePage implements OnInit, OnDestroy {
 
   async openNormal(){
     this.numbers_draws = [];
-    await this.normal_draw(0);
     this.draw_type = 'Sorteo Platinum';
-    this.openModal();
+    try{
+      await this.normal_draw(0);
+      await this.openModal();
+    } catch(error){
+      if(error){
+        await this.errorAlert( error);
+      } else {
+        await this.errorAlert('Demasiados números repetidos\n');
+      }
+    }
   }
 
   async openCustom(){
     this.numbers_draws = [];
     this.draw_type = 'Sorteo Gold';
-    await this.openCustomGameModal();
+    //await this.openCustomGameModal();
     try{
       await this.custom_draw(0);
       await this.openModal();
@@ -180,7 +191,7 @@ export class GamePage implements OnInit, OnDestroy {
 
   async normal_draw(index: number){
     if(this.numbers_draws.length === this.draw.ballsqty) return 0;
-    let num = await this.pick_one(this.draw.Data[index]);
+    let num = await this.pick_one(this.draw.Games[0].Data[index]);
     let exist = await this.exist(num);
     if(!exist){
       this.numbers_draws.push(num);
@@ -192,7 +203,8 @@ export class GamePage implements OnInit, OnDestroy {
 
   async custom_draw(index: number){
     if(this.numbers_draws.length === this.draw.ballsqty) return 0;
-    let num = await this.pick_one(this.Data[index]);
+    //let num = await this.pick_one(this.Data[index]);
+    let num = await this.pick_one(this.draw.Games[1].Data[index]);
     let exist = await this.exist(num);
     if(!exist){
       this.numbers_draws.push(num);
@@ -216,7 +228,7 @@ export class GamePage implements OnInit, OnDestroy {
 
   async pick_random() {
     if(this.numbers_draws.length <= 5){
-      return Math.floor(Math.random() * 34) +1
+      return Math.floor(Math.random() * this.draw.max_values) +1
     } else {
       return Math.floor(Math.random() * 14) +1
     }

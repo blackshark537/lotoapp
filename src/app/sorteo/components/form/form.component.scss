@@ -1,0 +1,62 @@
+
+.t-container{
+    overflow-x: auto;
+}
+
+.table{
+    width: 100%;
+    align-content: center;
+}
+
+h4{
+    margin: 0px;
+    padding: 0.3em;
+    width: 100%;
+    background-color: black;
+    color: white;
+    text-align: center;
+}
+
+.thead{
+    background-color: black;
+    color: white;
+}
+
+.lmas{
+    background-color: red;
+    color: white;
+    border-top: 1px solid white;
+    border-right: 1px solid white;
+}
+
+.slmas{
+    background-color: blue;
+    color: white;
+    border-top: 1px solid white;
+    border-right: 1px solid white;
+}
+
+
+th,td{
+    padding: 0.8em;
+    width: auto;
+}
+
+tr:nth-child(even) {background-color: #f2f2f2;}
+
+.tbody{
+    /* align-content: center; */
+    text-align: center;
+}
+
+.d-none{
+    display: none;
+}
+
+.truncate-text{
+    flex: 1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+

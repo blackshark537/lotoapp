@@ -3,7 +3,7 @@ import { ModalController, ToastController, Platform } from '@ionic/angular';
 import { Store } from '@ngrx/store';
 import * as EXEL from 'xlsx';
 import {SAVE, EDIT} from 'src/app/actions/admin_draw.action';
-import { Draw } from 'src/app/models/draw.model';
+import { AdminDraw, Game } from 'src/app/models/draw.model';
 import { StoreModel } from 'src/app/models/store.model';
 import { FormBuilder, FormGroup, Validators} from '@angular/forms';
 
@@ -15,10 +15,25 @@ import { FormBuilder, FormGroup, Validators} from '@angular/forms';
 export class FormComponent implements OnInit {
   @Input('edit') edit: boolean;
   @Input('index') index: number;
-  @Input('Draw') Draw: Draw;
+  @Input('Draw') Draw: AdminDraw;
   
   drawForm: FormGroup;
+  segment: boolean = false;
+  GameType: string = 'Platinum';
+  Games: Game[] = [{
+    Data:[],
+    type: 'Platinum',
+    filename: ''
+  },{
+    Data:[],
+    type: 'Gold',
+    filename: ''
+  }];
+
   labels = ['PRIMERO', 'SEGUNDO', 'TERCERO', 'QUARTO', 'QUINTO', 'SEXTO', 'L.Más', 'L.S.Más'];
+  headers = [];
+  Balls = [];
+  indexSelected: number = null;
   LotteryChoosed: any = [];
   lotteryModel = [
     {
@@ -28,7 +43,7 @@ export class FormComponent implements OnInit {
           name: 'Loto, Loto Más y Súper Más',
           balls_qty: 8,
           max_values: 38,
-          img: 'assets/leidsa.png'
+          img: 'assets/leidsa2.png'
         },
         {
           name: 'Loto Pool',
@@ -105,35 +120,34 @@ export class FormComponent implements OnInit {
       this.drawForm = this.fb.group({
         _id: this.Draw._id,
         lottery: [this.Draw.lottery, Validators.required],
-        Data: [],
-        filename: this.Draw.filename,
+        Games: [],
         active: this.Draw.active,
         owner: this.Draw.owner,
         emitDate: this.Draw.emitDate,
         expiryDate: this.Draw.expiryDate,
         draw: [this.Draw.draw, Validators.required],
         ballsqty: [this.Draw.ballsqty, Validators.required],
+        max_values: this.Draw.max_values,
         favorite: this.Draw.favorite,
         img: this.Draw.img
       });
+      this.drawForm.controls['Games'].setValue(this.Draw.Games);
     } else {
       this.drawForm = this.fb.group({
         _id: '',
         lottery: ['', Validators.required],
-        Data: [],
-        filename: '',
+        Games: [],
         active: true,
         owner: 'admin',
         emitDate: null,
         expiryDate: null,
         draw: ['', Validators.required],
         ballsqty: [null, Validators.required],
+        max_values: null,
         favorite: false,
         img: null
       });
     }
-
-    this.drawForm.controls['Data'].setValue(this.Draw.Data);
   }
 
   get lottery(){
@@ -148,12 +162,12 @@ export class FormComponent implements OnInit {
     return this.drawForm.get('expiryDate');
   }
 
-  get filename(){
-    return this.drawForm.get('filename');
-  }
-
   get balls_qty(){
     return this.drawForm.get('ballsqty');
+  }
+
+  get games(){
+    return this.drawForm.get('Games');
   }
 
   get matdesign(): boolean{
@@ -164,18 +178,64 @@ export class FormComponent implements OnInit {
     this.drawForm.setValue({ expiryDate:  new Date(evt.value)})
   }
 
-  setDraw(value){
-    let draw = JSON.parse(value);
-    console.log(draw);
-    this.drawForm.controls['draw'].setValue(draw.name);
-    this.drawForm.controls['ballsqty'].setValue(draw.balls_qty);
-    this.drawForm.controls['img'].setValue(draw.img);
-  }
-
   setLottery(value){
     let model = JSON.parse(value);
     this.drawForm.controls['lottery'].setValue(model.lottery);
     this.LotteryChoosed = model;
+  }
+
+  setDraw(value){
+    let draw = JSON.parse(value);
+    this.drawForm.controls['draw'].setValue(draw.name);
+    this.drawForm.controls['ballsqty'].setValue(draw.balls_qty);
+    this.drawForm.controls['max_values'].setValue(draw.max_values)
+    this.drawForm.controls['img'].setValue(draw.img);
+    this.setHeaders(draw.balls_qty);
+    this.setNumbers(draw.max_values);
+  }
+
+  setHeaders(balls_qty: number){
+    this.headers = [];
+    this.labels.map((label, i) => {
+      if(i < balls_qty) this.headers.push(label);
+    });
+  }
+
+  setIndex(value){
+    this.indexSelected = parseInt(value);
+  }
+
+  setNumbers(max_values){
+    this.Balls = [];
+    for (let i = 0; i < max_values+1; i++) {
+      this.Balls.push(i);
+    }
+  }
+
+  NumbersChosen(evt){
+    if (this.GameType === 'Platinum') {
+      this.Games[0].Data[this.indexSelected] = [];
+      evt.map(value => {
+        this.Games[0].Data[this.indexSelected].push(parseInt(value));
+      });
+    } else if (this.GameType === 'Gold') { 
+      this.Games[1].Data[this.indexSelected] = [];
+      evt.map(value => {
+        this.Games[1].Data[this.indexSelected].push(parseInt(value));
+      });
+    }
+  }
+
+  DataLoadingMode(evt){
+    if(evt === 'Auto'){ 
+      this.segment = false;
+    } else {
+      this.segment = true;
+    }
+  }
+
+  setGameType(value: string){
+    this.GameType = value;
   }
 
   async readfile(evt){
@@ -201,12 +261,16 @@ export class FormComponent implements OnInit {
         jsonData['data'].map(val => col.push(val[this.labels[i]]));
         row.push(col);
       }
-      this.drawForm.controls['Data'].setValue(row);
-
+      
+      await this.Games.map(game =>{
+        if(game.type === this.GameType){
+           game.Data = row;
+           game.filename = file.name;
+        }
+      });
     }
 
     if(file.type === type){
-      this.drawForm.controls['filename'].setValue(file.name);
       reader.readAsBinaryString(file);
     } else {
       const toast = await this.toastCtrl.create({
@@ -218,6 +282,7 @@ export class FormComponent implements OnInit {
   }
 
   async save(){
+    this.drawForm.controls['Games'].setValue(this.Games);
     this.drawForm.controls['_id'].setValue(this._id);
     this.drawForm.controls['emitDate'].setValue(new Date(Date.now()));
     this.store.dispatch(SAVE(this.drawForm.value));

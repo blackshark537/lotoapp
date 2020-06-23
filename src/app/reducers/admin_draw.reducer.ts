@@ -1,8 +1,8 @@
 import { createReducer, on, Action, State} from '@ngrx/store';
 import {GET, SAVE, EDIT, DEL, EXIT} from '../actions/admin_draw.action';
-import { Draw } from '../models/draw.model';
+import { Draw, AdminDraw } from '../models/draw.model';
 
-export const initial_state: Draw[] = JSON.parse(localStorage.getItem('admin_draw')) || [];
+export const initial_state: AdminDraw[] = JSON.parse(localStorage.getItem('admin_draw')) || [];
 
 const DrawReducer = createReducer(initial_state, 
     on(GET, state => [...state]),
@@ -19,6 +19,6 @@ const DrawReducer = createReducer(initial_state,
     })
 );
 
-export function reducerDraw(state: Draw[], actions: Action){
+export function reducerDraw(state: AdminDraw[], actions: Action){
     return DrawReducer(state, actions);
 }

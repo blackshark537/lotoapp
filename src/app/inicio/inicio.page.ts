@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Draw } from '../models/draw.model';
+import { Draw, AdminDraw } from '../models/draw.model';
 import { StoreModel } from '../models/store.model';
 import { Store } from '@ngrx/store';
 
@@ -12,7 +12,7 @@ import { Store } from '@ngrx/store';
 export class InicioPage implements OnInit {
   dateNow=new Date(Date.now());
 
-  draws$: Observable<Draw[]>
+  draws$: Observable<AdminDraw[]>
 
   constructor(
     private store: Store<StoreModel>

@@ -4,7 +4,7 @@ import { FormComponent } from './components/form/form.component';
 import { Store } from '@ngrx/store';
 import { GET, DEL } from 'src/app/actions/admin_draw.action';
 import { ADMIN_RECICLE } from 'src/app/actions/user.actions';
-import { Draw } from '../models/draw.model';
+import { Draw, AdminDraw } from '../models/draw.model';
 import { StoreModel } from '../models/store.model';
 import { Observable } from 'rxjs';
 
@@ -16,7 +16,7 @@ import { Observable } from 'rxjs';
 export class SorteoPage implements OnInit {
 
   selectedIndex: number
-  draw$: Observable<Draw[]>;
+  draw$: Observable<AdminDraw[]>;
   draw: Draw;
   edit: boolean;
   currDate = new Date(Date.now());

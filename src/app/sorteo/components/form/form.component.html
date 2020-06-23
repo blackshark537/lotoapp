@@ -30,23 +30,19 @@
     <ion-list>
       <ion-item>
         <ion-label color="{{lottery.invalid && lottery.touched? 'danger': 'dark'}}"
-        position="floating">Lotería: {{lottery.invalid && lottery.touched? ' requerido': ''}}</ion-label>
+        position="floating">Lotería: {{lottery.invalid && lottery.touched? ' requerido': 
+        edit? lottery.value : ''}}</ion-label>
         <ion-select (ionChange)="setLottery($event.target.value)">
           <ion-select-option *ngFor="let model of lotteryModel;" value="{{model | json}}">{{model.lottery}}</ion-select-option>
         </ion-select>
       </ion-item>
       <ion-item>
         <ion-label color="{{draw_name.invalid && draw_name.touched? 'danger': 'dark'}}"
-         position="floating">Sorteo:{{draw_name.invalid && draw_name.touched? ' requerido': ''}}</ion-label>
-        <!-- <ion-input formControlName="draw" required="true"></ion-input> -->
+         position="floating">Sorteo:{{draw_name.invalid && draw_name.touched? ' requerido':
+         edit? draw_name.value : ''}}</ion-label>
         <ion-select (ionChange)="setDraw($event.target.value)">
           <ion-select-option *ngFor="let draw of LotteryChoosed.draws;" value="{{draw | json}}">{{draw.name}}</ion-select-option>
         </ion-select>
-      </ion-item>
-      <ion-item>
-        <ion-label color="{{balls_qty.invalid && balls_qty.touched? 'danger': 'dark'}}"
-         position="floating">Bolas:{{balls_qty.invalid && balls_qty.touched? ' requerido': ''}}</ion-label>
-        <ion-input formControlName="ballsqty" type="number" readonly required="true"></ion-input>
       </ion-item>
       <ion-item>
         <ion-label color="{{expiryDate.invalid && expiryDate.touched? 'danger': 'dark'}}"
@@ -55,16 +51,81 @@
         <!-- <ion-input formControlName="expiryDate" [value]="expiryDate.value" type="date" required="true"></ion-input> -->
       </ion-item>
       <ion-item>
+        <!-- Type Select -->
+        <ion-segment (ionChange)="setGameType($event.target.value)" value="{{GameType}}">
+          <ion-segment-button value="Platinum">
+            <ion-label>Platinum</ion-label>
+          </ion-segment-button>
+          <ion-segment-button value="Gold">
+            <ion-label>Gold</ion-label>
+          </ion-segment-button>
+        </ion-segment>        
+      </ion-item>
+      <ion-item>
+        <!-- Data Loading Mode Segment -->
+        <ion-segment (ionChange)="DataLoadingMode($event.target.value)" value="Auto">
+          <ion-segment-button value="Manual">
+            <ion-label>Manual</ion-label>
+          </ion-segment-button>
+          <ion-segment-button value="Auto">
+            <ion-label>Auto</ion-label>
+          </ion-segment-button>
+        </ion-segment>
+      </ion-item>
+      <ion-item *ngIf="!segment; else manualBlock;">
         <ion-label position="fixed">Archivo:</ion-label>
-        <ion-text>{{ filename.value }}</ion-text>
+        <ion-text *ngIf="GameType === 'Platinum'">{{games.value? games.value[0].filename : Games[0].filename}}</ion-text>
+        <ion-text *ngIf="GameType === 'Gold'">{{games.value? games.value[1].filename : Games[1].filename}}</ion-text>
         <ion-buttons >
-          <ion-button *ngIf="!filename.value || edit" [disabled]="balls_qty.invalid" (click)="file.click()">
+          <ion-button *ngIf="GameType === 'Platinum'" [disabled]="balls_qty.invalid" (click)="file1.click()">
+            Añadir
+            <ion-icon [ios]="'document-attach-outline'" [ios]="'document-attach-sharp'"></ion-icon>
+          </ion-button>
+          <ion-button *ngIf="GameType === 'Gold'" [disabled]="balls_qty.invalid" (click)="file2.click()">
             Añadir
             <ion-icon [ios]="'document-attach-outline'" [ios]="'document-attach-sharp'"></ion-icon>
           </ion-button>
         </ion-buttons>
-        <input #file (change)="readfile($event.target)" style="display: none;" type="file">
+        <input #file1 (change)="readfile($event.target)" style="display: none;" type="file">
+        <input #file2 (change)="readfile($event.target)" style="display: none;" type="file">
       </ion-item>
+      <ng-template #manualBlock>
+        
+        <ion-item>
+          <ion-label>Bola</ion-label>
+          <ion-select placeholder="Select One" (ionChange)="setIndex($event.target.value)">
+            <ion-select-option *ngFor="let head of headers; index as i" value="{{i}}">{{head | titlecase}}</ion-select-option>
+          </ion-select>
+        </ion-item>
+        <ion-item>
+          <ion-label>Numeros</ion-label>
+          <ion-select placeholder="Select One" multiple="true" interface="alert" (ionChange)="NumbersChosen($event.target.value)">
+            <ion-select-option *ngFor="let ball of Balls; index as i" value="{{ball}}">{{ball}}</ion-select-option>
+          </ion-select>
+        </ion-item>
+
+        <div class="t-container" >
+          <table class="table">
+            <thead class="thead">
+              <tr>
+                <th >
+                  BOLAS
+                </th>
+                <th>NUMEROS</th>
+              </tr>
+            </thead>
+            <tbody class="tbody">
+              <tr *ngFor="let head of headers; index as i;">
+                <td class="{{head == 'L.Más'? 'lmas' : head == 'L.S.Más'? 'slmas' : 'thead'}}">{{head}}</td>
+                <td >
+                  {{this.GameType === 'Platinum'? Games[0].Data[i] : Games[1].Data[i]}}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+      </ng-template>
     </ion-list>
   </form>
 </ion-content>

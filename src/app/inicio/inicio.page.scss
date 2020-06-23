@@ -1,12 +1,12 @@
-.lmas{
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-    height: auto;
-    width: 100px;
+
+.truncate-text{
+    flex: 1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
-.others{
+.lottery{
     display: block;
     margin-left: auto;
     margin-right: auto;
