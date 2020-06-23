@@ -3,11 +3,9 @@ export interface Draw{
     lottery: string;
     draw: string;
     owner: string;
-    active: boolean;
-    filename?: string;
     favorite: boolean;
-    ballsqty: number;
     img?: string;
+    ballsqty: number;
     Data: any[];
     emitDate?: Date;
     expiryDate?: Date;

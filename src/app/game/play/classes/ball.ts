@@ -24,18 +24,19 @@ export class Ball{
   }
 
   get textura2() {
-    if(this.ball_type == 0) this.pg.fill(255,200,0);
+    if(this.ball_type == 0) this.pg.fill(250,250,250);//this.pg.fill(255,200,0);
     if(this.ball_type == 1) this.pg.fill(255,0,0);
     if(this.ball_type == 2) this.pg.fill(0,0,255);
     this.pg.noStroke();
     this.pg.ellipse(25,25,25);
 
     if(this.ball_type == 0){ 
-      this.pg.fill(0)
+      this.pg.fill(0);
+      this.pg.stroke(0);
     } else {
       this.pg.fill(250);
+      this.pg.stroke(250);
     }
-    this.pg.stroke(0);
     this.pg.text(this.num, 25, 28);
     this.pg.text('_', 25, 30);
     return this.pg;

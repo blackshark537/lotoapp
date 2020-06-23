@@ -44,6 +44,7 @@ export class PlayComponent implements OnInit, OnDestroy {
       const wind = p.createVector(0.01,0);
       let loop = false;
       let img;
+      let bgImg;
       let playButton;
       let draw_balls = [];
       let myFont;
@@ -53,6 +54,7 @@ export class PlayComponent implements OnInit, OnDestroy {
         img = p.loadImage('assets/hover.png');
         playButton = p.loadImage('assets/play.png');
         myFont = p.loadFont('assets/Inconsolata-Condensed.otf');
+        bgImg = p.loadImage('assets/game-bg.png');
         this.soundApi.src = 'assets/key_pressed.wav';
       }
 
@@ -100,6 +102,10 @@ export class PlayComponent implements OnInit, OnDestroy {
         p.background(250);
         //p.directionalLight(255,255,30,1,1,-1);
         //p.ambientLight(255);
+        //p.texture(bgImg);
+        //p.plane(p.width,p.height);
+        p.image(bgImg, 0, 0, p.width*2, p.height*2)
+
         if(this.drawBall.end_drawing){          
           p.remove();
           if(!this.finished){

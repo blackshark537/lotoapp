@@ -7,6 +7,7 @@ import { StoreModel } from 'src/app/models/store.model';
 import { Store } from '@ngrx/store';
 import { Draw, AdminDraw } from '../models/draw.model';
 import { ARCHIVE_DRAW } from '../actions/user.actions';
+import { Observable, Subscribable } from 'rxjs';
 
 @Component({
   selector: 'app-game',
@@ -17,7 +18,7 @@ export class GamePage implements OnInit, OnDestroy {
 
   errorSound = new Audio();
   draw_type: string;
-  draw: AdminDraw;
+  draw: AdminDraw = null;
   price = 15;
   numbers_draws: number[] = [];
   index: number=0;
@@ -25,11 +26,10 @@ export class GamePage implements OnInit, OnDestroy {
   user_draw: Draw ={
     Data: [],
     _id: null,
-    active: false,
-    ballsqty: null,
     draw: null,
     favorite: false,
     lottery: null,
+    ballsqty: null,
     owner: null
   };
   Data = [];
@@ -46,15 +46,20 @@ export class GamePage implements OnInit, OnDestroy {
   ngOnInit() {
     this.index = parseInt(this.activeRoute.snapshot.paramMap.get('id'));
     this.draw_type = '';
-    this.store.select('admin_draw').subscribe(resp=>{
+    this.store.select('admin_draw').subscribe(resp =>{
       let d = [...resp.slice(this.index, this.index+1)]
       this.draw = {...d[0]};
-      let draw2: any = {...d[0]};
-      this.user_draw = draw2;
-      this.user_draw.Data = [];
-      console.log(this.user_draw);
-      
     });
+
+    if(this.draw != null){
+      this.user_draw.lottery = this.draw.lottery;
+      this.user_draw.draw = this.draw.draw;
+      this.user_draw.img = this.draw.img;
+      this.user_draw.expiryDate = this.draw.expiryDate;
+      this.user_draw.ballsqty = this.draw.ballsqty;
+      this.user_draw.Data = [];
+    }
+
     let headers = ['PRIMERO', 'SEGUNDO', 'TERCERO', 'QUARTO', 'QUINTO', 'SEXTO', 'L.MAS', 'S.L.MAS'];
     headers.map((head, i)=>{
       if(i < this.draw.ballsqty) this.header.push(head);
@@ -64,7 +69,7 @@ export class GamePage implements OnInit, OnDestroy {
 
   async ngOnDestroy(){
     if(this.user_draw.Data.length > 0){
-      this.back();
+      await this.back();
     }
   }
 

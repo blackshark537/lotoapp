@@ -2,7 +2,7 @@ import { createReducer, on, Action} from '@ngrx/store';
 import { UserModel } from '../models/user.model';
 import { GET, ARCHIVE_DRAW, MARK_AS_FAVORITE, RECICLE, DELETE_ONE, EMPTY_TRASHCAN, SAVE_STATE, ADMIN_RECICLE} from '../actions/user.actions';
 
-export const user_state: UserModel = { //JSON.parse(localStorage.getItem('user_data')) || {
+export const user_state: UserModel = JSON.parse(localStorage.getItem('user_data')) || {
     archived: [],
     name: 'Administrador',
     credits: 0,
