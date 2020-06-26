@@ -8,11 +8,14 @@ export class Ball{
   private angle = 0;
   public ball_type = 0;
   private audio = new Audio();
-  
+  private webgl;
+
   constructor(
     private p: p5,
-    private num?: number
+    private num?: number,
+    webgl?: boolean
   ){
+    this.webgl = webgl;
     this.audio.src = 'assets/ball_hit.wav';
     this.audio.volume = 0.2;
     this.ball = p.createVector(p.random(-70,70), p.random(-70,30), 0);
@@ -54,15 +57,17 @@ export class Ball{
   draw(){
     this.p.push();
     this.p.noStroke();
-    /*
-    this.p.translate(this.ball.x, this.ball.y, 0);
-    this.p.rotateZ(this.angle*-1);
-    this.p.texture(this.textura2);
-    this.p.plane(this.r);
-    this.angle +=0.1;
-     */
-    this.p.translate(this.p.width/2, this.p.height/2);
-    this.p.image(this.textura2,this.ball.x, this.ball.y);
+
+    if(this.webgl){
+      this.p.translate(this.ball.x, this.ball.y, 0);
+      this.p.rotateZ(this.angle*-1);
+      this.p.texture(this.textura2);
+      this.p.plane(this.r);
+      this.angle +=0.1;
+    } else {
+      this.p.translate(this.p.width/2, this.p.height/2);
+      this.p.image(this.textura2,this.ball.x, this.ball.y);
+    }
     this.edges_3d();
     this.p.pop();
   }
@@ -70,13 +75,16 @@ export class Ball{
   _draw(pos: { tex: number; x: number; y: number;}){
     this.p.push();
     this.p.noStroke();
-    //this.p.translate(pos.x, pos.y,0);
-    //this.p.rotateZ(this.angle*-1);
-    //this.p.texture(this.textura2);
-    //this.p.plane(this.r);
-    //this.angle+=0.1;
-    this.p.translate(this.p.width/2, this.p.height/2);
-    this.p.image(this.textura2, pos.x, pos.y);
+    if(this.webgl){
+      this.p.translate(pos.x, pos.y,0);
+      //this.p.rotateZ(this.angle*-1);
+      this.p.texture(this.textura2);
+      this.p.plane(this.r);
+      this.angle+=0.1;
+    } else {
+      this.p.translate(this.p.width/2, this.p.height/2);
+      this.p.image(this.textura2, pos.x, pos.y);
+    }
     this.p.pop();
   }
   

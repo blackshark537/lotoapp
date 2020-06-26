@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { registerLocaleData } from '@angular/common'
 import localeEs from '@angular/common/locales/es-DO'
-import { Router } from '@angular/router';
 import { Platform } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
@@ -95,6 +94,10 @@ export class AppComponent implements OnInit {
     this.store.select('user_state').subscribe(state=>{
       this.user = {...state};
     });
+  }
+
+  get is_loggin_route(){
+    return window.location.href.includes('login');
   }
 
   get is_game_route(){

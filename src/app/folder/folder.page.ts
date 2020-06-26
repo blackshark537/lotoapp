@@ -24,8 +24,10 @@ export class FolderPage implements OnInit {
   public user: UserModel = {
     archived: [],
     recycle: [],
-    name: '',
-    password: ''
+    name: null,
+    password: null,
+    created: null,
+    email: null
   };
   
   constructor(

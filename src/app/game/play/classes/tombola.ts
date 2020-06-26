@@ -7,8 +7,9 @@ export class Tombola{
     private basketImg: p5.Image;
     private x;
     private y;
+    private webgl;
 
-    constructor(p: p5, basket: p5.Image, stand?: p5.Image){
+    constructor(p: p5, basket: p5.Image, webgl?: boolean){
         this.p = p;
         this.x = p.width;
         this.y = p.height;
@@ -16,6 +17,7 @@ export class Tombola{
         this.pg = p.createGraphics(300,300);
         this.pg.textAlign(this.pg.CENTER);
         this.pg.ellipseMode(this.pg.CENTER);
+        this.webgl = webgl;
     }
 
     get basket_base(){
@@ -33,15 +35,16 @@ export class Tombola{
     }
     draw(){
         this.p.push();
-        //this.p.translate(this.x/2, this.y/2,30);
-        /* this.p.texture(this.basketImg);
-        this.p.noStroke();
-        this.p.plane(300,300); */
-        this.p.image(this.basketImg,this.x/2, this.y/2,330,330);
-        //this.p.translate(this.x/2, this.y/2);
-        /* this.p.texture(this.basket_base);
-        this.p.plane(300,300); */
-        this.p.image(this.basket_base,this.x/2, this.y/2,330,330);
+        if(this.webgl){
+            this.p.texture(this.basketImg);
+            this.p.noStroke();
+            this.p.plane(330,330);
+            this.p.texture(this.basket_base);
+            this.p.plane(330,330);
+        } else {
+            this.p.image(this.basketImg,this.x/2, this.y/2,330,330);
+            this.p.image(this.basket_base,this.x/2, this.y/2,330,330);
+        }
         this.p.pop();
     }
 }

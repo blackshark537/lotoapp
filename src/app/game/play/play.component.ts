@@ -23,6 +23,7 @@ export class PlayComponent implements OnInit, OnDestroy {
   can_save: boolean=false;
   goforit: boolean = false;
   finished: boolean = false;
+  webgl: boolean = true;
   canvas;
 
   constructor(
@@ -59,7 +60,7 @@ export class PlayComponent implements OnInit, OnDestroy {
       }
 
       p.setup = ()=>{
-        p.createCanvas(400,400);
+        this.webgl? p.createCanvas(400,400, p.WEBGL) : p.createCanvas(400,400);
         p.ellipseMode(p.CENTER);
         p.rectMode(p.CENTER);
         p.textAlign(p.CENTER);
@@ -68,12 +69,12 @@ export class PlayComponent implements OnInit, OnDestroy {
         x = p.width;
         y = p.height;
         for(let i=0; i<15; i++){
-          this.balls.push(new Ball(p, i+15));
+          this.balls.push(new Ball(p, i+15, this.webgl));
         };
         
-        this.draw.map(val=> draw_balls.push(new Ball(p, val)));
+        this.draw.map(val=> draw_balls.push(new Ball(p, val, this.webgl)));
         this.drawBall = new DrawBall( p, draw_balls);
-        this.tombola = new Tombola(p, img);
+        this.tombola = new Tombola(p, img, this.webgl);
         p.frameRate(60);
         p.textFont(myFont, 18);
         p.noFill();
@@ -98,13 +99,17 @@ export class PlayComponent implements OnInit, OnDestroy {
       }
   
       p.draw = ()=>{
-        
         p.background(250);
-        //p.directionalLight(255,255,30,1,1,-1);
-        //p.ambientLight(255);
-        //p.texture(bgImg);
-        //p.plane(p.width,p.height);
-        p.image(bgImg, 0, 0, p.width*2, p.height*2)
+        if(this.webgl){
+          p.directionalLight(255,255,30,1,1,-1);
+          p.ambientLight(255);
+          //background wallpaper
+          p.texture(bgImg);
+          p.noStroke();
+          p.plane(p.width,p.height);
+        }else{
+          p.image(bgImg, 0, 0, p.width*2, p.height*2);
+        }
 
         if(this.drawBall.end_drawing){          
           p.remove();
@@ -131,11 +136,14 @@ export class PlayComponent implements OnInit, OnDestroy {
         this.tombola.draw();
         if (!loop){
           p.push();
-          p.translate(x/2,y/2);
           p.noStroke();
-          /* p.texture(playButton)
-          p.plane(70,50) */
-          p.image(playButton,0,0, 70, 50)
+          if(this.webgl){
+            p.texture(playButton);
+            p.plane(70,50);
+          }else{
+            p.translate(x/2,y/2);
+            p.image(playButton,0,0, 70, 50)
+          }
           p.pop();
         } 
 
@@ -183,7 +191,7 @@ export class PlayComponent implements OnInit, OnDestroy {
   }
 
   async dismiss() {
-    if(this.canvas) this.canvas.remove();
+    this.canvas.remove();
     await this.modalCtrl.dismiss({
       'dismissed': true,
       'data': this.data
