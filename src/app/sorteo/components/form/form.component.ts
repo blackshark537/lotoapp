@@ -283,7 +283,7 @@ export class FormComponent implements OnInit {
 
   async save(){
     this.drawForm.controls['Games'].setValue(this.Games);
-    this.drawForm.controls['_id'].setValue(this._id);
+    //this.drawForm.controls['_id'].setValue(this._id);
     this.drawForm.controls['emitDate'].setValue(new Date(Date.now()));
     this.store.dispatch(SAVE(this.drawForm.value));
     this.dismiss();
@@ -301,13 +301,13 @@ export class FormComponent implements OnInit {
     });
   }
 
-  get _id(): string{
+  /* get _id(): string{
     let id = '';
     const string_list = 'QWERTYUIOPASDFGHJKLZXCVBNMqwertyuiopasdfghjklzxcvbnm0123456789';
     for(let i=0; i<20; i++){
       id += string_list[Math.floor(Math.random() * string_list.length)];
     }
     return id;
-  }
+  } */
 
 }

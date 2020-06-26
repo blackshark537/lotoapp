@@ -9,6 +9,7 @@ import { UserModel } from './models/user.model';
 import { EXIT } from './actions/admin_draw.action';
 import { Store } from '@ngrx/store';
 import { SAVE_STATE } from './actions/user.actions';
+import { Router } from '@angular/router';
 
 registerLocaleData(localeEs, 'es-Do')
 
@@ -68,6 +69,7 @@ export class AppComponent implements OnInit {
   ];
 
   constructor(
+    private router: Router,
     private store: Store<StoreModel>,
     private platform: Platform,
     private splashScreen: SplashScreen,
@@ -84,6 +86,10 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit() {
+
+    if(localStorage.getItem('token')){
+      this.router.navigate(['inicio']);
+    }
 
     addEventListener('beforeunload', (evt)=>{
       evt.preventDefault();
@@ -102,5 +108,13 @@ export class AppComponent implements OnInit {
 
   get is_game_route(){
     return window.location.href.includes('/game/');
+  }
+
+  removeToken(){
+    if(confirm('Seguro que quieres salir!')){
+      localStorage.removeItem('token');
+      localStorage.removeItem('role');
+      this.router.navigate(['login']);
+    }
   }
 }

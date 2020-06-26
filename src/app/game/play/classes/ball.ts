@@ -7,7 +7,7 @@ export class Ball{
   private pg
   private angle = 0;
   public ball_type = 0;
-  private audio = new Audio();
+  //private audio = new Audio();
   private webgl;
 
   constructor(
@@ -16,8 +16,8 @@ export class Ball{
     webgl?: boolean
   ){
     this.webgl = webgl;
-    this.audio.src = 'assets/ball_hit.wav';
-    this.audio.volume = 0.2;
+    //this.audio.src = 'assets/ball_hit.wav';
+    //this.audio.volume = 0.2;
     this.ball = p.createVector(p.random(-70,70), p.random(-70,30), 0);
     this.r = 50;
     this.vel = p.createVector(0,5);
