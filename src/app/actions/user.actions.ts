@@ -1,10 +1,10 @@
 import { createAction, props} from '@ngrx/store';
 import { Draw } from '../models/draw.model';
-import { UserModel } from '../models/user.model';
+import { userLog } from '../models/user.model';
 
 export const GET = createAction('[user State] get user data');
-export const Signin = createAction('[user State] SignIn', props<{user: UserModel}>());
-export const Signup = createAction('[user State] SignUp', props<{user: UserModel}>());
+export const Signin = createAction('[user State] SignIn', props<{user: userLog}>());
+export const Signup = createAction('[user State] SignUp', props<{user: userLog}>());
 export const ARCHIVE_DRAW = createAction('[user State] save user draw', props<{draw: Draw}>());
 export const MARK_AS_FAVORITE = createAction('[user State] mark draw as favorite', props<{index: number}>());
 export const RECICLE = createAction('[user State] send draw to recicle', props<{index: number}>());

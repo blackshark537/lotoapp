@@ -16,10 +16,11 @@
 
   <ion-grid>
     <ion-row>
-      <ion-col size-md="4">
+      <ion-col size-lg="4">
       </ion-col>
 
-      <ion-col size="12" size-md="4">
+      <ion-col size="12" size-lg="4">
+        <form [formGroup]="userForm">
           <ion-card id="card">
             <ion-card-header color="tertiary">
               <ion-button *ngIf="step>0" fill="clear" id="back_button" (click)="step = step-0.5">
@@ -42,73 +43,86 @@
                 <ion-label position="floating">
                   {{step===0? 'Nombre:' : step===0.5? 'Email' : 'Password'}}
                 </ion-label>
-                <ion-input *ngIf="step===0" type="text" ></ion-input>
-                <ion-input *ngIf="step===0.5" type="email"></ion-input>
-                <ion-input *ngIf="step===1" type="password"></ion-input>
-
+                <ion-input *ngIf="step===0" type="text" formControlName="name"></ion-input>
+                <ion-input *ngIf="step===0.5" type="email" formControlName="email" required="true"></ion-input>
+                <ion-input *ngIf="step===1" type="password" formControlName="password" required="true"></ion-input>
               </ion-item>
 
               <small>{{
                 step===0? 'Escribe tu nombre completo' :
-                step===0.5? 'Escribe tu email' : 'Escribe una contraseña'
+                step===0.5? 'Escribe tu email, ' : 'Escribe una contraseña'
               }}</small>
+              <small class="danger" *ngIf="step===0.5 && f.email.errors.required">Email is required</small>
+              <small class="danger" *ngIf="step===0.5 && f.email.errors.email">Email must be a valid email address</small>
+
+              <ion-item *ngIf="step===1">
+                <ion-label position="floating">Confirmar Password</ion-label>
+                <ion-input *ngIf="step===1" type="password" formControlName="confirmPassword" required="true"></ion-input>
+              </ion-item>
+              <small *ngIf="step===1 && f.confirmPassword.errors.required">Confirm Password is required</small>
+              <small *ngIf="step===1 && f.confirmPassword.errors.mustMatch">Passwords must match</small>
+
               <ion-item lines="none" style="margin-top: 1em;">
                 <ion-badge color="tertiary" id="badge1">1</ion-badge>
                 <ion-badge color="{{step>0? 'tertiary' : 'light'}}" id="badge2">2</ion-badge>
                 <ion-badge color="{{step===1? 'tertiary' : 'light'}}" id="badge3">3</ion-badge>
                 <ion-progress-bar color="tertiary" [value]="step"></ion-progress-bar>
-              </ion-item>              
+              </ion-item>
               <ion-item lines="none">
-                  <ion-button *ngIf="step != 1" class="center" (click)="step= step + 0.5">
-                    Siguiente
-                  </ion-button>
-                  <ion-button *ngIf="step===1" class="center">
-                    Listo!
-                  </ion-button>
+                <ion-button *ngIf="step != 1" class="center" (click)="step= step + 0.5">
+                  Siguiente
+                </ion-button>
+                <ion-button [disabled]="userForm.invalid" *ngIf="step===1" class="center" (click)="signup(userForm)">
+                  Listo!
+                </ion-button>
               </ion-item>
               <small class="center">Al registrarse acepta nuestra <a href="#">politicas de uso</a></small>
             </ion-card-content>
 
 
-          <ng-template #login>
-          
+            <ng-template #login>
 
-            <ion-card-content>
 
-              <ion-item>
-                <ion-label position="floating">
-                  {{step2===0? 'Email' : 'Password'}}
-                </ion-label>
-                <ion-input *ngIf="step2===0" type="email"></ion-input>
-                <ion-input *ngIf="step2===1" type="password"></ion-input>
+              <ion-card-content>
 
-              </ion-item>
+                <ion-item>
+                  <ion-label position="floating">
+                    {{step2===0? 'Email' : 'Password'}}
+                    <ion-icon slot="end" 
+                    color="{{email.invalid && email.touched || pswd.invalid && pswd.touched? 'danger' : 'success'}}" 
+                    name="{{email.invalid && email.touched || pswd.invalid && pswd.touched? 'close' : 'checkmark'}}"></ion-icon>
+                  </ion-label>
+                  <ion-input *ngIf="step2===0" type="email" formControlName="email" required="true"></ion-input>
+                  <ion-input *ngIf="step2===1" type="password" formControlName="password" required="true"></ion-input>
 
-              <small>{{
+                </ion-item>
+
+                <small>{{
                 step2===0? 'Escribe tu email' : 'Escribe una contraseña'
               }}</small>
 
-              <ion-item lines="none" style="margin-top: 1em;">
-                <ion-badge color="{{step2>=0? 'tertiary' : 'light'}}" id="badge1">1</ion-badge>
-                <ion-badge color="{{step2>0? 'tertiary' : 'light'}}" id="badge3">2</ion-badge>
-                <ion-progress-bar color="tertiary" [value]="step2"></ion-progress-bar>
-              </ion-item>
-              <ion-item lines="none">
+                <ion-item lines="none" style="margin-top: 1em;">
+                  <ion-badge color="{{step2>=0? 'tertiary' : 'light'}}" id="badge1">1</ion-badge>
+                  <ion-badge color="{{step2>0? 'tertiary' : 'light'}}" id="badge3">2</ion-badge>
+                  <ion-progress-bar color="tertiary" [value]="step2"></ion-progress-bar>
+                </ion-item>
+                <ion-item lines="none">
                   <ion-button *ngIf="step2 != 1" class="center" (click)="step2= step2 + 1">
                     Siguiente
                   </ion-button>
-                  <ion-button *ngIf="step2===1" class="center">
+                  <ion-button [disabled]="userForm.invalid" *ngIf="step2===1" class="center" (click)="signin(userForm)">
                     Iniciar Sesion
                   </ion-button>
-              </ion-item>
-            </ion-card-content>
-          
-        </ng-template>
+                </ion-item>
+              </ion-card-content>
+
+            </ng-template>
 
           </ion-card>
+        </form>
       </ion-col>
 
-      <ion-col size-md="4">
+      <ion-col size-lg="4">
       </ion-col>
     </ion-row>
   </ion-grid>

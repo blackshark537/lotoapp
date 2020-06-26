@@ -14,3 +14,10 @@ export interface UserModel{
     img?: string;
     role?: string;
 }
+
+export interface userLog{
+    name?: string;
+    email: string;
+    password: string;
+    confirmPassword?: string;
+}
