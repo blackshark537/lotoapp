@@ -10,7 +10,7 @@ import { Draw } from '../models/draw.model';
 })
 export class UserhttpService {
 
-  url = 'http://localhost:3000/user';
+  url = 'http://loter.ddns.net/user';
 
   constructor(
     private http: HttpClient

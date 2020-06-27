@@ -56,7 +56,16 @@ export class LogginPage implements OnInit {
   }
 
   signup(user: userLog){
-    this.store.dispatch(userActions.Signup({user}));
+    console.log(user);
+    if(user.password === user.confirmPassword){
+      this.store.dispatch(userActions.Signup({user}));
+    } else {
+      this.showToast('Passwords must match');
+    }
+  }
+
+  async showToast(msg: string){
+    alert(msg)
   }
 
 }

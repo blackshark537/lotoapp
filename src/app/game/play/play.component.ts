@@ -23,7 +23,7 @@ export class PlayComponent implements OnInit, OnDestroy {
   can_save: boolean=false;
   goforit: boolean = false;
   finished: boolean = false;
-  webgl: boolean = true;
+  webgl: boolean = false;
   canvas;
 
   constructor(

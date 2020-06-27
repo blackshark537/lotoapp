@@ -20,6 +20,17 @@ export class userEffects{
 
     ));
 
+    signup$ = createEffect(() =>
+    this.actions$.pipe(
+        ofType(user.Signup),
+        exhaustMap(payload =>
+            this.httpService.signup(payload.user).pipe(
+                map(resp => user.SignupSuccess()),
+                catchError(error => of(user.Error({error})))
+            )
+        )
+    ));
+
     constructor(
         private actions$: Actions,
         private httpService: UserhttpService

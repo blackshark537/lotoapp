@@ -14,7 +14,7 @@ interface httpInterface{
 })
 export class AdminhttpService {
 
-  url = 'http://localhost:3000/admin';
+  url = 'http://loter.ddns.net/admin';
 
   constructor(
     private http: HttpClient
@@ -37,8 +37,11 @@ export class AdminhttpService {
     .pipe(catchError(error => throwError(error)));
   }
 
-  updateDraw(draw: AdminDraw, id: string): Observable<AdminDraw>{
-    return this.http.patch<AdminDraw>(`${this.url}/draw/${id}`, draw)
+  updateDraw(draw: AdminDraw): Observable<AdminDraw>{
+    let drawCopy = {...draw};
+    const id = drawCopy._id;
+    delete drawCopy._id;
+    return this.http.patch<AdminDraw>(`${this.url}/draw/${id}`, drawCopy)
     .pipe(catchError(error => throwError(error)));
   }
 

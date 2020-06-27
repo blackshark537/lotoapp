@@ -23,10 +23,10 @@
         <form [formGroup]="userForm">
           <ion-card id="card">
             <ion-card-header color="tertiary">
-              <ion-button *ngIf="step>0" fill="clear" id="back_button" (click)="step = step-0.5">
+              <ion-button *ngIf="step>0 && register" fill="clear" id="back_button" (click)="step = step-0.5">
                 <ion-icon color="light" name="arrow-back-outline"></ion-icon>
               </ion-button>
-              <ion-button *ngIf="step2>0" fill="clear" id="back_button" (click)="step2 = step2-1">
+              <ion-button *ngIf="step2>0 && !register" fill="clear" id="back_button" (click)="step2 = step2-1">
                 <ion-icon color="light" name="arrow-back-outline"></ion-icon>
               </ion-button>
               <ion-avatar class="center">
@@ -52,8 +52,8 @@
                 step===0? 'Escribe tu nombre completo' :
                 step===0.5? 'Escribe tu email, ' : 'Escribe una contraseña'
               }}</small>
-              <small class="danger" *ngIf="step===0.5 && f.email.errors.required">Email is required</small>
-              <small class="danger" *ngIf="step===0.5 && f.email.errors.email">Email must be a valid email address</small>
+              <!-- <small class="danger" *ngIf="step===0.5 && email.required">Email is required</small> -->
+              <small class="danger" *ngIf="step===0.5 && email.invalid">debe de ser un correo valido</small>
 
               <ion-item *ngIf="step===1">
                 <ion-label position="floating">Confirmar Password</ion-label>

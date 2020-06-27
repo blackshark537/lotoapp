@@ -1,6 +1,6 @@
 import { createReducer, on, Action} from '@ngrx/store';
 import { UserModel } from '../models/user.model';
-import { GET, ARCHIVE_DRAW, MARK_AS_FAVORITE, RECICLE, DELETE_ONE, EMPTY_TRASHCAN, SAVE_STATE, ADMIN_RECICLE, Error, SigninSuccess} from '../actions/user.actions';
+import { GET, ARCHIVE_DRAW, MARK_AS_FAVORITE, RECICLE, DELETE_ONE, EMPTY_TRASHCAN, SAVE_STATE, ADMIN_RECICLE, Error, SigninSuccess, SignupSuccess} from '../actions/user.actions';
 
 export const user_state: UserModel = JSON.parse(localStorage.getItem('user_data')) || {
     archived: [],
@@ -66,6 +66,10 @@ export const userReducer = createReducer(user_state,
         localStorage.setItem('role', resp.body.profile.role)
         setTimeout(()=> window.location.href = '/#/inicio', 1000);
         return resp.body.profile;
+    }),
+    on(SignupSuccess, (state)=>{
+        alert('se ha creado un usuario por favor inicie sesion')
+        return state
     }),
     on(Error, (state, {error} )=>{
         console.error(error);

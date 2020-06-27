@@ -30,6 +30,16 @@ export class AdminEffects{
         )
     );
 
+    patchDraw$ = createEffect(() =>
+        this.actions$.pipe(
+            ofType(adminActions.EDIT),
+            exhaustMap(payload => this.adminService.updateDraw(payload.Draw).pipe(
+                map(resp => adminActions.GET()),
+                catchError(error => of(adminActions.Error({error})))
+            ))
+        )
+    );
+
     constructor(
         private adminService: AdminhttpService,
         private actions$: Actions
