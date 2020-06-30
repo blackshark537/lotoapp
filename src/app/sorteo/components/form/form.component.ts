@@ -6,6 +6,7 @@ import {SAVE, EDIT} from 'src/app/actions/admin_draw.action';
 import { AdminDraw, Game } from 'src/app/models/draw.model';
 import { StoreModel } from 'src/app/models/store.model';
 import { FormBuilder, FormGroup, Validators} from '@angular/forms';
+import { NativeHelpersService } from 'src/app/services/native-helpers.service';
 
 @Component({
   selector: 'app-form',
@@ -108,6 +109,7 @@ export class FormComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
+    private native: NativeHelpersService,
     private platform: Platform,
     private toastCtrl: ToastController,
     private modalCtrl: ModalController,
@@ -273,11 +275,15 @@ export class FormComponent implements OnInit {
     if(file.type === type){
       reader.readAsBinaryString(file);
     } else {
-      const toast = await this.toastCtrl.create({
-        message: 'Este tipo de archivo no es admitido',
-        duration: 5000
-      });
-      await toast.present();
+      if(this.platform.is('hybrid')){
+        this.native.showToast('Este tipo de archivo no es admitido')
+      } else {
+        const toast = await this.toastCtrl.create({
+          message: 'Este tipo de archivo no es admitido',
+          duration: 5000
+        });
+        await toast.present();
+      }
     }
   }
 

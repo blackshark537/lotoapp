@@ -3,7 +3,7 @@ import { UserhttpService } from '../services/userhttp.service';
 import { createEffect, ofType, Actions } from '@ngrx/effects';
 import * as user from '../actions/user.actions';
 import { of } from 'rxjs';
-import { map, mergeMap, exhaustMap, catchError } from 'rxjs/operators'
+import { map, mergeMap, exhaustMap, catchError, tap } from 'rxjs/operators'
 
 @Injectable()
 export class userEffects{
@@ -26,6 +26,37 @@ export class userEffects{
         exhaustMap(payload =>
             this.httpService.signup(payload.user).pipe(
                 map(resp => user.SignupSuccess()),
+                catchError(error => of(user.Error({error})))
+            )
+        )
+    ));
+
+    createDraw$ = createEffect(() =>
+    this.actions$.pipe(
+        ofType(user.ARCHIVE_DRAW),
+        exhaustMap(payload =>
+            this.httpService.saveDraw(payload.draw).pipe(
+                map(resp => user.ARCHIVE_DRAW_SUCCESS({resp})),
+                catchError(error => of(user.Error({error})))
+            )
+        )
+    ));
+
+    getUser$ = createEffect(() =>
+    this.actions$.pipe(
+        ofType(user.GET),
+        mergeMap(()=> this.httpService.getOneUser().pipe(
+            map(resp => user.GET_Success({resp})),
+            catchError(error => of(user.Error({error})))
+        ))
+    ));
+
+    patchUser$ = createEffect(() =>
+    this.actions$.pipe(
+        ofType(user.UPDATE),
+        exhaustMap(payload =>
+            this.httpService.updateUser(payload.user).pipe(
+                map(() => user.GET()),
                 catchError(error => of(user.Error({error})))
             )
         )

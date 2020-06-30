@@ -1,26 +1,55 @@
 import { createReducer, on, Action} from '@ngrx/store';
 import { UserModel } from '../models/user.model';
-import { GET, ARCHIVE_DRAW, MARK_AS_FAVORITE, RECICLE, DELETE_ONE, EMPTY_TRASHCAN, SAVE_STATE, ADMIN_RECICLE, Error, SigninSuccess, SignupSuccess} from '../actions/user.actions';
+import { GET, ARCHIVE_DRAW, MARK_AS_FAVORITE, RECICLE, DELETE_ONE, EMPTY_TRASHCAN, SAVE_STATE, ADMIN_RECICLE, Error, SigninSuccess, SignupSuccess, ARCHIVE_DRAW_SUCCESS, GET_Success} from '../actions/user.actions';
 
-export const user_state: UserModel = JSON.parse(localStorage.getItem('user_data')) || {
+export const user_state: UserModel = {
     archived: [],
     name: 'Administrador',
     credits: 0,
     gender: 'male',
-    lastName:'',
+    created: new Date(Date.now()),
+    email: null,
     phone: null,
     password: null,
     recycle: [],
 }
 
+export async function presentLoading() {
+    const loading = document.createElement('ion-loading');
+  
+    loading.cssClass = 'my-custom-class';
+    loading.message = 'Por favor, espere...';
+    loading.duration = 2000;
+    loading.backdropDismiss = false;
+    loading.animated = true,
+    loading.translucent = true
+    document.body.appendChild(loading);
+    await loading.present();
+    await loading.onDidDismiss();
+}
+
+export async function presentAlert(head, sub_head, msg) {
+    const alert = document.createElement('ion-alert');
+    alert.cssClass = 'my-custom-class';
+    alert.header = head;
+    alert.subHeader = sub_head;
+    alert.message = msg;
+    alert.buttons = ['OK'];
+  
+    document.body.appendChild(alert);
+    return alert.present();
+}
+
 export const userReducer = createReducer(user_state,
-    on(GET, state =>{
-         return {...state};
+    on(GET_Success, (state ,{resp})=>{
+        console.log(resp);
+         return {...resp.body};
     }),
-    on(ARCHIVE_DRAW, (state, {draw})=>{
-        let new_state = {...state};
-        new_state.archived = [...new_state.archived, draw];
-        return {...new_state};
+    on(ARCHIVE_DRAW_SUCCESS, (state, {resp})=>{
+        let user = {...state};
+        user.archived = [...user.archived];
+        user.archived.push(resp.body._id)
+        return user
     }),
     on(MARK_AS_FAVORITE, (state, {index})=>{
         let new_state = {...state}; //remove readonly state
@@ -58,22 +87,27 @@ export const userReducer = createReducer(user_state,
         return {...new_state};
     }),
     on(SAVE_STATE, state=>{
-        localStorage.setItem('user_data', JSON.stringify(state));
         return {...state}
     }),
     on(SigninSuccess, (state, {resp})=>{
-        localStorage.setItem('token', resp.body.token)
-        localStorage.setItem('role', resp.body.profile.role)
-        setTimeout(()=> window.location.href = '/#/inicio', 1000);
+
+        presentLoading().then(async () => {
+            localStorage.setItem('token', resp.body.token)
+            localStorage.setItem('role', resp.body.profile.role)
+            window.location.href = '/#/inicio'
+        });
         return resp.body.profile;
     }),
     on(SignupSuccess, (state)=>{
-        alert('se ha creado un usuario por favor inicie sesion')
+        
+        presentLoading().then(async ()=>{
+            await presentAlert('Atención!', 'Usuario creado con éxito.', 'Por favor inicie sesión.');
+        });
         return state
     }),
     on(Error, (state, {error} )=>{
-        console.error(error);
-        return [...state]
+        presentAlert('Error!', 'Lo sentimos a ocurrido un error', `<strong>${error}</strong>`);
+        return state
     })
 );
 

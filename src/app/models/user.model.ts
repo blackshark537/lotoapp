@@ -1,6 +1,7 @@
 import { Draw } from './draw.model';
 
 export interface UserModel{
+    _id?: string;
     name: string;
     nickName?: string;
     phone?: string;

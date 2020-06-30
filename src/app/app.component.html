@@ -11,11 +11,14 @@
             <ion-list-header>
               <ion-label >Loter</ion-label>
             </ion-list-header>
-            <ion-note>{{user? user.name : ''}}</ion-note>
+            <ion-note>{{user && user.role === 'User'? 'Usuario ' + user.name : user.name | titlecase}}</ion-note>
           </ion-toolbar>
 
           <ion-menu-toggle auto-hide="false" *ngFor="let p of appPages; let i = index">
-            <ion-item [disabled]="is_game_route" routerDirection='root' (click)="selectedIndex = i" [routerLink]="[p.url]" routerLinkActive="selected" >
+            <ion-item
+              class="{{p.title === 'Sorteos' && user.role === 'User' || p.title === 'Usuarios' && user.role === 'User'? 'd-none' : 'd-block'}}"
+              [disabled]="is_game_route" routerDirection='root' (click)="selectedIndex = i" [routerLink]="[p.url]"
+              routerLinkActive="selected">
               <ion-icon color="{{p.style}}" slot="start" [ios]="p.icon + '-outline'" [md]="p.icon + '-sharp'"></ion-icon>
               <ion-label>{{ p.title }}</ion-label>
             </ion-item>

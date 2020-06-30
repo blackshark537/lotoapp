@@ -167,10 +167,11 @@ export class PlayComponent implements OnInit, OnDestroy {
   }
 
   get ask_for_slmas(){
-    return confirm('quieres continuar con super mas');
+    return this.show_alert('quieres continuar con super mas');
   }
 
   async show_alert(msg){
+    let goforit = false;
     const alerta = await this.alertCtrl.create({
       animated: true,
       translucent: true,
@@ -179,15 +180,16 @@ export class PlayComponent implements OnInit, OnDestroy {
       message: msg,
       buttons: [{
         text: "Cancelar",
-        role: 'cancel',
-        handler: () => this.goforit = false
+        role: 'cancel'
       },{
         text: "Ok",
-        handler: () => this.goforit = true
+        handler: () => goforit = true
       }]
     });
 
     await alerta.present();
+    await alerta.onWillDismiss();
+    return goforit;
   }
 
   async dismiss() {

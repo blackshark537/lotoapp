@@ -1,5 +1,5 @@
 export interface Draw{
-    _id: string;
+    _id?: string;
     lottery: string;
     draw: string;
     owner: string;
@@ -12,7 +12,7 @@ export interface Draw{
 }
 
 export interface AdminDraw{
-    _id: string;
+    _id?: string;
     lottery: string;
     draw: string;
     owner: string;

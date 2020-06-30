@@ -40,6 +40,16 @@ export class AdminEffects{
         )
     );
 
+    deleteDraw$ = createEffect(() => 
+        this.actions$.pipe(
+            ofType(adminActions.DEL),
+            exhaustMap(payload => this.adminService.deleteDraw(payload.id).pipe(
+                map(resp => adminActions.GET()),
+                catchError(error => of(adminActions.Error({error})))
+            ))
+        )
+    );
+
     constructor(
         private adminService: AdminhttpService,
         private actions$: Actions

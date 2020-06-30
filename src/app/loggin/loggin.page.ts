@@ -4,7 +4,7 @@ import { userLog } from '../models/user.model';
 import * as userActions from '../actions/user.actions';
 import { StoreModel } from '../models/store.model';
 import { Store } from '@ngrx/store';
-import { Router } from '@angular/router';
+import { NativeHelpersService } from '../services/native-helpers.service';
 
 @Component({
   selector: 'app-loggin',
@@ -20,7 +20,8 @@ export class LogginPage implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    private store: Store<StoreModel>
+    private store: Store<StoreModel>,
+    private native: NativeHelpersService
   ) { }
 
   ngOnInit() {
@@ -51,21 +52,16 @@ export class LogginPage implements OnInit {
     return this.userForm.get('password');
   }
 
-  signin(user: userLog){
+  async signin(user: userLog){
     this.store.dispatch(userActions.Signin({user}));
   }
 
-  signup(user: userLog){
-    console.log(user);
+  async signup(user: userLog){
     if(user.password === user.confirmPassword){
       this.store.dispatch(userActions.Signup({user}));
     } else {
-      this.showToast('Passwords must match');
+      await this.native.showError('Error, las contraseñas no coinciden');
     }
-  }
-
-  async showToast(msg: string){
-    alert(msg)
   }
 
 }

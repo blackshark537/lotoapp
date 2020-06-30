@@ -1,13 +1,14 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { ModalController, AlertController, ActionSheetController, Platform } from '@ionic/angular';
+import { ModalController, ActionSheetController } from '@ionic/angular';
 import { PlayComponent } from './play/play.component';
 import { CustomGameComponent } from './custom-game/custom-game.component';
 import { StoreModel } from 'src/app/models/store.model';
 import { Store } from '@ngrx/store';
 import { Draw, AdminDraw } from '../models/draw.model';
-import { ARCHIVE_DRAW } from '../actions/user.actions';
-import { Observable, Subscribable } from 'rxjs';
+import { ARCHIVE_DRAW, UPDATE } from '../actions/user.actions';
+import { UserModel } from '../models/user.model';
+import { NativeHelpersService } from '../services/native-helpers.service';
 
 @Component({
   selector: 'app-game',
@@ -16,16 +17,16 @@ import { Observable, Subscribable } from 'rxjs';
 })
 export class GamePage implements OnInit, OnDestroy {
 
-  errorSound = new Audio();
+  user: UserModel;
   draw_type: string;
   draw: AdminDraw = null;
   price = 15;
+  initialCredit = 0;
   numbers_draws: number[] = [];
-  index: number=0;
+  id: string=null;
   header: string[]=[];
   user_draw: Draw ={
     Data: [],
-    _id: null,
     draw: null,
     favorite: false,
     lottery: null,
@@ -38,17 +39,22 @@ export class GamePage implements OnInit, OnDestroy {
     private store: Store<StoreModel>,
     private activeRoute: ActivatedRoute,
     private modalCtrl: ModalController,
-    private platform: Platform,
+    private native: NativeHelpersService,
     private router: Router,
-    private alertCtrl: AlertController,
     private actionSheetController: ActionSheetController) { }
 
   ngOnInit() {
-    this.index = parseInt(this.activeRoute.snapshot.paramMap.get('id'));
+    this.id = this.activeRoute.snapshot.paramMap.get('id');
     this.draw_type = '';
     this.store.select('admin_draw').subscribe(resp =>{
-      let d = [...resp.slice(this.index, this.index+1)]
+      let d = resp.filter(val => val.draw === this.id)
       this.draw = {...d[0]};
+    });
+
+    this.store.select('user_state').subscribe(resp=>{
+      this.user = {...resp};
+      //console.log(this.user);
+      this.initialCredit = this.user.credits;
     });
 
     if(this.draw != null){
@@ -78,47 +84,28 @@ export class GamePage implements OnInit, OnDestroy {
   }
 
   async back(){
-    const alert = await this.alertCtrl.create({
-      animated: true,
-      backdropDismiss: false,
-      translucent: true,
-      header: 'Mensage!',
-      message: '<strong>Deseas guardar la partida</strong>!!!',
-      buttons: [
-        {
-          text: 'Cancel',
-          role: 'cancel',
-          cssClass: 'secondary',
-          handler: () => {
-            this.router.navigate(['/inicio']);
-          }
-        }, {
-          text: 'Ok',
-          handler: async () => {
-            this.save_draw();
-          }
-        }
-      ]
-    });
-
-    alert.present().then(() =>{
-      this.errorSound.src = 'assets/notify.mp3'
-      this.errorSound.volume = 1;
-      this.errorSound.onloadeddata  = ()=>{
-        this.errorSound.play();
-      }
-    });
+    const result = await this.native.comfirmModal('Deseas guardar la partida!!!');
+    if(result){
+      this.save_draw();
+    } else {
+      this.router.navigate(['/inicio']);
+    }
   }
 
   async save_draw(){
     this.user_draw.emitDate = new Date(Date.now());
-    this.user_draw.owner = 'user';
+    this.user_draw.owner = this.user.email;
+
     await this.store.dispatch(ARCHIVE_DRAW({draw: this.user_draw}));
+    await this.native.showLoading();
+    //console.log('usr => ',this.user);
+    this.user.credits -= this.debit;
+    await this.store.dispatch(UPDATE({user: this.user}));
     this.router.navigate(['/inicio']);
   }
 
   matdesign(): boolean{
-    return this.platform.is('android') || this.platform.is('desktop')? true : false;
+    return this.native.matdesign;
   }
 
   async openAction(){
@@ -127,17 +114,17 @@ export class GamePage implements OnInit, OnDestroy {
       buttons:[
         {
           icon: 'cash',
-          text: 'Sorteo Platinum',
+          text: 'Sorteo Platinum $5.00 RD X bola',
           handler: ()=>{this.openNormal()}
         },
         {
           icon: 'construct',
-          text: 'Sorteo Gold',
+          text: 'Sorteo Gold $10.00 RD X bola',
           handler: ()=>{this.openCustom()}
         },
         {
           icon: 'shuffle',
-          text: 'Sorteo por la maquina',
+          text: 'Sorteo por la maquina $2.00 RD X bola',
           role: 'destructive',
           handler: ()=>{this.openRandom()}
         },
@@ -154,44 +141,63 @@ export class GamePage implements OnInit, OnDestroy {
 
   async openNormal(){
     this.numbers_draws = [];
+    this.price = 5 * this.draw.ballsqty;
     this.draw_type = 'Sorteo Platinum';
-    try{
-      await this.normal_draw(0);
-      await this.openModal();
-    } catch(error){
-      if(error){
-        await this.errorAlert( error);
-      } else {
-        await this.errorAlert('Demasiados números repetidos\n');
+    
+    if(await this.ask()){
+      this.user.credits -= this.price
+      try{
+        await this.normal_draw(0);
+        await this.openModal();
+      } catch(error){
+        if(error){
+          await this.errorAlert( error);
+        } else {
+          await this.errorAlert('Demasiados números repetidos\n');
+        }
       }
     }
   }
 
   async openCustom(){
     this.numbers_draws = [];
+    this.price = 10 * this.draw.ballsqty;
     this.draw_type = 'Sorteo Gold';
-    //await this.openCustomGameModal();
-    try{
-      await this.custom_draw(0);
-      await this.openModal();
-    } catch(error){
-      if(error){
-        await this.errorAlert( error);
-      } else {
-        await this.errorAlert('Demasiados números repetidos\n');
+    
+    if(await this.ask()){
+      this.user.credits -= this.price
+      try{
+        await this.custom_draw(0);
+        await this.openModal();
+      } catch(error){
+        if(error){
+          await this.errorAlert( error);
+        } else {
+          await this.errorAlert('Demasiados números repetidos\n');
+        }
       }
     }
   }
 
   async openRandom(){
     this.numbers_draws = [];
+    this.price = 2 * this.draw.ballsqty;
     this.draw_type = 'Sorteo por la maquina';
-    try{
-      await this.random_draw();
-    } catch(error){
-      this.errorAlert(error);
+    
+    if(await this.ask()){
+      this.user.credits -= this.price
+      try{
+        await this.random_draw();
+        this.openModal();
+      } catch(error){
+        this.errorAlert(error);
+      }
     }
-    this.openModal();
+  }
+
+  async ask(): Promise<boolean>{
+    const msg = `se descontaran  $${this.price}.00 creditos, aceptar para continuar!`;
+    return await this.native.comfirmModal(msg);
   }
 
   async normal_draw(index: number){
@@ -208,7 +214,6 @@ export class GamePage implements OnInit, OnDestroy {
 
   async custom_draw(index: number){
     if(this.numbers_draws.length === this.draw.ballsqty) return 0;
-    //let num = await this.pick_one(this.Data[index]);
     let num = await this.pick_one(this.draw.Games[1].Data[index]);
     let exist = await this.exist(num);
     if(!exist){
@@ -261,10 +266,14 @@ export class GamePage implements OnInit, OnDestroy {
 
     await modal.present();
     const { data } = await modal.onWillDismiss();
-    if(data.data.length >0) this.user_draw.Data.push(data.data);
+    if(data.data.length >0){
+      data.data.push(this.price);
+       this.user_draw.Data.push(data.data);
+    };
  
   }
 
+  //not in use
   async openCustomGameModal(){
     const modal = await this.modalCtrl.create({
       component: CustomGameComponent,
@@ -283,28 +292,15 @@ export class GamePage implements OnInit, OnDestroy {
     }
   }
 
-  async errorAlert(msg: string){
-    const alerta = await this.alertCtrl.create({
-      animated: true,
-      backdropDismiss: false,
-      header: 'Error',
-      message: msg,
-      translucent: true,
-      buttons: [{
-        text: "Cancelar",
-        role: 'cancel'
-      },{
-        text: "Ok",
-        role: 'cancel'
-      }]
-    });
+  get debit(){
+    let debt=0;
+    this.user_draw.Data.map((val, i)=>{
+      debt+= val[this.user_draw.ballsqty+1];
+    })
+    return debt;
+  }
 
-    alerta.present().then(()=>{
-      this.errorSound.src = 'assets/error.wav'
-      this.errorSound.volume = 1;
-      this.errorSound.onloadeddata  = ()=>{
-        this.errorSound.play();
-      }
-    });
+  async errorAlert(msg: string) {
+    await this.native.showError(msg);
   }
 }

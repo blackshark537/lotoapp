@@ -8,14 +8,10 @@
       <ion-back-button (click)="goInicio()"></ion-back-button>
     </ion-buttons>
 
-    <!-- <ion-title>Game</ion-title> -->
     <ion-buttons slot="end" >
-        <p class="credit">Crédito Inicial: $0.00 </p>
-        <p class="credit">Débito: $0.00 </p>
-        <p class="credit">Crédito Final: $0.00 </p>
-      <!-- <ion-button (click)="openAction()" *ngIf="!matdesign()">
-        <ion-icon name="game-controller"></ion-icon>
-      </ion-button> -->
+        <p class="credit">Crédito Inicial: {{initialCredit | currency}} </p>
+        <p class="credit">Débito: {{debit | currency}} </p>
+        <p class="credit">Crédito Final: {{user.credits | currency}} </p>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
@@ -50,7 +46,7 @@
           <td *ngFor="let col of row; index as i">
             {{col}}
           </td>
-          <td>-{{price | currency}}</td>
+          <!-- <td>-{{price | currency}}</td> -->
         </tr>
       </tbody>
     </table>

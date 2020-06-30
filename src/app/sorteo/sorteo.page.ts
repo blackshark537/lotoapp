@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Platform, ActionSheetController, ModalController, ToastController } from '@ionic/angular';
+import { ActionSheetController, ModalController } from '@ionic/angular';
 import { FormComponent } from './components/form/form.component';
 import { Store } from '@ngrx/store';
 import { GET, DEL } from 'src/app/actions/admin_draw.action';
@@ -7,6 +7,7 @@ import { ADMIN_RECICLE } from 'src/app/actions/user.actions';
 import { Draw, AdminDraw } from '../models/draw.model';
 import { StoreModel } from '../models/store.model';
 import { Observable } from 'rxjs';
+import { NativeHelpersService } from '../services/native-helpers.service';
 
 @Component({
   selector: 'app-sorteo',
@@ -22,8 +23,7 @@ export class SorteoPage implements OnInit {
   currDate = new Date(Date.now());
 
   constructor(
-    private platform: Platform,
-    private toastCtrl: ToastController,
+    private native: NativeHelpersService,
     private actionController: ActionSheetController,
     private modalController: ModalController,
     private store: Store<StoreModel>
@@ -37,7 +37,7 @@ export class SorteoPage implements OnInit {
   }
 
   get matdesign(): boolean{
-    return this.platform.is('android') || this.platform.is('desktop')? true : false;
+    return this.native.matdesign;
   }
 
   expDate(date){
@@ -48,32 +48,32 @@ export class SorteoPage implements OnInit {
     
     this.selectedIndex = index;
     this.draw = draw;
+      const actionSheet = await this.actionController.create({
+        header: 'Acciones',
+        translucent: true,
+        animated: true,
+        buttons: [
+          {
+            text: 'editar',
+            icon: 'pencil',
+            handler: () => { this.edit = true; this.openModal() }
+          },
+          {
+            text: 'reciclar',
+            icon: 'trash',
+            cssClass: 'delete',
+            role: 'destructive',
+            handler: () => { this.del_one() }
+          },
+          {
+            text: 'cancelar',
+            icon: 'close',
+            role: 'cancel'
+          }
+        ]
+      });
 
-    const actionSheet = await this.actionController.create({
-      header: 'Acciones',
-      translucent: true,
-      buttons:[
-        {
-          text: 'editar',
-          icon: 'pencil',
-          handler: () =>{ this.edit=true; this.openModal() }
-        },
-        {
-          text: 'reciclar',
-          icon: 'trash',
-          cssClass: 'delete',
-          role: 'destructive',
-          handler: ()=>{ this.del_one() }
-        },
-        {
-          text: 'cancelar',
-          icon: 'close',
-          role: 'cancel'
-        }
-      ]
-    });
-
-    await actionSheet.present();
+      await actionSheet.present(); 
   }
 
   async openModal(){
@@ -98,22 +98,7 @@ export class SorteoPage implements OnInit {
 
   async del_one(){
     await this.store.dispatch(ADMIN_RECICLE({draw: this.draw}));
-    await this.store.dispatch(DEL({index: this.selectedIndex}));
-    const toast = await this.toastCtrl.create({
-      message: 'Enviado a la papelera de reciclaje!',
-      position: 'top',
-      buttons:[
-        {
-          icon: 'close',
-          side: 'end',
-          role: 'cancel'
-        }
-      ],
-      animated: true,
-      translucent: true,
-      duration: 4000
-    });
-    this.matdesign? toast.position = 'bottom' : toast.position = 'top';
-    await toast.present();
+    await this.store.dispatch(DEL({id: this.draw._id}));
+    await this.native.showToast('Enviado a la papelera de reciclaje!');
   }
 }

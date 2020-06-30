@@ -4,6 +4,7 @@ import { Draw, AdminDraw } from '../models/draw.model';
 import { StoreModel } from '../models/store.model';
 import { Store } from '@ngrx/store';
 import * as adminAction from '../actions/admin_draw.action';
+import * as userAction from '../actions/user.actions';
 import { UserModel } from '../models/user.model';
 
 @Component({
@@ -16,6 +17,27 @@ export class InicioPage implements OnInit {
 
   draws$: Observable<AdminDraw[]>
   user: UserModel;
+  filter: string = null;
+  loteriesFilters: any=[];
+
+  lotteryModel = [
+    {
+      lottery: 'Leidsa',
+      img: 'assets/leidsa.png'
+    },
+    {
+      lottery: 'Nacional',
+      img: 'assets/loteria-nacional.png'
+    },
+    {
+      lottery: 'Real',
+      img: 'assets/loteria-real.png'
+    },
+    {
+      lottery: 'Loteka',
+      img: 'assets/loteka.png'
+    }
+  ];
 
   constructor(
     private store: Store<StoreModel>
@@ -23,10 +45,18 @@ export class InicioPage implements OnInit {
 
   ngOnInit() {
     this.draws$ = this.store.select('admin_draw');
-    this.store.dispatch(adminAction.GET());
-
     this.store.select('user_state').subscribe(resp =>{
       this.user = {...resp};
+    });
+
+    this.store.dispatch(adminAction.GET());
+    this.store.dispatch(userAction.GET());
+  }
+
+  filterLoteries(){
+    this.loteriesFilters=[];
+    this.draws$.subscribe(resp =>{
+      this.loteriesFilters = resp.filter((val)=> val.lottery === this.filter);
     });
   }
 

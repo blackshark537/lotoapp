@@ -12,7 +12,6 @@ const DrawReducer = createReducer(initial_state,
         new_state[index] = Draw;
         return new_state;
     }),
-    on(DEL, (state,{index})=> [...state.slice(0, index), ...state.slice(index+1) ]),
     on(EXIT, state =>{
         localStorage.setItem('admin_draw', JSON.stringify(state));
         return state;

@@ -3,10 +3,11 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Platform, ActionSheetController, AlertController, ToastController } from '@ionic/angular';
 import { Store } from '@ngrx/store';
 import { StoreModel } from '../models/store.model';
-import { MARK_AS_FAVORITE, RECICLE, DELETE_ONE, EMPTY_TRASHCAN, ARCHIVE_DRAW } from '../actions/user.actions';
+//import { MARK_AS_FAVORITE, RECICLE, DELETE_ONE, EMPTY_TRASHCAN, ARCHIVE_DRAW } from '../actions/user.actions';
 import { SAVE } from '../actions/admin_draw.action'
 import { UserModel } from '../models/user.model';
 import { Draw } from '../models/draw.model';
+import { NativeHelpersService } from '../services/native-helpers.service';
 
 @Component({
   selector: 'app-folder',
@@ -35,6 +36,7 @@ export class FolderPage implements OnInit {
     private alertCtrl: AlertController,
     private actionCtrl: ActionSheetController,
     private platform: Platform,
+    private native: NativeHelpersService,
     private store: Store<StoreModel>,
     private activatedRoute: ActivatedRoute,
     private router: Router) { }
@@ -76,9 +78,9 @@ export class FolderPage implements OnInit {
 
   //Restore data from recycle bin
   async restore(index){
-    if(this.user.recycle[index].owner === 'user') await this.store.dispatch(ARCHIVE_DRAW({draw: this.user.recycle[index]}));
-    if(this.user.recycle[index].owner === 'admin') await this.store.dispatch(SAVE(this.user.recycle[index]));
-    await this.store.dispatch(DELETE_ONE({index})); 
+    //if(this.user.recycle[index].owner === 'user') await this.store.dispatch(ARCHIVE_DRAW({draw: this.user.recycle[index]}));
+    //if(this.user.recycle[index].owner === 'admin') await this.store.dispatch(SAVE(this.user.recycle[index]));
+    //await this.store.dispatch(DELETE_ONE({index})); 
   }
 
   normalOptions(index){
@@ -97,7 +99,7 @@ export class FolderPage implements OnInit {
           text: 'Favorito',
           icon: 'heart',
           handler: () =>{ 
-            this.store.dispatch(MARK_AS_FAVORITE({index}));
+            //this.store.dispatch(MARK_AS_FAVORITE({index}));
             this.folder === 'Archivadas'? this.showToast('Enviado a favoritas!') :
             this.showToast('Enviado a archivadas!');
           }
@@ -108,7 +110,7 @@ export class FolderPage implements OnInit {
           cssClass: 'delete',
           role: 'destructive',
           handler: ()=>{ 
-            this.store.dispatch(RECICLE({index}));
+            //this.store.dispatch(RECICLE({index}));
             this.showToast('Enviado a la papelera de reciclaje!');
           }
         },
@@ -176,10 +178,10 @@ export class FolderPage implements OnInit {
           cssClass: 'primary',
           handler: ()=>{ 
               if(removeAll){
-                this.store.dispatch(EMPTY_TRASHCAN());
+                //this.store.dispatch(EMPTY_TRASHCAN());
                 this.showToast('Objetos eliminados!');
               } else {
-                this.store.dispatch(DELETE_ONE({index}));
+                //this.store.dispatch(DELETE_ONE({index}));
                 this.showToast('Objeto eliminado!');
               }
            }
