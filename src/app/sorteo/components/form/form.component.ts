@@ -17,6 +17,12 @@ export class FormComponent implements OnInit {
   @Input('edit') edit: boolean;
   @Input('index') index: number;
   @Input('Draw') Draw: AdminDraw;
+
+  customAlertOptions: any = {
+    header: 'Números a sortear',
+    subHeader: 'Elija los números que desee',
+    translucent: true
+  };
   
   drawForm: FormGroup;
   segment: boolean = false;
@@ -214,16 +220,16 @@ export class FormComponent implements OnInit {
     }
   }
 
-  NumbersChosen(evt){
+  NumbersChosen(evt, i: number){
     if (this.GameType === 'Platinum') {
-      this.Games[0].Data[this.indexSelected] = [];
+      this.Games[0].Data[i] = [];
       evt.map(value => {
-        this.Games[0].Data[this.indexSelected].push(parseInt(value));
+        this.Games[0].Data[i].push(parseInt(value));
       });
     } else if (this.GameType === 'Gold') { 
-      this.Games[1].Data[this.indexSelected] = [];
+      this.Games[1].Data[i] = [];
       evt.map(value => {
-        this.Games[1].Data[this.indexSelected].push(parseInt(value));
+        this.Games[1].Data[i].push(parseInt(value));
       });
     }
   }

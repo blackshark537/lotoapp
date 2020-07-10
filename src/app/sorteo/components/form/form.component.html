@@ -28,7 +28,7 @@
 <ion-content>
   <form [formGroup]="drawForm">
     <ion-list>
-      <ion-item>
+      <ion-item button>
         <ion-label color="{{lottery.invalid && lottery.touched? 'danger': 'dark'}}"
         position="floating">Lotería: {{lottery.invalid && lottery.touched? ' requerido': 
         edit? lottery.value : ''}}</ion-label>
@@ -36,7 +36,7 @@
           <ion-select-option *ngFor="let model of lotteryModel;" value="{{model | json}}">{{model.lottery}}</ion-select-option>
         </ion-select>
       </ion-item>
-      <ion-item>
+      <ion-item button>
         <ion-label color="{{draw_name.invalid && draw_name.touched? 'danger': 'dark'}}"
          position="floating">Sorteo:{{draw_name.invalid && draw_name.touched? ' requerido':
          edit? draw_name.value : ''}}</ion-label>
@@ -44,7 +44,7 @@
           <ion-select-option *ngFor="let draw of LotteryChoosed.draws;" value="{{draw | json}}">{{draw.name}}</ion-select-option>
         </ion-select>
       </ion-item>
-      <ion-item>
+      <ion-item button>
         <ion-label color="{{expiryDate.invalid && expiryDate.touched? 'danger': 'dark'}}"
          position="floating">Vence: {{expiryDate.invalid && expiryDate.touched? 'requerido': ''}}</ion-label>
         <ion-datetime [value]="expiryDate.value" formControlName="expiryDate" required="true" display-timezone="utc"></ion-datetime>
@@ -91,7 +91,7 @@
       </ion-item>
       <ng-template #manualBlock>
         
-        <ion-item>
+        <!-- <ion-item>
           <ion-label>Bola</ion-label>
           <ion-select placeholder="Select One" (ionChange)="setIndex($event.target.value)">
             <ion-select-option *ngFor="let head of headers; index as i" value="{{i}}">{{head | titlecase}}</ion-select-option>
@@ -102,7 +102,7 @@
           <ion-select placeholder="Select One" multiple="true" interface="alert" (ionChange)="NumbersChosen($event.target.value)">
             <ion-select-option *ngFor="let ball of Balls; index as i" value="{{ball}}">{{ball}}</ion-select-option>
           </ion-select>
-        </ion-item>
+        </ion-item> -->
 
         <div class="t-container" >
           <table class="table">
@@ -117,8 +117,18 @@
             <tbody class="tbody">
               <tr *ngFor="let head of headers; index as i;">
                 <td class="{{head == 'L.Más'? 'lmas' : head == 'L.S.Más'? 'slmas' : 'thead'}}">{{head}}</td>
-                <td >
+                <!-- <td >
                   {{this.GameType === 'Platinum'? Games[0].Data[i] : Games[1].Data[i]}}
+                </td> -->
+                <td *ngIf="this.GameType === 'Platinum'">
+                  <ion-select id="{{i}}" placeholder="Select One" multiple="true" [interfaceOptions]="customAlertOptions" interface="alert" (ionChange)="NumbersChosen($event.target.value, i)">
+                    <ion-select-option *ngFor="let ball of Balls; index as i" value="{{ball}}">{{ball}}</ion-select-option>
+                  </ion-select>
+                </td>
+                <td *ngIf="this.GameType === 'Gold'">
+                  <ion-select id="{{i}}" placeholder="Select One" multiple="true" [interfaceOptions]="customAlertOptions" interface="alert" (ionChange)="NumbersChosen($event.target.value, i)">
+                    <ion-select-option *ngFor="let ball of Balls; index as i" value="{{ball}}">{{ball}}</ion-select-option>
+                  </ion-select>
                 </td>
               </tr>
             </tbody>

@@ -42,10 +42,28 @@ export class userEffects{
         )
     ));
 
+    favoriteDraw$ = createEffect(() => 
+    this.actions$.pipe(
+        ofType(user.MARK_AS_FAVORITE),
+        exhaustMap((payload)=> this.httpService.favoriteDraw(payload.draw).pipe(
+                map(resp => user.GET_Populated()),
+                catchError(error => of(user.Error({error})))
+        ))
+    ));
+
     getUser$ = createEffect(() =>
     this.actions$.pipe(
         ofType(user.GET),
         mergeMap(()=> this.httpService.getOneUser().pipe(
+            map(resp => user.GET_Success({resp})),
+            catchError(error => of(user.Error({error})))
+        ))
+    ));
+
+    getUserPopulated$ = createEffect(() =>
+    this.actions$.pipe(
+        ofType(user.GET_Populated),
+        mergeMap(()=> this.httpService.getPopulateUser().pipe(
             map(resp => user.GET_Success({resp})),
             catchError(error => of(user.Error({error})))
         ))
@@ -61,6 +79,7 @@ export class userEffects{
             )
         )
     ));
+
 
     constructor(
         private actions$: Actions,

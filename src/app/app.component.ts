@@ -60,12 +60,12 @@ export class AppComponent implements OnInit {
       style: 'primary',
       icon: 'settings'
     },
-    {
+/*     {
       title: 'Reciclaje',
       url: '/folder/Reciclaje',
       style: 'danger',
       icon: 'trash'
-    }
+    } */
   ];
 
   constructor(

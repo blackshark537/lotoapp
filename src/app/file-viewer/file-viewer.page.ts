@@ -62,11 +62,11 @@ export class FileViewerPage implements OnInit {
           text: 'favorito',
           icon: 'heart',
           handler: () =>{ 
-            this.store.dispatch(MARK_AS_FAVORITE({index}));
+            this.store.dispatch(MARK_AS_FAVORITE({draw: this.draw}));
             this.router.navigate(['folder', 'Archivadas']);
           }
         },
-        {
+/*         {
           text: 'reciclar',
           icon: 'trash',
           cssClass: 'delete',
@@ -76,7 +76,7 @@ export class FileViewerPage implements OnInit {
             this.showToast('Enviado a la papelera de reciclaje');
             this.router.navigate(['folder', 'Archivadas']);
           }
-        },
+        }, */
         {
           text: 'cancelar',
           icon: 'close',

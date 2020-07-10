@@ -14,8 +14,8 @@ interface httpInterface{
 })
 export class AdminhttpService {
 
-  //url = 'http://loter.ddns.net/admin';
-  private url = 'http://localhost:3000/admin';
+  private url = 'http://loter.ddns.net/admin';
+  //private url = 'http://localhost:3000/admin';
   
   constructor(
     private http: HttpClient

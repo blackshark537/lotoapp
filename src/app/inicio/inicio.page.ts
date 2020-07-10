@@ -6,6 +6,7 @@ import { Store } from '@ngrx/store';
 import * as adminAction from '../actions/admin_draw.action';
 import * as userAction from '../actions/user.actions';
 import { UserModel } from '../models/user.model';
+import { NativeHelpersService } from '../services/native-helpers.service';
 
 @Component({
   selector: 'app-inicio',
@@ -18,7 +19,7 @@ export class InicioPage implements OnInit {
   draws$: Observable<AdminDraw[]>
   user: UserModel;
   filter: string = null;
-  loteriesFilters: any=[];
+  loteriesFilters: any[] = [];
 
   lotteryModel = [
     {
@@ -40,6 +41,7 @@ export class InicioPage implements OnInit {
   ];
 
   constructor(
+    private native: NativeHelpersService,
     private store: Store<StoreModel>
   ) { }
 
@@ -51,6 +53,10 @@ export class InicioPage implements OnInit {
 
     this.store.dispatch(adminAction.GET());
     this.store.dispatch(userAction.GET());
+  }
+
+  get material(): boolean{
+    return this.native.matdesign;
   }
 
   filterLoteries(){

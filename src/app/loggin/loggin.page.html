@@ -33,46 +33,42 @@
                 <img src="assets/trevol.jpg" alt="user">
               </ion-avatar>
               <ion-item lines="none" color="tertiary">
-                <h2 class="center">{{register? 'SignUp' : 'SignIn'}}</h2>
+                <h2 class="center">{{register? 'Registrarse' : 'Iniciar Sesion'}}</h2>
               </ion-item>
             </ion-card-header>
 
             <ion-card-content *ngIf="register; else login">
 
               <ion-item>
-                <ion-label position="floating">
-                  {{step===0? 'Nombre:' : step===0.5? 'Email' : 'Password'}}
-                </ion-label>
-                <ion-input *ngIf="step===0" type="text" formControlName="name"></ion-input>
-                <ion-input *ngIf="step===0.5" type="email" formControlName="email" required="true"></ion-input>
-                <ion-input *ngIf="step===1" type="password" formControlName="password" required="true"></ion-input>
+                <ion-label position="floating">Nombre</ion-label>
+                <ion-input type="text" required="true" formControlName="name"></ion-input>
+              </ion-item>
+              <small>Escribe tu nombre completo</small>
+
+              <ion-item>
+                <ion-label position="floating">Email</ion-label>
+                <ion-input type="email" formControlName="email" required="true"></ion-input>
+              </ion-item>
+              <small>Escribe tu email</small>
+              <small class="danger" *ngIf="email.invalid">, debe de ser un correo valido</small>
+
+              <ion-item>
+                <ion-label position="floating">Password</ion-label>
+                <ion-input type="password" formControlName="password" required="true"></ion-input>
               </ion-item>
 
-              <small>{{
-                step===0? 'Escribe tu nombre completo' :
-                step===0.5? 'Escribe tu email, ' : 'Escribe una contraseña'
-              }}</small>
+              <small>Escribe una contraseña</small>
               <!-- <small class="danger" *ngIf="step===0.5 && email.required">Email is required</small> -->
-              <small class="danger" *ngIf="step===0.5 && email.invalid">debe de ser un correo valido</small>
 
-              <ion-item *ngIf="step===1">
+              <ion-item >
                 <ion-label position="floating">Confirmar Password</ion-label>
-                <ion-input *ngIf="step===1" type="password" formControlName="confirmPassword" required="true"></ion-input>
+                <ion-input type="password" formControlName="confirmPassword" required="true"></ion-input>
               </ion-item>
               <!-- <small *ngIf="step===1 && f.confirmPassword.errors.required">Confirm Password is required</small>
               <small *ngIf="step===1 && f.confirmPassword.errors.mustMatch">Passwords must match</small> -->
 
-              <ion-item lines="none" style="margin-top: 1em;">
-                <ion-badge color="tertiary" id="badge1">1</ion-badge>
-                <ion-badge color="{{step>0? 'tertiary' : 'light'}}" id="badge2">2</ion-badge>
-                <ion-badge color="{{step===1? 'tertiary' : 'light'}}" id="badge3">3</ion-badge>
-                <ion-progress-bar color="tertiary" [value]="step"></ion-progress-bar>
-              </ion-item>
               <ion-item lines="none">
-                <ion-button *ngIf="step != 1" class="center" (click)="step= step + 0.5">
-                  Siguiente
-                </ion-button>
-                <ion-button [disabled]="pswd.invalid" *ngIf="step===1" class="center" (click)="signup(userForm.value)">
+                <ion-button [disabled]="pswd.invalid" class="center" (click)="signup(userForm.value)">
                   Listo!
                 </ion-button>
               </ion-item>
@@ -86,31 +82,30 @@
               <ion-card-content>
 
                 <ion-item>
-                  <ion-label position="floating">
-                    {{step2===0? 'Email' : 'Password'}}
+                  <ion-label position="floating"> Email
                     <ion-icon slot="end" 
-                    color="{{email.invalid && email.touched || pswd.invalid && pswd.touched? 'danger' : 'success'}}" 
-                    name="{{email.invalid && email.touched || pswd.invalid && pswd.touched? 'close' : 'checkmark'}}"></ion-icon>
+                    color="{{email.invalid && email.touched? 'danger' : 'success'}}" 
+                    name="{{email.invalid && email.touched? 'close' : 'checkmark'}}"></ion-icon>
                   </ion-label>
-                  <ion-input *ngIf="step2===0" type="email" formControlName="email" required="true"></ion-input>
-                  <ion-input *ngIf="step2===1" type="password" formControlName="password" required="true"></ion-input>
-
+                  <ion-input type="email" formControlName="email" required="true"></ion-input>
                 </ion-item>
+                <small>Escribe tu email</small>
 
-                <small>{{
-                step2===0? 'Escribe tu email' : 'Escribe una contraseña'
-              }}</small>
-
-                <ion-item lines="none" style="margin-top: 1em;">
-                  <ion-badge color="{{step2>=0? 'tertiary' : 'light'}}" id="badge1">1</ion-badge>
-                  <ion-badge color="{{step2>0? 'tertiary' : 'light'}}" id="badge3">2</ion-badge>
-                  <ion-progress-bar color="tertiary" [value]="step2"></ion-progress-bar>
+                <ion-item>
+                  <ion-label position="floating"> Password
+                    <ion-icon slot="end" 
+                    color="{{pswd.invalid && pswd.touched? 'danger' : 'success'}}" 
+                    name="{{pswd.invalid && pswd.touched? 'close' : 'checkmark'}}"></ion-icon>
+                  </ion-label>
+                  <ion-input type="password" formControlName="password" required="true"></ion-input>
                 </ion-item>
+                <small>Escribe tu contraseña</small>
+
                 <ion-item lines="none">
-                  <ion-button *ngIf="step2 != 1" class="center" (click)="step2= step2 + 1">
+                  <!-- <ion-button *ngIf="step2 != 1" class="center" (click)="step2= step2 + 1">
                     Siguiente
-                  </ion-button>
-                  <ion-button [disabled]="pswd.invalid" *ngIf="step2===1" class="center" (click)="signin(userForm.value)">
+                  </ion-button> -->
+                  <ion-button [disabled]="pswd.invalid" class="center" (click)="signin(userForm.value)">
                     Iniciar Sesion
                   </ion-button>
                 </ion-item>

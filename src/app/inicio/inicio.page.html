@@ -7,7 +7,7 @@
         Atras
       </ion-button>
     </ion-buttons>
-    <ion-title *ngIf="!filter">Inicio</ion-title>
+    <ion-title *ngIf="!filter && material">Inicio</ion-title>
     <ion-buttons slot="end" >
       <p class="credit">Créditos totales: {{user.credits | currency}} </p>
       <ion-button color="warning">
@@ -49,4 +49,12 @@
       </ion-col>
     </ion-row>
   </ion-grid>
+  <div id="container" *ngIf="filter && loteriesFilters.length == 0"><!--  -->
+    <strong class="capitalize" color="primary">
+      Aún no existen Sorteos disponibles, 
+    </strong>
+    <p>
+      por favor inténtelo más tarde.
+    </p>
+  </div>
 </ion-content>

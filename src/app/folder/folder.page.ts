@@ -8,6 +8,7 @@ import { SAVE } from '../actions/admin_draw.action'
 import { UserModel } from '../models/user.model';
 import { Draw } from '../models/draw.model';
 import { NativeHelpersService } from '../services/native-helpers.service';
+import { GET_Populated, MARK_AS_FAVORITE } from '../actions/user.actions';
 
 @Component({
   selector: 'app-folder',
@@ -18,7 +19,6 @@ export class FolderPage implements OnInit {
   private alertSound = new Audio();
   public folder: string;
   public detail: boolean;
-  public draw: Draw;
   public indexSelected: number;
   public dateNow = new Date(Date.now());
   public dateExp;
@@ -53,6 +53,8 @@ export class FolderPage implements OnInit {
       this.user.archived = [...state.archived];
       this.user.recycle = [...state.recycle];
     });
+
+    this.store.dispatch(GET_Populated());
   }
 
   // one click to select a folder OR double click to open the selected folder
@@ -99,12 +101,12 @@ export class FolderPage implements OnInit {
           text: 'Favorito',
           icon: 'heart',
           handler: () =>{ 
-            //this.store.dispatch(MARK_AS_FAVORITE({index}));
+            this.store.dispatch(MARK_AS_FAVORITE({draw: this.user.archived[index]}));
             this.folder === 'Archivadas'? this.showToast('Enviado a favoritas!') :
             this.showToast('Enviado a archivadas!');
           }
         },
-        {
+/*         {
           text: 'Reciclar',
           icon: 'trash',
           cssClass: 'delete',
@@ -113,7 +115,7 @@ export class FolderPage implements OnInit {
             //this.store.dispatch(RECICLE({index}));
             this.showToast('Enviado a la papelera de reciclaje!');
           }
-        },
+        }, */
         {
           text: 'cancelar',
           icon: 'close',

@@ -42,7 +42,6 @@ export async function presentAlert(head, sub_head, msg) {
 
 export const userReducer = createReducer(user_state,
     on(GET_Success, (state ,{resp})=>{
-        console.log(resp);
          return {...resp.body};
     }),
     on(ARCHIVE_DRAW_SUCCESS, (state, {resp})=>{
@@ -51,7 +50,7 @@ export const userReducer = createReducer(user_state,
         user.archived.push(resp.body._id)
         return user
     }),
-    on(MARK_AS_FAVORITE, (state, {index})=>{
+/*     on(MARK_AS_FAVORITE, (state, {index})=>{
         let new_state = {...state}; //remove readonly state
         let new_archive = [...new_state.archived]; //remove readonly archive
         let new_data = {...new_archive[index]};//remove readonly archive data
@@ -59,7 +58,7 @@ export const userReducer = createReducer(user_state,
         new_archive[index]=new_data;
         new_state.archived = new_archive;
         return new_state;
-    }),
+    }), */
     on(RECICLE, (state, {index})=>{
         let new_state = {...state}; //remove readonly state
         let new_archive = [...new_state.archived]; //remove readonly archive
