@@ -35,17 +35,60 @@
 
     <ion-row *ngIf="filter">
       <ion-col size="12">
-        <h1 style="text-align: center; margin: auto;">Seleccione un sorteo!</h1>
+        <h1 style="text-align: center; margin: auto;">A seleccionado {{filter}}</h1>
+        <h2 style="text-align: center; margin: auto;">A continuación seleccione un sorteo!</h2>
         <h3 style="text-align: center; margin: auto;">Sorteos disponibles</h3>
       </ion-col>
-      <ion-col size="12" size-md="4" *ngFor="let draw of loteriesFilters; index as i;">
-        <ion-card *ngIf="draw.lottery === filter" [disabled]="dateNow > date(draw.expiryDate)" type="button" class="card-hover" [routerLink]="['/game', draw.draw]">
-          <img [src]="draw.img" class="lottery"/>
-          <ion-card-header class="ion-text-center">
-            <ion-card-title class="truncate-text">{{draw.draw}}</ion-card-title>
-            <ion-card-subtitle>{{dateNow > date(draw.expiryDate)? 'Expiró ' : 'Expirará '}} {{draw.expiryDate | amLocale: 'es-do' | amTimeAgo}}</ion-card-subtitle>
-          </ion-card-header>
-        </ion-card>
+      <ion-col size="12" size-md="12">
+        
+        <ion-list *ngFor="let draw of loteriesFilters; index as i;">
+          <ion-list-header>
+            <h2>Sorteo: {{draw.draw}}</h2>
+          </ion-list-header>
+
+          <ion-item [disabled]="dateNow > date(draw.expiryDate)" >
+            <ion-thumbnail slot="start">
+              <img [src]="draw.img" />
+            </ion-thumbnail>
+            <ion-label>
+              <strong>Sorteo Platimun</strong>
+              <br>
+              <small>Se descontaran $5.00 por cada bola</small>
+            </ion-label>
+            <ion-buttons slot="end">
+              <ion-button fill="solid" color="primary" (click)="openNormal(draw)">Sortear</ion-button>
+            </ion-buttons>
+          </ion-item>
+
+          <ion-item [disabled]="dateNow > date(draw.expiryDate)" >
+            <ion-thumbnail slot="start">
+              <img [src]="draw.img" />
+            </ion-thumbnail>
+            <ion-label>
+              <strong>Sorteo Gold</strong>
+              <br>
+              <small>Se descontaran $3.00 por cada bola</small>
+            </ion-label>
+            <ion-buttons slot="end">
+              <ion-button fill="solid" color="primary">Sortear</ion-button>
+            </ion-buttons>
+          </ion-item>
+
+          <ion-item [disabled]="dateNow > date(draw.expiryDate)">
+            <ion-thumbnail slot="start">
+              <img [src]="draw.img" />
+            </ion-thumbnail>
+            <ion-label>
+              <strong>Sorteo por la maquina</strong>
+              <br>
+              <small>Se descontaran $2.00 por cada bola</small>
+            </ion-label>
+            <ion-buttons slot="end">
+              <ion-button fill="solid" color="primary" (click)="openRandom(draw)">Sortear</ion-button>
+            </ion-buttons>
+          </ion-item>
+
+        </ion-list>
       </ion-col>
     </ion-row>
   </ion-grid>

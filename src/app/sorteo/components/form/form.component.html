@@ -1,5 +1,5 @@
-<ion-header>
-  <ion-toolbar>
+<ion-header [translucent]="true">
+  <ion-toolbar color="primary">
 
     <ion-buttons slot="start" >
       <ion-button (click)="dismiss()">
@@ -50,8 +50,8 @@
         <ion-datetime [value]="expiryDate.value" formControlName="expiryDate" required="true" display-timezone="utc"></ion-datetime>
         <!-- <ion-input formControlName="expiryDate" [value]="expiryDate.value" type="date" required="true"></ion-input> -->
       </ion-item>
-      <ion-item>
-        <!-- Type Select -->
+      <!-- <ion-item>
+        
         <ion-segment (ionChange)="setGameType($event.target.value)" value="{{GameType}}">
           <ion-segment-button value="Platinum">
             <ion-label>Platinum</ion-label>
@@ -62,7 +62,7 @@
         </ion-segment>        
       </ion-item>
       <ion-item>
-        <!-- Data Loading Mode Segment -->
+        
         <ion-segment (ionChange)="DataLoadingMode($event.target.value)" value="Auto">
           <ion-segment-button value="Manual">
             <ion-label>Manual</ion-label>
@@ -86,10 +86,15 @@
             <ion-icon [ios]="'document-attach-outline'" [ios]="'document-attach-sharp'"></ion-icon>
           </ion-button>
         </ion-buttons>
+        <ion-buttons>
+          <ion-button >
+            <a href="/assets/template.xlsx">Descargar template</a>
+          </ion-button>
+        </ion-buttons>
         <input #file1 (change)="readfile($event.target)" style="display: none;" type="file">
         <input #file2 (change)="readfile($event.target)" style="display: none;" type="file">
       </ion-item>
-      <ng-template #manualBlock>
+      <ng-template #manualBlock> -->
         
         <!-- <ion-item>
           <ion-label>Bola</ion-label>
@@ -104,7 +109,7 @@
           </ion-select>
         </ion-item> -->
 
-        <div class="t-container" >
+        <!-- <div class="t-container" >
           <table class="table">
             <thead class="thead">
               <tr>
@@ -116,15 +121,22 @@
             </thead>
             <tbody class="tbody">
               <tr *ngFor="let head of headers; index as i;">
-                <td class="{{head == 'L.Más'? 'lmas' : head == 'L.S.Más'? 'slmas' : 'thead'}}">{{head}}</td>
+                <td class="{{head == 'L.Más'? 'lmas' : head == 'L.S.Más'? 'slmas' : 'thead'}}">{{head}}</td> -->
                 <!-- <td >
                   {{this.GameType === 'Platinum'? Games[0].Data[i] : Games[1].Data[i]}}
                 </td> -->
-                <td *ngIf="this.GameType === 'Platinum'">
-                  <ion-select id="{{i}}" placeholder="Select One" multiple="true" [interfaceOptions]="customAlertOptions" interface="alert" (ionChange)="NumbersChosen($event.target.value, i)">
-                    <ion-select-option *ngFor="let ball of Balls; index as i" value="{{ball}}">{{ball}}</ion-select-option>
-                  </ion-select>
-                </td>
+                <!-- <div *ngIf="this.GameType === 'Platinum'">
+                  <td *ngFor="let entry of Balls; index as i"> -->
+                    <!-- <ion-select id="{{i}}" placeholder="Select One" multiple="true" [interfaceOptions]="customAlertOptions" interface="alert" (ionChange)="NumbersChosen($event.target.value, i)">
+                      <ion-select-option *ngFor="let ball of Balls; index as i" value="{{ball}}">{{ball}}</ion-select-option>
+                    </ion-select> -->
+                    
+                      <!-- <ion-label>{{entry}}</ion-label>
+                      <ion-checkbox (ionChange)="NumbersChosen(entry, i)" slot="end"></ion-checkbox>
+                    
+                  </td>
+                </div>
+                
                 <td *ngIf="this.GameType === 'Gold'">
                   <ion-select id="{{i}}" placeholder="Select One" multiple="true" [interfaceOptions]="customAlertOptions" interface="alert" (ionChange)="NumbersChosen($event.target.value, i)">
                     <ion-select-option *ngFor="let ball of Balls; index as i" value="{{ball}}">{{ball}}</ion-select-option>
@@ -135,7 +147,7 @@
           </table>
         </div>
 
-      </ng-template>
+      </ng-template> -->
     </ion-list>
   </form>
 </ion-content>

@@ -40,29 +40,29 @@
             <ion-card-content *ngIf="register; else login">
 
               <ion-item>
-                <ion-label position="floating">Nombre</ion-label>
-                <ion-input type="text" required="true" formControlName="name"></ion-input>
+                <ion-label position="fixed">Nombre:</ion-label>
+                <input type="text" required="true" formControlName="name">
               </ion-item>
               <small>Escribe tu nombre completo</small>
 
               <ion-item>
-                <ion-label position="floating">Email</ion-label>
-                <ion-input type="email" formControlName="email" required="true"></ion-input>
+                <ion-label position="fixed">Email:</ion-label>
+                <input type="email" formControlName="email" required="true">
               </ion-item>
               <small>Escribe tu email</small>
               <small class="danger" *ngIf="email.invalid">, debe de ser un correo valido</small>
 
               <ion-item>
-                <ion-label position="floating">Password</ion-label>
-                <ion-input type="password" formControlName="password" required="true"></ion-input>
+                <ion-label position="fixed">Contraseña:</ion-label>
+                <input type="password" formControlName="password" required="true">
               </ion-item>
 
               <small>Escribe una contraseña</small>
               <!-- <small class="danger" *ngIf="step===0.5 && email.required">Email is required</small> -->
 
               <ion-item >
-                <ion-label position="floating">Confirmar Password</ion-label>
-                <ion-input type="password" formControlName="confirmPassword" required="true"></ion-input>
+                <ion-label position="fixed">Confirmar Contraseña:</ion-label>
+                <input type="password" formControlName="confirmPassword" required="true">
               </ion-item>
               <!-- <small *ngIf="step===1 && f.confirmPassword.errors.required">Confirm Password is required</small>
               <small *ngIf="step===1 && f.confirmPassword.errors.mustMatch">Passwords must match</small> -->
@@ -82,22 +82,22 @@
               <ion-card-content>
 
                 <ion-item>
-                  <ion-label position="floating"> Email
+                  <ion-label position="fixed"> Email:
                     <ion-icon slot="end" 
                     color="{{email.invalid && email.touched? 'danger' : 'success'}}" 
                     name="{{email.invalid && email.touched? 'close' : 'checkmark'}}"></ion-icon>
                   </ion-label>
-                  <ion-input type="email" formControlName="email" required="true"></ion-input>
+                  <input type="email" formControlName="email" required="true">
                 </ion-item>
                 <small>Escribe tu email</small>
 
                 <ion-item>
-                  <ion-label position="floating"> Password
+                  <ion-label position="fixed"> Contraseña:
                     <ion-icon slot="end" 
                     color="{{pswd.invalid && pswd.touched? 'danger' : 'success'}}" 
                     name="{{pswd.invalid && pswd.touched? 'close' : 'checkmark'}}"></ion-icon>
                   </ion-label>
-                  <ion-input type="password" formControlName="password" required="true"></ion-input>
+                  <input type="password" formControlName="password" required="true">
                 </ion-item>
                 <small>Escribe tu contraseña</small>
 

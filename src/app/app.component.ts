@@ -106,7 +106,7 @@ export class AppComponent implements OnInit {
   }
 
   get is_loggin_route(){
-    return window.location.href.includes('login');
+    return window.location.href.includes('login') || window.location.href.includes('/sorteos/new');
   }
 
   get is_game_route(){

@@ -242,7 +242,6 @@ export class GamePage implements OnInit, OnDestroy {
     } else {
       return Math.floor(Math.random() * 14) +1
     }
-
   }
 
   async exist(num: number){

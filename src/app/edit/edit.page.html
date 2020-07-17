@@ -1,0 +1,43 @@
+<ion-header [translucent]="true">
+  <ion-toolbar color="tertiary">
+    <ion-title>Manual</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="t-container">
+    <table class="table">
+      <thead class="thead">
+        <tr>
+          <th class="normal">
+            #No
+          </th>
+          <th *ngFor="let head of header; index as i" 
+          class="{{head == 'L.MAS'? 'lmas' : head == 'S.L.MAS'? 'slmas' : 'normal'}}">
+              {{ head }}
+
+          </th>
+          <th class="normal">
+            Acciones
+          </th>
+        </tr>
+      </thead>
+      <tbody class="tbody">
+        <tr *ngFor="let row of draw.Games[game].Data; index as i;">
+          <td style="background-color: blanchedalmond; color: black;">{{i+1 + '.-'}}</td>
+          <td *ngFor="let col of row; index as i">
+            {{col}}
+          </td>
+          <!-- <td>-{{price | currency}}</td> -->
+        </tr>
+        <tr>
+          <td style="position: absolute; right: 1em;">
+            <ion-button (click)="pushOne()">
+              Add
+            </ion-button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</ion-content>

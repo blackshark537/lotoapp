@@ -223,9 +223,10 @@ export class FormComponent implements OnInit {
   NumbersChosen(evt, i: number){
     if (this.GameType === 'Platinum') {
       this.Games[0].Data[i] = [];
-      evt.map(value => {
+      console.log(evt);
+      /* evt.map(value => {
         this.Games[0].Data[i].push(parseInt(value));
-      });
+      }); */
     } else if (this.GameType === 'Gold') { 
       this.Games[1].Data[i] = [];
       evt.map(value => {

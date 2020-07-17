@@ -4,10 +4,10 @@
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
     <ion-title>Sorteos</ion-title>
-    <ion-buttons *ngIf="!matdesign" slot="end">
+    <ion-buttons slot="end">
       <ion-button (click)="new_one()">
         Nuevo
-        <ion-icon name="add"></ion-icon>
+      <ion-icon name="add"></ion-icon>
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
@@ -18,18 +18,46 @@
   <ion-grid>
     <ion-row>
       <ion-col size="12">
-        <ion-list>
-          <ion-item  button [class.selected]="selectedIndex == i" detail="true" *ngFor="let draw of draw$ | async; index as i" (click)="openActions(i, draw)">
+        <ion-list *ngFor="let draw of draw$ | async; index as i">
+          <ion-list-header>
+            <ion-label>
+              <h2>Loteria: {{draw.lottery | titlecase}}</h2>
+              <h4>Sorteo: {{ draw.draw}}</h4>
+            </ion-label>
+            <ion-buttons style="position: absolute; right: 1em;">
+              <ion-button (click)="openActions(i, draw)">
+                <ion-icon color="medium" size="large" [ios]="'ellipsis-vertical-outline'" [md]="'ellipsis-vertical-sharp'"></ion-icon>
+              </ion-button>
+            </ion-buttons>
+          </ion-list-header>
+          <ion-item lines="none">
             <ion-avatar slot="start" >
               <!-- <img src="assets/leidsa.png" > -->
-              <ion-icon color="success" size="large" [ios]="'document-outline'" [md]="'document-sharp'"></ion-icon>
+              <ion-icon color="medium" size="large" [ios]="'document-outline'" [md]="'document-sharp'"></ion-icon>
             </ion-avatar>
             <ion-label>
-              <h2>Lotería: {{ draw.lottery + ' '+ draw.draw}}</h2>
-              <h3>Creada: {{ draw.emitDate | amLocale: 'es-do' | amTimeAgo}}</h3>
-              <h3>{{currDate > expDate(draw.expiryDate)? 'Expiró ' : 'Expirará '}} {{draw.expiryDate | amLocale: 'es-do' | amTimeAgo}}</h3>
-              <p>activa: {{ draw.active? 'Si' : 'No'}}</p>
+              <h3>Platinum</h3>
             </ion-label>
+            <ion-buttons slot="end">
+              <ion-button [routerLink]="['edit/0', draw._id]" fill="solid" color="primary">manual</ion-button>
+              <ion-button fill="solid" color="success">auto</ion-button>
+            </ion-buttons>
+          </ion-item>
+
+          <ion-item>
+            <ion-avatar slot="start" >
+              <!-- <img src="assets/leidsa.png" > -->
+              <ion-icon color="warning" size="large" [ios]="'document-outline'" [md]="'document-sharp'"></ion-icon>
+            </ion-avatar>
+            <ion-label>
+              <h3>Gold</h3>
+              <!-- <h4>Sorteo: {{ draw.draw}}</h4> -->
+              <p>Creada: {{ draw.emitDate | amLocale: 'es-do' | amTimeAgo}}</p>
+            </ion-label>
+            <ion-buttons slot="end">
+              <ion-button [routerLink]="['edit/1', draw._id]" fill="solid" color="primary">manual</ion-button>
+              <ion-button fill="solid" color="success">auto</ion-button>
+            </ion-buttons>
           </ion-item>
         </ion-list>
       </ion-col>
@@ -37,10 +65,10 @@
   </ion-grid>
   
   <!-- fab placed to the bottom end -->
-  <ion-fab *ngIf="matdesign" vertical="bottom" horizontal="end" slot="fixed">
+  <!-- <ion-fab *ngIf="matdesign" vertical="bottom" horizontal="end" slot="fixed">
     <ion-fab-button (click)="new_one()">
       <ion-icon name="add"></ion-icon>
     </ion-fab-button>
-  </ion-fab>
+  </ion-fab> -->
   
 </ion-content>
