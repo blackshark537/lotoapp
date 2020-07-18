@@ -8,8 +8,10 @@ import { MomentModule } from 'ngx-moment';
 import { InicioPageRoutingModule } from './inicio-routing.module';
 
 import { InicioPage } from './inicio.page';
+import { PlayComponent } from '../game/play/play.component';
 
 @NgModule({
+  entryComponents:[PlayComponent],
   imports: [
     CommonModule,
     FormsModule,
@@ -21,6 +23,6 @@ import { InicioPage } from './inicio.page';
     IonicModule,
     InicioPageRoutingModule
   ],
-  declarations: [InicioPage]
+  declarations: [InicioPage, PlayComponent]
 })
 export class InicioPageModule {}

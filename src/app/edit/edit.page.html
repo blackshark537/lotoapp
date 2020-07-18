@@ -1,6 +1,11 @@
 <ion-header [translucent]="true">
   <ion-toolbar color="tertiary">
-    <ion-title>Manual</ion-title>
+    <ion-back-button slot="start"></ion-back-button>
+    <ion-title>{{game === 0? 'Platinum' : 'Gold'}}</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="wipeData()">Limpiar</ion-button>
+      <ion-button (click)="save()">Guardar</ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
@@ -10,12 +15,10 @@
       <thead class="thead">
         <tr>
           <th class="normal">
-            #No
+            Bolas
           </th>
-          <th *ngFor="let head of header; index as i" 
-          class="{{head == 'L.MAS'? 'lmas' : head == 'S.L.MAS'? 'slmas' : 'normal'}}">
-              {{ head }}
-
+          <th *ngFor="let head of header; index as i" >
+            -
           </th>
           <th class="normal">
             Acciones
@@ -24,7 +27,7 @@
       </thead>
       <tbody class="tbody">
         <tr *ngFor="let row of draw.Games[game].Data; index as i;">
-          <td style="background-color: blanchedalmond; color: black;">{{i+1 + '.-'}}</td>
+          <td class="{{header[i] == 'L.MAS'? 'lmas' : header[i] == 'S.L.MAS'? 'slmas' : 'normal'}}">{{header[i]}}</td>
           <td *ngFor="let col of row; index as i">
             {{col}}
           </td>
@@ -32,7 +35,7 @@
         </tr>
         <tr>
           <td style="position: absolute; right: 1em;">
-            <ion-button (click)="pushOne()">
+            <ion-button [disabled]="draw.Games[game].Data.length == header.length" (click)="pushOne()">
               Add
             </ion-button>
           </td>

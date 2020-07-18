@@ -7,14 +7,16 @@ import { IonicModule } from '@ionic/angular';
 import { EditPageRoutingModule } from './edit-routing.module';
 
 import { EditPage } from './edit.page';
+import { ModalComponent } from './modal/modal.component';
 
 @NgModule({
+  entryComponents:[ModalComponent],
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
     EditPageRoutingModule
   ],
-  declarations: [EditPage]
+  declarations: [EditPage, ModalComponent]
 })
 export class EditPageModule {}

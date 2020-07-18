@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute  } from '@angular/router';
+import { ActivatedRoute, Router  } from '@angular/router';
 import { StoreModel } from '../models/store.model';
 import { Store } from '@ngrx/store';
-import { filter } from 'rxjs/operators';
-import { Draw, AdminDraw } from '../models/draw.model';
+import { AdminDraw } from '../models/draw.model';
+import { ModalController } from '@ionic/angular';
+import { ModalComponent } from './modal/modal.component';
+import { EDIT } from '../actions/admin_draw.action';
 
 @Component({
   selector: 'app-edit',
@@ -15,8 +17,12 @@ export class EditPage implements OnInit {
   draw: AdminDraw;
   game: number;
   header: string[]=[];
-
+  numbersAvailable: number[] = [];
+  numbersLmasAvailable: number[] = [];
+  numbersSLmasAvailable: number[] = [];
   constructor(
+    private modalCtrl: ModalController,
+    private router: Router,
     private store: Store<StoreModel>,
     private activatedRoute: ActivatedRoute
   ) { }
@@ -31,12 +37,14 @@ export class EditPage implements OnInit {
       this.draw = {...a[0]};
     });
 
-    console.log(this.draw);
     if(this.draw){
       this.draw = {...this.draw};
       this.draw.Games = [...this.draw.Games];
       this.draw.Games[this.game] = {...this.draw.Games[this.game]};
-      this.draw.Games[this.game].Data = [];
+      
+      if(this.draw.Games[this.game].Data.length === 0){
+        this.wipeData();
+      }
     }
 
     let headers = ['PRIMERO', 'SEGUNDO', 'TERCERO', 'QUARTO', 'QUINTO', 'SEXTO', 'L.MAS', 'S.L.MAS'];
@@ -46,10 +54,58 @@ export class EditPage implements OnInit {
 
   }
 
+  wipeData(){
+    this.numbersAvailable = [];
+    this.numbersLmasAvailable = [];
+    this.numbersSLmasAvailable = [];
+    this.draw.Games[this.game].Data = [];
+    for(let i = 0; i < this.draw.max_values; i++){
+      this.numbersAvailable.push(i+1);
+      if(i < 11) this.numbersSLmasAvailable.push(i+1);
+      if(i < 16) this.numbersLmasAvailable.push(i+1);
+    }
+  }
 
-  pushOne(){
-    /* let d = [0,1,2,3,4,5,6,7]
-    this.draw.Games[this.game].Data.push(d); */
+
+  async pushOne(){
+    let availables = [];
+    
+    if(this.draw.Games[this.game].Data.length > 5){
+      availables = this.numbersLmasAvailable;
+    } else if(this.draw.Games[this.game].Data.length > 6){
+      availables = this.numbersSLmasAvailable;
+    }else {
+      availables = this.numbersAvailable;
+    }
+
+    const modal = await this.modalCtrl.create({
+      animated: true,
+      backdropDismiss: false,
+      component: ModalComponent,
+      swipeToClose: false,
+      componentProps: {
+        data: availables
+      }
+    });
+
+    await modal.present();
+    const {data} = await modal.onWillDismiss();
+    const choosed: number[] = data.choosed
+    if(choosed){
+      this.draw.Games[this.game].Data.push(choosed);
+      this.numbersAvailable.map((value1, i) =>{
+        choosed.map(value2=> {
+          if(value2 === value1){
+            this.numbersAvailable.splice(i, 1);
+          }
+        })
+      });
+    }
+  }
+
+  async save(){
+    this.store.dispatch(EDIT({index: 0, Draw: this.draw}));
+    this.router.navigate(['sorteos']);
   }
 
 }

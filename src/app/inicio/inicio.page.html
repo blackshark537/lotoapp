@@ -46,7 +46,7 @@
             <h2>Sorteo: {{draw.draw}}</h2>
           </ion-list-header>
 
-          <ion-item [disabled]="dateNow > date(draw.expiryDate)" >
+          <ion-item [disabled]="draw.Games[0].Data.length === 0" >
             <ion-thumbnail slot="start">
               <img [src]="draw.img" />
             </ion-thumbnail>
@@ -56,11 +56,11 @@
               <small>Se descontaran $5.00 por cada bola</small>
             </ion-label>
             <ion-buttons slot="end">
-              <ion-button fill="solid" color="primary" (click)="openNormal(draw)">Sortear</ion-button>
+              <ion-button fill="solid" color="primary" (click)="openNormal(draw, 0)">Sortear</ion-button>
             </ion-buttons>
           </ion-item>
 
-          <ion-item [disabled]="dateNow > date(draw.expiryDate)" >
+          <ion-item [disabled]="draw.Games[0].Data.length === 0">
             <ion-thumbnail slot="start">
               <img [src]="draw.img" />
             </ion-thumbnail>
@@ -70,11 +70,11 @@
               <small>Se descontaran $3.00 por cada bola</small>
             </ion-label>
             <ion-buttons slot="end">
-              <ion-button fill="solid" color="primary">Sortear</ion-button>
+              <ion-button fill="solid" color="primary" (click)="openNormal(draw, 1)">Sortear</ion-button>
             </ion-buttons>
           </ion-item>
 
-          <ion-item [disabled]="dateNow > date(draw.expiryDate)">
+          <ion-item >
             <ion-thumbnail slot="start">
               <img [src]="draw.img" />
             </ion-thumbnail>

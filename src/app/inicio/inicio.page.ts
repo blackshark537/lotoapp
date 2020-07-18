@@ -7,6 +7,8 @@ import * as adminAction from '../actions/admin_draw.action';
 import * as userAction from '../actions/user.actions';
 import { UserModel } from '../models/user.model';
 import { NativeHelpersService } from '../services/native-helpers.service';
+import { PlayComponent } from '../game/play/play.component';
+import { ModalController } from '@ionic/angular';
 
 @Component({
   selector: 'app-inicio',
@@ -20,6 +22,7 @@ export class InicioPage implements OnInit {
   draw: AdminDraw = null;
   price = 15;
   numbers_draws: number[] = [];
+  game: number = 0;
 
   draws$: Observable<AdminDraw[]>
   user: UserModel;
@@ -55,6 +58,7 @@ export class InicioPage implements OnInit {
   ];
 
   constructor(
+    private modalCtrl: ModalController,
     private native: NativeHelpersService,
     private store: Store<StoreModel>
   ) { }
@@ -95,19 +99,20 @@ export class InicioPage implements OnInit {
     }
   }
 
-  async openNormal(draw){
+  async openNormal(draw, game){
     this.draw = draw;
+    this.game = game;
+    this.game? this.draw_type = 'Sorteo Gold' : this.draw_type = 'Sorteo Platinum';
+    this.game? this.price = 3 * this.draw.ballsqty : this.price = 5 * this.draw.ballsqty;
+
     this.userDraw();
     this.numbers_draws = [];
-    this.price = 5 * this.draw.ballsqty;
-    this.draw_type = 'Sorteo Platinum';
     
     if(await this.ask()){
       this.user.credits -= this.price
       try{
         await this.normal_draw(0);
-        //await this.openModal();
-        console.log(this.numbers_draws, draw);
+        await this.openModal();
       } catch(error){
         if(error){
           await this.errorAlert( error);
@@ -129,7 +134,7 @@ export class InicioPage implements OnInit {
       this.user.credits -= this.price
       try{
         await this.random_draw();
-        //this.openModal();
+        this.openModal();
       } catch(error){
         this.errorAlert(error);
       }
@@ -142,12 +147,14 @@ export class InicioPage implements OnInit {
   }
 
   async normal_draw(index: number){
+
     if(this.numbers_draws.length === this.draw.ballsqty) return 0;
-    let num = await this.pick_one(this.draw.Games[0].Data[index]);
+    let num = await this.pick_one(this.draw.Games[this.game].Data[index]);
     let exist = await this.exist(num);
+
     if(!exist && num != null){
       this.numbers_draws.push(num);
-      this.normal_draw(index++);
+      this.normal_draw(index+=1);
     } else {
       this.normal_draw(index);
     }
@@ -176,10 +183,31 @@ export class InicioPage implements OnInit {
 
   async exist(num: number){
     let confirm = false;
-    await this.numbers_draws.map(val =>{
+    this.numbers_draws.map(val =>{
       if(val === num) confirm = true;
     });
     return confirm;
+  }
+
+  async openModal(){
+    const modal = await this.modalCtrl.create({
+      component: PlayComponent,
+      swipeToClose: false,
+      backdropDismiss: false,
+      componentProps: {
+        draw: this.numbers_draws,
+        game: this.draw_type
+      }
+    });
+
+    await modal.present();
+    const { data } = await modal.onWillDismiss();
+    if(data.data.length >0){
+      data.data.push(this.price);
+       this.user_draw.Data.push(data.data);
+       console.log(this.user_draw);
+    };
+ 
   }
 
   async errorAlert(msg: string) {
