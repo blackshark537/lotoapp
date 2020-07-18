@@ -17,7 +17,7 @@
           <th class="normal">
             Bolas
           </th>
-          <th *ngFor="let head of header; index as i" >
+          <th *ngFor="let head of header2; index as i" >
             -
           </th>
           <th class="normal">
@@ -36,7 +36,7 @@
         <tr>
           <td style="position: absolute; right: 1em;">
             <ion-button [disabled]="draw.Games[game].Data.length == header.length" (click)="pushOne()">
-              Add
+              Agregar
             </ion-button>
           </td>
         </tr>

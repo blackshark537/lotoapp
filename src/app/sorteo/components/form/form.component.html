@@ -44,12 +44,11 @@
           <ion-select-option *ngFor="let draw of LotteryChoosed.draws;" value="{{draw | json}}">{{draw.name}}</ion-select-option>
         </ion-select>
       </ion-item>
-      <ion-item button>
+      <!-- <ion-item button>
         <ion-label color="{{expiryDate.invalid && expiryDate.touched? 'danger': 'dark'}}"
          position="floating">Vence: {{expiryDate.invalid && expiryDate.touched? 'requerido': ''}}</ion-label>
         <ion-datetime [value]="expiryDate.value" formControlName="expiryDate" required="true" display-timezone="utc"></ion-datetime>
-        <!-- <ion-input formControlName="expiryDate" [value]="expiryDate.value" type="date" required="true"></ion-input> -->
-      </ion-item>
+      </ion-item> -->
       <!-- <ion-item>
         
         <ion-segment (ionChange)="setGameType($event.target.value)" value="{{GameType}}">

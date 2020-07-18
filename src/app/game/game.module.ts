@@ -7,11 +7,10 @@ import { MomentModule } from 'ngx-moment';
 import { GamePageRoutingModule } from './game-routing.module';
 
 import { GamePage } from './game.page';
-import { PlayComponent } from './play/play.component';
 import { CustomGameComponent } from './custom-game/custom-game.component';
 
 @NgModule({
-  entryComponents: [PlayComponent, CustomGameComponent],
+  entryComponents: [CustomGameComponent],
   imports: [
     CommonModule,
     FormsModule,
@@ -19,6 +18,6 @@ import { CustomGameComponent } from './custom-game/custom-game.component';
     IonicModule,
     GamePageRoutingModule
   ],
-  declarations: [GamePage, PlayComponent, CustomGameComponent]
+  declarations: [GamePage, CustomGameComponent]
 })
 export class GamePageModule {}

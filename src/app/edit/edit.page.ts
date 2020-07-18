@@ -17,6 +17,7 @@ export class EditPage implements OnInit {
   draw: AdminDraw;
   game: number;
   header: string[]=[];
+  header2: string[] = [];
   numbersAvailable: number[] = [];
   numbersLmasAvailable: number[] = [];
   numbersSLmasAvailable: number[] = [];
@@ -92,6 +93,14 @@ export class EditPage implements OnInit {
     const {data} = await modal.onWillDismiss();
     const choosed: number[] = data.choosed
     if(choosed){
+      
+      if(this.header2.length === 0){
+        this.header2 = [];
+        for (let i = 0; i < choosed.length; i++) {
+          this.header2.push('-');
+        }
+      }
+
       this.draw.Games[this.game].Data.push(choosed);
       this.numbersAvailable.map((value1, i) =>{
         choosed.map(value2=> {

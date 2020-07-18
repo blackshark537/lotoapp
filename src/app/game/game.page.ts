@@ -1,12 +1,11 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ModalController, ActionSheetController } from '@ionic/angular';
-import { PlayComponent } from './play/play.component';
 import { CustomGameComponent } from './custom-game/custom-game.component';
 import { StoreModel } from 'src/app/models/store.model';
 import { Store } from '@ngrx/store';
 import { Draw, AdminDraw } from '../models/draw.model';
-import { ARCHIVE_DRAW, UPDATE } from '../actions/user.actions';
+import { ARCHIVE_DRAW, UPDATE, GET_Populated } from '../actions/user.actions';
 import { UserModel } from '../models/user.model';
 import { NativeHelpersService } from '../services/native-helpers.service';
 
@@ -43,19 +42,31 @@ export class GamePage implements OnInit, OnDestroy {
     private router: Router,
     private actionSheetController: ActionSheetController) { }
 
-  ngOnInit() {
+  async ngOnInit() {
     this.id = this.activeRoute.snapshot.paramMap.get('id');
     this.draw_type = '';
-    this.store.select('admin_draw').subscribe(resp =>{
+    this.store.dispatch(GET_Populated());
+
+    await this.store.select('admin_draw').subscribe(resp =>{
       let d = resp.filter(val => val.draw === this.id)
       this.draw = {...d[0]};
     });
 
-    this.store.select('user_state').subscribe(resp=>{
+    /* this.store.select('user_state').subscribe(resp=>{
       this.user = {...resp};
-      //console.log(this.user);
+      console.log(this.user);
       this.initialCredit = this.user.credits;
+      
+    }); */
+
+    await this.store.select('user_state').subscribe(state=>{
+      this.user = {...state};
+      this.user.archived = [...state.archived];
+      this.user.recycle = [...state.recycle];
+      console.log(this.user.archived[this.user.archived.length-1]);
     });
+
+    if(this.user.archived[this.user.archived.length-1].Data) this.user_draw = this.user.archived[this.user.archived.length-1];
 
     if(this.draw != null){
       this.user_draw.lottery = this.draw.lottery;
@@ -63,7 +74,7 @@ export class GamePage implements OnInit, OnDestroy {
       this.user_draw.img = this.draw.img;
       this.user_draw.expiryDate = this.draw.expiryDate;
       this.user_draw.ballsqty = this.draw.ballsqty;
-      this.user_draw.Data = [];
+      //this.user_draw.Data = [];
     }
 
     let headers = ['PRIMERO', 'SEGUNDO', 'TERCERO', 'QUARTO', 'QUINTO', 'SEXTO', 'L.MAS', 'S.L.MAS'];
@@ -253,7 +264,7 @@ export class GamePage implements OnInit, OnDestroy {
   }
 
   async openModal(){
-    const modal = await this.modalCtrl.create({
+ /*    const modal = await this.modalCtrl.create({
       component: PlayComponent,
       swipeToClose: false,
       backdropDismiss: false,
@@ -269,7 +280,7 @@ export class GamePage implements OnInit, OnDestroy {
       data.data.push(this.price);
        this.user_draw.Data.push(data.data);
     };
- 
+  */
   }
 
   //not in use

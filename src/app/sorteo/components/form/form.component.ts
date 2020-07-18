@@ -148,7 +148,7 @@ export class FormComponent implements OnInit {
         active: true,
         owner: 'admin',
         emitDate: null,
-        expiryDate: null,
+        expiryDate: new Date(Date.now()),
         draw: ['', Validators.required],
         ballsqty: [null, Validators.required],
         max_values: null,

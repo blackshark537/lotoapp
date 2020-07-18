@@ -9,6 +9,7 @@ import { UserModel } from '../models/user.model';
 import { NativeHelpersService } from '../services/native-helpers.service';
 import { PlayComponent } from '../game/play/play.component';
 import { ModalController } from '@ionic/angular';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-inicio',
@@ -58,6 +59,7 @@ export class InicioPage implements OnInit {
   ];
 
   constructor(
+    private router: Router,
     private modalCtrl: ModalController,
     private native: NativeHelpersService,
     private store: Store<StoreModel>
@@ -70,11 +72,22 @@ export class InicioPage implements OnInit {
     });
 
     this.store.dispatch(adminAction.GET());
-    this.store.dispatch(userAction.GET());
+    this.store.dispatch(userAction.GET_Populated());
   }
 
   get material(): boolean{
     return this.native.matdesign;
+  }
+
+  async save_draw(){
+    this.user_draw.emitDate = new Date(Date.now());
+    this.user_draw.owner = this.user.email;
+    
+    await this.store.dispatch(userAction.ARCHIVE_DRAW({draw: this.user_draw}));
+    await this.native.showLoading();
+    await this.store.dispatch(userAction.UPDATE({user: this.user}));
+    
+    //this.router.navigate(['/file/', this.user.archived.length-1]);
   }
 
   filterLoteries(){
@@ -205,7 +218,7 @@ export class InicioPage implements OnInit {
     if(data.data.length >0){
       data.data.push(this.price);
        this.user_draw.Data.push(data.data);
-       console.log(this.user_draw);
+       await this.save_draw()
     };
  
   }
