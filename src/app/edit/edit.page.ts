@@ -92,7 +92,7 @@ export class EditPage implements OnInit {
     await modal.present();
     const {data} = await modal.onWillDismiss();
     const choosed: number[] = data.choosed
-    if(choosed){
+    if(choosed.length >0){
       
       if(this.header2.length === 0){
         this.header2 = [];

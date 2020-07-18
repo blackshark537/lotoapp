@@ -4,4 +4,5 @@ import { UserModel } from './user.model';
 export class StoreModel{
     admin_draw: AdminDraw[];
     user_state: UserModel;
+    users_profiles: UserModel[];
 }

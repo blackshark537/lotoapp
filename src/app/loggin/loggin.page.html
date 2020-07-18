@@ -21,7 +21,7 @@
 
       <ion-col size="12" size-lg="4">
         <form [formGroup]="userForm">
-          <ion-card id="card">
+          <ion-card id="card" >
             <ion-card-header color="tertiary">
               <ion-button *ngIf="step>0 && register" fill="clear" id="back_button" (click)="step = step-0.5">
                 <ion-icon color="light" name="arrow-back-outline"></ion-icon>
@@ -40,29 +40,41 @@
             <ion-card-content *ngIf="register; else login">
 
               <ion-item>
-                <ion-label position="fixed">Nombre:</ion-label>
-                <input type="text" required="true" formControlName="name">
+                <ion-label position="stacked">Nombre:
+                  <ion-icon slot="end" 
+                    color="{{name.invalid && name.touched? 'danger' : 'success'}}" 
+                    name="{{name.invalid && name.touched? 'close' : 'checkmark'}}"></ion-icon>
+                </ion-label>
+                <input type="text" placeholder="Tu Nombre Completo" class="formCtrl {{name.invalid && name.touched? 'badForm': ''}}" required="true" formControlName="name">
               </ion-item>
               <small>Escribe tu nombre completo</small>
 
               <ion-item>
-                <ion-label position="fixed">Email:</ion-label>
-                <input type="email" formControlName="email" required="true">
+                <ion-label position="stacked">Email:
+                  <ion-icon slot="end" 
+                    color="{{email.invalid && email.touched? 'danger' : 'success'}}" 
+                    name="{{email.invalid && email.touched? 'close' : 'checkmark'}}"></ion-icon>
+                </ion-label>
+                <input type="email" placeholder="email@example.com" class="formCtrl {{email.invalid && email.touched? 'badForm': ''}}" formControlName="email" required="true">
               </ion-item>
               <small>Escribe tu email</small>
               <small class="danger" *ngIf="email.invalid">, debe de ser un correo valido</small>
 
               <ion-item>
-                <ion-label position="fixed">Contraseña:</ion-label>
-                <input type="password" formControlName="password" required="true">
+                <ion-label position="stacked">Contraseña:
+                  <ion-icon slot="end" 
+                    color="{{pswd.invalid && pswd.touched? 'danger' : 'success'}}" 
+                    name="{{pswd.invalid && pswd.touched? 'close' : 'checkmark'}}"></ion-icon>
+                </ion-label>
+                <input type="password" placeholder="Contraseña *****" class="formCtrl {{pswd.invalid && pswd.touched? 'badForm': ''}}" formControlName="password" required="true">
               </ion-item>
 
               <small>Escribe una contraseña</small>
               <!-- <small class="danger" *ngIf="step===0.5 && email.required">Email is required</small> -->
 
               <ion-item >
-                <ion-label position="fixed">Confirmar Contraseña:</ion-label>
-                <input type="password" formControlName="confirmPassword" required="true">
+                <ion-label position="stacked">Confirmar Contraseña:</ion-label>
+                <input type="password" placeholder="Confirmar Contraseña *****" class="formCtrl" formControlName="confirmPassword" required="true">
               </ion-item>
               <!-- <small *ngIf="step===1 && f.confirmPassword.errors.required">Confirm Password is required</small>
               <small *ngIf="step===1 && f.confirmPassword.errors.mustMatch">Passwords must match</small> -->
@@ -82,24 +94,27 @@
               <ion-card-content>
 
                 <ion-item>
-                  <ion-label position="fixed"> Email:
+                  <ion-label position="stacked"> Email:
                     <ion-icon slot="end" 
                     color="{{email.invalid && email.touched? 'danger' : 'success'}}" 
                     name="{{email.invalid && email.touched? 'close' : 'checkmark'}}"></ion-icon>
                   </ion-label>
-                  <input type="email" formControlName="email" required="true">
+                  <input type="email" class="formCtrl {{email.invalid && email.touched? 'badForm': ''}}"
+                  placeholder="email@example.com" formControlName="email" required="true">
                 </ion-item>
                 <small>Escribe tu email</small>
 
                 <ion-item>
-                  <ion-label position="fixed"> Contraseña:
+                  <ion-label position="stacked"> Contraseña:
                     <ion-icon slot="end" 
                     color="{{pswd.invalid && pswd.touched? 'danger' : 'success'}}" 
                     name="{{pswd.invalid && pswd.touched? 'close' : 'checkmark'}}"></ion-icon>
                   </ion-label>
-                  <input type="password" formControlName="password" required="true">
+                  <input type="password" class="formCtrl {{pswd.invalid && pswd.touched? 'badForm': ''}}"
+                  placeholder="Contraseña *****" formControlName="password" required="true">
                 </ion-item>
-                <small>Escribe tu contraseña</small>
+                <small>Escribe tu contraseña,  </small>
+                <small class="center"><a href="#"> Olvide la contraseña </a></small>
 
                 <ion-item lines="none">
                   <!-- <ion-button *ngIf="step2 != 1" class="center" (click)="step2= step2 + 1">

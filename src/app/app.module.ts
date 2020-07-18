@@ -20,6 +20,7 @@ import { AdminEffects } from './effects/admin.effects';
 
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
+import { UsersProfilesReducer } from './reducers/users_profiles.reducer';
 
 @NgModule({
   declarations: [AppComponent],
@@ -32,7 +33,8 @@ import { AppRoutingModule } from './app-routing.module';
     EffectsModule.forRoot([userEffects, AdminEffects]),
     StoreModule.forRoot({
        admin_draw: reducerDraw,
-       user_state: UserReducer
+       user_state: UserReducer,
+       users_profiles: UsersProfilesReducer
     }),
     StoreDevtoolsModule.instrument({
       maxAge: 25,

@@ -1,6 +1,6 @@
 import { createReducer, on, Action} from '@ngrx/store';
 import { UserModel } from '../models/user.model';
-import { GET, ARCHIVE_DRAW, MARK_AS_FAVORITE, RECICLE, DELETE_ONE, EMPTY_TRASHCAN, SAVE_STATE, ADMIN_RECICLE, Error, SigninSuccess, SignupSuccess, ARCHIVE_DRAW_SUCCESS, GET_Success} from '../actions/user.actions';
+import { RECICLE, DELETE_ONE, EMPTY_TRASHCAN, SAVE_STATE, ADMIN_RECICLE, Error, SigninSuccess, SignupSuccess, ARCHIVE_DRAW_SUCCESS, GET_Success} from '../actions/user.actions';
 
 export const user_state: UserModel = {
     archived: [],
@@ -42,7 +42,9 @@ export async function presentAlert(head, sub_head, msg) {
 
 export const userReducer = createReducer(user_state,
     on(GET_Success, (state ,{resp})=>{
-         return {...resp.body};
+        let user = {...resp.body}
+        user.archived = [...user.archived].reverse();
+        return {...user};
     }),
     on(ARCHIVE_DRAW_SUCCESS, (state, {resp})=>{
         let user = {...state};

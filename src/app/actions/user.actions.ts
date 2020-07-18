@@ -3,6 +3,8 @@ import { Draw } from '../models/draw.model';
 import { userLog, UserModel } from '../models/user.model';
 
 export const GET = createAction('[user State] get user data');
+export const GET_All_Users = createAction('[User State] get all Users');
+export const GET_All_Users_Success = createAction('[User State] get all Users Success', props<{resp: any}>());
 export const GET_Populated = createAction('[user State] get populate user data');
 export const GET_Success = createAction('[user State] get user data success', props<{resp: any}>());
 export const Signin = createAction('[user State] SignIn', props<{user: userLog}>());

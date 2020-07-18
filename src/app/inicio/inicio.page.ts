@@ -72,7 +72,7 @@ export class InicioPage implements OnInit {
     });
 
     this.store.dispatch(adminAction.GET());
-    this.store.dispatch(userAction.GET_Populated());
+    this.store.dispatch(userAction.GET());
   }
 
   get material(): boolean{
@@ -85,9 +85,12 @@ export class InicioPage implements OnInit {
     
     await this.store.dispatch(userAction.ARCHIVE_DRAW({draw: this.user_draw}));
     await this.native.showLoading();
+    await this.updateUser();
+    this.router.navigate(['/folder/Archivadas']);
+  }
+
+  async updateUser(){
     await this.store.dispatch(userAction.UPDATE({user: this.user}));
-    
-    //this.router.navigate(['/file/', this.user.archived.length-1]);
   }
 
   filterLoteries(){
@@ -112,6 +115,10 @@ export class InicioPage implements OnInit {
     }
   }
 
+  async buyCredits(){
+    await this.notify('Para recargar deposite a esta cuenta: null');
+  }
+
   async openNormal(draw, game){
     this.draw = draw;
     this.game = game;
@@ -120,19 +127,23 @@ export class InicioPage implements OnInit {
 
     this.userDraw();
     this.numbers_draws = [];
-    
-    if(await this.ask()){
-      this.user.credits -= this.price
-      try{
-        await this.normal_draw(0);
-        await this.openModal();
-      } catch(error){
-        if(error){
-          await this.errorAlert( error);
-        } else {
-          await this.errorAlert('Demasiados números repetidos\n');
+    if(this.user.credits> this.price){
+      if(await this.ask()){
+        this.user.credits -= this.price
+        await this.updateUser();
+        try{
+          await this.normal_draw(0);
+          await this.openModal();
+        } catch(error){
+          if(error){
+            await this.errorAlert( error);
+          } else {
+            await this.errorAlert('Demasiados números repetidos\n');
+          }
         }
       }
+    } else {
+      this.errorAlert('no cuenta con los creditos suficientes, por favor recargue');
     }
   }
 
@@ -142,15 +153,19 @@ export class InicioPage implements OnInit {
     this.numbers_draws = [];
     this.price = 2 * this.draw.ballsqty;
     this.draw_type = 'Sorteo por la maquina';
-    
-    if(await this.ask()){
-      this.user.credits -= this.price
-      try{
-        await this.random_draw();
-        this.openModal();
-      } catch(error){
-        this.errorAlert(error);
+    if(this.user.credits> this.price){
+      if(await this.ask()){
+        this.user.credits -= this.price
+        await this.updateUser();
+        try{
+          await this.random_draw();
+          this.openModal();
+        } catch(error){
+          this.errorAlert(error);
+        }
       }
+    } else {
+      this.errorAlert('no cuenta con los creditos suficientes, por favor recargue');
     }
   }
 
@@ -225,6 +240,10 @@ export class InicioPage implements OnInit {
 
   async errorAlert(msg: string) {
     await this.native.showError(msg);
+  }
+
+  async notify(msg: string){
+    await this.native.comfirmModal(msg);
   }
 
 }

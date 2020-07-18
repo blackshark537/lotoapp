@@ -10,6 +10,7 @@ export class ModalComponent implements OnInit {
 
   @Input('data') data: number[];
   choosed: number[] = [];
+  data2: number[] = [];
 
   constructor(
     private modalCtrl: ModalController,
@@ -29,9 +30,14 @@ export class ModalComponent implements OnInit {
     this.choosed.splice(index, 1);
   }
 
-  async save(){
+  save(){
+    this.data2 = this.choosed;
+    this.dismiss();
+  }
+
+  async dismiss(){
     await this.modalCtrl.dismiss({
-      choosed: this.choosed
+      choosed: this.data2
     });
   }
 

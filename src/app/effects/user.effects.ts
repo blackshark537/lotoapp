@@ -60,6 +60,16 @@ export class userEffects{
         ))
     ));
 
+    getUserProfiles$ = createEffect(() =>
+    this.actions$.pipe(
+        ofType(user.GET_All_Users),
+        mergeMap(()=> this.httpService.getUsers().pipe(
+            map(resp => user.GET_All_Users_Success({resp})),
+            catchError(error => of(user.Error({error})))
+        ))
+    )
+    );
+
     getUserPopulated$ = createEffect(() =>
     this.actions$.pipe(
         ofType(user.GET_Populated),

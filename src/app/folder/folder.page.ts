@@ -36,7 +36,6 @@ export class FolderPage implements OnInit {
     private alertCtrl: AlertController,
     private actionCtrl: ActionSheetController,
     private platform: Platform,
-    private native: NativeHelpersService,
     private store: Store<StoreModel>,
     private activatedRoute: ActivatedRoute,
     private router: Router) { }

@@ -10,7 +10,7 @@
     <ion-title *ngIf="!filter && material">Inicio</ion-title>
     <ion-buttons slot="end" >
       <p class="credit">Créditos totales: {{user.credits | currency}} </p>
-      <ion-button color="warning">
+      <ion-button color="warning" (click)="buyCredits()">
         comprar
       </ion-button>
   </ion-buttons>
@@ -56,11 +56,11 @@
               <small>Se descontaran $5.00 por cada bola</small>
             </ion-label>
             <ion-buttons slot="end">
-              <ion-button fill="solid" color="primary" (click)="openNormal(draw, 0)">Sortear</ion-button>
+              <ion-button [disabled]="draw.Games[0].Data.length === 0" fill="solid" color="primary" (click)="openNormal(draw, 0)">Sortear</ion-button>
             </ion-buttons>
           </ion-item>
 
-          <ion-item [disabled]="draw.Games[0].Data.length === 0">
+          <ion-item [disabled]="draw.Games[1].Data.length === 0">
             <ion-thumbnail slot="start">
               <img [src]="draw.img" />
             </ion-thumbnail>
@@ -70,7 +70,7 @@
               <small>Se descontaran $3.00 por cada bola</small>
             </ion-label>
             <ion-buttons slot="end">
-              <ion-button fill="solid" color="primary" (click)="openNormal(draw, 1)">Sortear</ion-button>
+              <ion-button [disabled]="draw.Games[1].Data.length === 0" fill="solid" color="primary" (click)="openNormal(draw, 1)">Sortear</ion-button>
             </ion-buttons>
           </ion-item>
 
