@@ -34,8 +34,7 @@
                 </ion-avatar>
                 <ion-label>
                   <h2>Lotería: {{ draw.lottery + ' '+ draw.draw}}</h2>
-                  <h3>Sorteada: {{ draw.emitDate | amLocale: 'es-do' | amTimeAgo}}</h3>
-                  <p>activa: {{ draw.active? 'Si' : 'No'}}</p>
+                  <h3>Sorteada: {{ draw.emitDate | date: 'short'}} {{ draw.emitDate | amLocale: 'es-do' | amTimeAgo}}</h3>
                 </ion-label>
               </ion-item>
             </div>
@@ -51,8 +50,7 @@
                 </ion-avatar>
                 <ion-label>
                   <h2>Lotería: {{ draw.lottery + ' '+ draw.draw}}</h2>
-                  <h3>Sorteada: {{ draw.emitDate | amLocale: 'es-do' | amTimeAgo}}</h3>
-                  <p>activa: {{ draw.active? 'Si' : 'No'}}</p>
+                  <h3>Sorteada: {{ draw.emitDate | date: 'short'}} {{ draw.emitDate | amLocale: 'es-do' | amTimeAgo}}</h3>
                 </ion-label>
                 <ion-icon slot="end" color="danger" [ios]="'heart-outline'" [md]="'heart-sharp'"></ion-icon>
               </ion-item>
@@ -73,7 +71,7 @@
 
               <ion-label>
                 <h2>Lotería: {{ draw? draw.lottery + ' '+ draw.draw : ''}}</h2>
-                <h3>Sorteada: {{ draw.emitDate | amLocale: 'es-do' | amTimeAgo}}</h3>
+                <h3>Sorteada: {{ draw.emitDate | date: 'short'}} {{ draw.emitDate | amLocale: 'es-do' | amTimeAgo}}</h3>
                 <h4>type: {{draw.owner === 'user'? 'folder' : 'document'}}</h4>
                 <p>id: {{ draw._id}}</p>
               </ion-label>

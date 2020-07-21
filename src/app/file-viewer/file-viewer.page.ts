@@ -15,7 +15,6 @@ export class FileViewerPage implements OnInit {
 
   draw: Draw;
   index: number;
-  header: string[] = [];
   public dateNow = new Date(Date.now());
   public dateExp;
 
@@ -35,12 +34,13 @@ export class FileViewerPage implements OnInit {
       let d = {...resp}
       this.draw = d.archived[this.index];
     });
-
-    let headers = ['PRIMERO', 'SEGUNDO', 'TERCERO', 'QUARTO', 'QUINTO', 'SEXTO', 'L.MAS', 'S.L.MAS'];
-    headers.map((head, i)=>{
-      if(i < this.draw.ballsqty) this.header.push(head);
-    });
     this.dateExp = this.draw.expiryDate;
+  }
+
+  get headers(){
+    let headers = ['PRIMERO', 'SEGUNDO', 'TERCERO', 'QUARTO', 'QUINTO', 'SEXTO', 'L.MAS', 'S.L.MAS'];
+    headers.splice(this.draw.ballsqty, headers.length-this.draw.ballsqty)
+    return headers;
   }
 
   //check if the platform is Android

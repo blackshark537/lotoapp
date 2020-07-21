@@ -20,10 +20,10 @@ export class DrawBall{
 
     draw(){
         this.p.push();
-        if (this.can_withdraw) {
+        if (this.can_withdraw) { // si se puede sacar una bola
             this.x = this.p.sin(this.angle) * this.radius;
-            if (this.x > 0) this.y = this.p.cos(this.angle) * (this.radius * -1);
-            if (this.x > -110+(this.index*15)) {
+            if (this.x > 0) this.y = this.p.cos(this.angle) * (this.radius * -1); //block y
+            if (this.x > -110+(this.index*15)) { // draw the ball
                 let ball = this.data[this.index];
                 ball._draw({ tex: ball.numero, x: this.x, y: this.y });
             } else {
@@ -31,6 +31,7 @@ export class DrawBall{
                 this.index += 1;
                 this.audio.volume = 0.5;
                 this.audio.play();
+                setTimeout(()=> this.pick_one(), 300);
                 if(this.index == 6){
                     this.data[this.index].ball_type = 1;
                 }

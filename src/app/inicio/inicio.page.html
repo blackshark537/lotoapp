@@ -21,7 +21,7 @@
   <ion-grid>
     <ion-row *ngIf="!filter">
       <ion-col size="12">
-        <h1 style="text-align: center; margin: auto;">Seleccione una loteria!</h1>
+        <h1 style="text-align: center; margin: auto;">Seleccione una lotería!</h1>
       </ion-col>
       <ion-col size="12" size-md="4" *ngFor="let draw of lotteryModel; index as i;">
         <ion-card type="button" class="card-hover" (click)="filter=draw.lottery; filterLoteries();">
@@ -51,9 +51,9 @@
               <img [src]="draw.img" />
             </ion-thumbnail>
             <ion-label>
-              <strong>Sorteo Platimun</strong>
+              <strong>Sorteo Platinum</strong>
               <br>
-              <small>Se descontaran $5.00 por cada bola</small>
+              <small>Se descontarán $5.00 por cada bola</small>
             </ion-label>
             <ion-buttons slot="end">
               <ion-button [disabled]="draw.Games[0].Data.length === 0" fill="solid" color="primary" (click)="openNormal(draw, 0)">Sortear</ion-button>
@@ -67,7 +67,7 @@
             <ion-label>
               <strong>Sorteo Gold</strong>
               <br>
-              <small>Se descontaran $3.00 por cada bola</small>
+              <small>Se descontarán $3.00 por cada bola</small>
             </ion-label>
             <ion-buttons slot="end">
               <ion-button [disabled]="draw.Games[1].Data.length === 0" fill="solid" color="primary" (click)="openNormal(draw, 1)">Sortear</ion-button>
@@ -79,9 +79,9 @@
               <img [src]="draw.img" />
             </ion-thumbnail>
             <ion-label>
-              <strong>Sorteo por la maquina</strong>
+              <strong>Sorteo por la máquina [Aleatorio]</strong>
               <br>
-              <small>Se descontaran $2.00 por cada bola</small>
+              <small>Se descontarán $2.00 por cada bola</small>
             </ion-label>
             <ion-buttons slot="end">
               <ion-button fill="solid" color="primary" (click)="openRandom(draw)">Sortear</ion-button>

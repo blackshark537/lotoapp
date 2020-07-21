@@ -87,6 +87,7 @@ export class PlayComponent implements OnInit, OnDestroy {
         }
         if(p.mouseX > 100 && p.mouseX < 400-100 && p.mouseY > 100 && p.mouseY < 400-100){
           if(!loop) loop = true;
+          setTimeout(()=> this.drawBall.pick_one(), 500);
         }
       }
 

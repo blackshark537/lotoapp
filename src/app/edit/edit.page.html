@@ -1,6 +1,6 @@
 <ion-header [translucent]="true">
   <ion-toolbar color="tertiary">
-    <ion-back-button slot="start"></ion-back-button>
+    <ion-back-button slot="start" color="light"></ion-back-button>
     <ion-title>{{game === 0? 'Platinum' : 'Gold'}}</ion-title>
     <ion-buttons slot="end">
       <ion-button (click)="wipeData()">Limpiar</ion-button>
@@ -20,16 +20,13 @@
           <th *ngFor="let head of header2; index as i" >
             -
           </th>
-          <th class="normal">
-            Acciones
-          </th>
         </tr>
       </thead>
       <tbody class="tbody">
         <tr *ngFor="let row of draw.Games[game].Data; index as i;">
           <td class="{{header[i] == 'L.MAS'? 'lmas' : header[i] == 'S.L.MAS'? 'slmas' : 'normal'}}">{{header[i]}}</td>
-          <td *ngFor="let col of row; index as i">
-            {{col}}
+          <td *ngFor="let col of row; index as j">
+            <input type="number" id="data-{{j}}" name="data-{{j}}" class="formCtrl" [(ngModel)]="draw.Games[game].Data[i][j]">
           </td>
           <!-- <td>-{{price | currency}}</td> -->
         </tr>

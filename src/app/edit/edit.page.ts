@@ -7,6 +7,7 @@ import { ModalController } from '@ionic/angular';
 import { ModalComponent } from './modal/modal.component';
 import { EDIT } from '../actions/admin_draw.action';
 
+
 @Component({
   selector: 'app-edit',
   templateUrl: './edit.page.html',
@@ -42,7 +43,11 @@ export class EditPage implements OnInit {
       this.draw = {...this.draw};
       this.draw.Games = [...this.draw.Games];
       this.draw.Games[this.game] = {...this.draw.Games[this.game]};
-      
+      this.draw.Games[this.game].Data = [...this.draw.Games[this.game].Data];
+      this.draw.Games[this.game].Data.map((val, i)=> {
+        if(i < this.draw.Games[this.game].Data[0].length) this.header2.push('-');
+        this.draw.Games[this.game].Data[i] = [...this.draw.Games[this.game].Data[i]];
+      });
       if(this.draw.Games[this.game].Data.length === 0){
         this.wipeData();
       }

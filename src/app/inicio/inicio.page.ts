@@ -86,7 +86,9 @@ export class InicioPage implements OnInit {
     await this.store.dispatch(userAction.ARCHIVE_DRAW({draw: this.user_draw}));
     await this.native.showLoading();
     await this.updateUser();
-    this.router.navigate(['/folder/Archivadas']);
+    await this.native.showLoading();
+    await this.store.dispatch(userAction.GET_Populated());
+    this.router.navigate(['/file', 0]);
   }
 
   async updateUser(){

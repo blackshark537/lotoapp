@@ -28,7 +28,7 @@
 <ion-content>
   <form [formGroup]="drawForm">
     <ion-list>
-      <ion-item button>
+      <ion-item detail="false">
         <ion-label color="{{lottery.invalid && lottery.touched? 'danger': 'dark'}}"
         position="floating">Lotería: {{lottery.invalid && lottery.touched? ' requerido': 
         edit? lottery.value : ''}}</ion-label>
@@ -36,7 +36,7 @@
           <ion-select-option *ngFor="let model of lotteryModel;" value="{{model | json}}">{{model.lottery}}</ion-select-option>
         </ion-select>
       </ion-item>
-      <ion-item button>
+      <ion-item detail="false">
         <ion-label color="{{draw_name.invalid && draw_name.touched? 'danger': 'dark'}}"
          position="floating">Sorteo:{{draw_name.invalid && draw_name.touched? ' requerido':
          edit? draw_name.value : ''}}</ion-label>

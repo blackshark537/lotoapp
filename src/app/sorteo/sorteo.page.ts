@@ -2,12 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import { ActionSheetController, ModalController } from '@ionic/angular';
 import { FormComponent } from './components/form/form.component';
 import { Store } from '@ngrx/store';
-import { GET, DEL } from 'src/app/actions/admin_draw.action';
+import { GET, DEL, EDIT } from 'src/app/actions/admin_draw.action';
 import { ADMIN_RECICLE } from 'src/app/actions/user.actions';
 import { Draw, AdminDraw } from '../models/draw.model';
 import { StoreModel } from '../models/store.model';
 import { Observable } from 'rxjs';
 import { NativeHelpersService } from '../services/native-helpers.service';
+import * as EXEL from 'xlsx';
 
 @Component({
   selector: 'app-sorteo',
@@ -21,6 +22,7 @@ export class SorteoPage implements OnInit {
   draw: Draw;
   edit: boolean;
   currDate = new Date(Date.now());
+  labels = ['PRIMERO', 'SEGUNDO', 'TERCERO', 'QUARTO', 'QUINTO', 'SEXTO', 'L.Más', 'L.S.Más'];
 
   constructor(
     private native: NativeHelpersService,
@@ -57,6 +59,11 @@ export class SorteoPage implements OnInit {
             text: 'editar',
             icon: 'pencil',
             handler: () => { this.edit = true; this.openModal() }
+          },
+          {
+            text: 'descargar plantilla',
+            icon: 'document',
+            handler: () => { window.location.href = '/assets/template.xlsx' }
           },
           {
             text: 'reciclar',
@@ -100,5 +107,49 @@ export class SorteoPage implements OnInit {
     await this.store.dispatch(ADMIN_RECICLE({draw: this.draw}));
     await this.store.dispatch(DEL({id: this.draw._id}));
     await this.native.showToast('Enviado a la papelera de reciclaje!');
+  }
+
+  async readfile(evt, draw$: AdminDraw, gameType:number){
+    let draw = {...draw$};
+    draw.Games = [...draw.Games];
+    draw.Games[gameType] = {...draw.Games[gameType]};
+    
+    let workBook = null;
+    let jsonData = null;
+    const type = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+    const file: File = evt.files[0];
+    const reader = new FileReader();
+    
+    reader.onloadend = async () =>{
+      const data = reader.result;
+      workBook = EXEL.read(data, { type: 'binary' });
+      jsonData = workBook.SheetNames.reduce((initial, name) => {
+        const sheet = workBook.Sheets[name];
+        initial[name] = EXEL.utils.sheet_to_json(sheet);
+        return initial;
+      }, {});
+
+      let col = [];
+      let row = [];
+      for (let i = 0; i < draw.ballsqty; i++) {
+        col = [];
+        jsonData['data'].map(val =>{ 
+          if(val[this.labels[i]] !== null && val[this.labels[i]] !== undefined){
+            col.push(val[this.labels[i]]);
+          }
+        });
+        row.push(col);
+      }
+      draw.Games[gameType].Data = row;
+      this.store.dispatch(EDIT({index: 0, Draw: draw}));
+      await this.native.showLoading();
+      await this.native.showToast('Archivo guardado!!!')
+    }
+
+    if(file.type === type){
+      reader.readAsBinaryString(file);
+    } else {
+      this.native.showError('Este tipo de archivo no es admitido');
+    }
   }
 }

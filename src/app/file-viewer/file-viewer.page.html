@@ -21,8 +21,7 @@
     </ion-avatar>
     <ion-label *ngIf="draw != undefined ">
         <h2>{{ draw? draw.lottery + ' '+ draw.draw : ''}}</h2>
-        <h3>Creada: {{ draw.emitDate | amLocale: 'es-do' | amTimeAgo}}</h3>
-        <h3>{{dateNow > dateExp? 'Venció':'Vence'}}: {{ draw.expiryDate | amLocale: 'es-do' | amTimeAgo}}</h3>
+        <h3>Creada: {{draw.emitDate | date: 'short'}} {{ draw.emitDate | amLocale: 'es-do' | amTimeAgo}}</h3>
         <p>id: {{ draw._id}}</p>
     </ion-label>
   </ion-item>
@@ -34,7 +33,7 @@
           <th class="normal">
             #No
           </th>
-          <th *ngFor="let head of header; index as i" 
+          <th *ngFor="let head of headers; index as i" 
           class="{{head == 'L.MAS'? 'lmas' : head == 'S.L.MAS'? 'slmas' : 'normal'}}">
               {{ head }}
 
@@ -50,10 +49,12 @@
       <tbody class="tbody">
         <tr *ngFor="let row of draw.Data; index as i;">
           <td style="background-color: blanchedalmond; color: black;">{{i+1 + '.-'}}</td>
-          <td *ngFor="let col of row; index as i">
-            {{col}}
+          <td *ngFor="let col of row; index as j">
+            <span *ngIf="j === row.length-1; else elseBlock">{{col | currency}}</span>
+            <ng-template #elseBlock>
+              {{col}}
+            </ng-template>
           </td>
-          <td>-</td>
         </tr>
       </tbody>
     </table>
