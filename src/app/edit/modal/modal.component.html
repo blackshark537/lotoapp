@@ -1,18 +1,22 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>Seleccione los numeros que desea entrar {{choosed.length}}</ion-title>
+    <ion-title>{{head | uppercase}}</ion-title>
   </ion-toolbar>
 </ion-header>
 <ion-content>
   <ion-grid>
     <ion-row>
-      <ion-col size="2" *ngFor="let num of data; index as i">
+      <ion-col size="12">
+        <ion-title>Seleccione los numeros que desea entrar {{choosed.length}}</ion-title>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col size="1.2" *ngFor="let num of data; index as i">
         <ion-fab-button (click)="pushOne(num, i)">{{num}}</ion-fab-button>
       </ion-col>
     </ion-row>
-
     <ion-row>
-      <ion-col size="2" *ngFor="let num of choosed; index as i">
+      <ion-col size="1.2" *ngFor="let num of choosed; index as i">
         <ion-fab-button color="success" (click)="popOne(num, i)">{{num}}</ion-fab-button>
       </ion-col>
     </ion-row>

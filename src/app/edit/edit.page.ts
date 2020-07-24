@@ -67,20 +67,21 @@ export class EditPage implements OnInit {
     this.draw.Games[this.game].Data = [];
     for(let i = 0; i < this.draw.max_values; i++){
       this.numbersAvailable.push(i+1);
-      if(i < 11) this.numbersSLmasAvailable.push(i+1);
-      if(i < 16) this.numbersLmasAvailable.push(i+1);
+      if(i < 15) this.numbersSLmasAvailable.push(i+1);
+      if(i < 10) this.numbersLmasAvailable.push(i+1);
     }
   }
 
 
   async pushOne(){
     let availables = [];
-    
-    if(this.draw.Games[this.game].Data.length > 5){
+    let index = this.draw.Games[this.game].Data.length;
+
+    if(index === 6){
       availables = this.numbersLmasAvailable;
-    } else if(this.draw.Games[this.game].Data.length > 6){
+    } else if(index === 7){
       availables = this.numbersSLmasAvailable;
-    }else {
+    } else {
       availables = this.numbersAvailable;
     }
 
@@ -90,7 +91,8 @@ export class EditPage implements OnInit {
       component: ModalComponent,
       swipeToClose: false,
       componentProps: {
-        data: availables
+        data: availables,
+        head: this.header[index]
       }
     });
 

@@ -9,6 +9,8 @@ import { ModalController } from '@ionic/angular';
 export class ModalComponent implements OnInit {
 
   @Input('data') data: number[];
+  @Input('head') head: string;
+
   choosed: number[] = [];
   data2: number[] = [];
 

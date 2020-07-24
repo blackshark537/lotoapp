@@ -204,10 +204,13 @@ export class InicioPage implements OnInit {
   }
 
   async pick_random() {
-    if(this.numbers_draws.length <= 5){
-      return Math.floor(Math.random() * this.draw.max_values) +1
-    } else {
+    let index = this.numbers_draws.length;
+    if(index === 6){
+      return Math.floor(Math.random() * 9) +1
+    } else if(index === 7){
       return Math.floor(Math.random() * 14) +1
+    } else {
+      return Math.floor(Math.random() * this.draw.max_values) +1
     }
   }
 
