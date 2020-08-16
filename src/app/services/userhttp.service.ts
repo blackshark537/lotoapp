@@ -12,8 +12,8 @@ export interface DateDto{day: number, month: number, year: number};
 })
 export class UserhttpService {
 
-  //private url = 'http://loter.ddns.net/user';
-  private url = 'http://localhost:3000/user';
+  private url = 'http://loter.ddns.net/user';
+  //private url = 'http://localhost:3000/user';
 
 
   constructor(
