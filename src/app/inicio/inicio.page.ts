@@ -10,6 +10,7 @@ import { NativeHelpersService } from '../services/native-helpers.service';
 import { PlayComponent } from '../game/play/play.component';
 import { ModalController } from '@ionic/angular';
 import { Router } from '@angular/router';
+import { DateDto } from '../services/userhttp.service';
 
 @Component({
   selector: 'app-inicio',
@@ -17,6 +18,12 @@ import { Router } from '@angular/router';
   styleUrls: ['./inicio.page.scss'],
 })
 export class InicioPage implements OnInit {
+
+  date: DateDto={
+    day: new Date(Date.now()).getDate(),
+    month: new Date(Date.now()).getMonth()+1,
+    year: new Date(Date.now()).getFullYear()
+  };
 
   dateNow=new Date(Date.now());
   draw_type: string;
@@ -26,18 +33,14 @@ export class InicioPage implements OnInit {
   game: number = 0;
 
   draws$: Observable<AdminDraw[]>
+  last_draw: Draw[];
   user: UserModel;
   filter: string = null;
+  drawfilter: string = null;
   loteriesFilters: any[] = [];
+  lastDrawLoaded: boolean = false;
 
-  user_draw: Draw ={
-    Data: [],
-    draw: null,
-    favorite: false,
-    lottery: null,
-    ballsqty: null,
-    owner: null
-  };
+  user_draw: Draw;
 
   lotteryModel = [
     {
@@ -65,14 +68,40 @@ export class InicioPage implements OnInit {
     private store: Store<StoreModel>
   ) { }
 
-  ngOnInit() {
+  async ngOnInit() {
+    this.cleanUserDraw();
     this.draws$ = this.store.select('admin_draw');
-    this.store.select('user_state').subscribe(resp =>{
+    await this.store.select('user_state').subscribe(resp =>{
       this.user = {...resp};
+    });
+
+    await this.store.select('draw_state').subscribe(resp => {
+      this.last_draw = [...resp]
     });
 
     this.store.dispatch(adminAction.GET());
     this.store.dispatch(userAction.GET());
+    this.fetchLastDraw();
+  }
+
+  cleanUserDraw(){
+    this.lastDrawLoaded = false;
+    this.user_draw = {
+      Data: [],
+      draw: null,
+      favorite: false,
+      lottery: null,
+      ballsqty: null,
+      owner: null
+    };
+  }
+
+  fetchLastDraw(){
+    this.store.dispatch(userAction.GET_DRAWS_BY_DATE({date: this.date}));
+  }
+
+  openLastDraw(){
+    this.router.navigate(['/game']);
   }
 
   get material(): boolean{
@@ -80,15 +109,12 @@ export class InicioPage implements OnInit {
   }
 
   async save_draw(){
-    this.user_draw.emitDate = new Date(Date.now());
-    this.user_draw.owner = this.user.email;
-    
     await this.store.dispatch(userAction.ARCHIVE_DRAW({draw: this.user_draw}));
     await this.native.showLoading();
     await this.updateUser();
+    await this.fetchLastDraw();
     await this.native.showLoading();
-    await this.store.dispatch(userAction.GET_Populated());
-    this.router.navigate(['/file', 0]);
+    await this.openLastDraw();
   }
 
   async updateUser(){
@@ -96,14 +122,11 @@ export class InicioPage implements OnInit {
   }
 
   filterLoteries(){
+    this.cleanUserDraw();
     this.loteriesFilters=[];
     this.draws$.subscribe(resp =>{
       this.loteriesFilters = resp.filter((val)=> val.lottery === this.filter);
     });
-  }
-
-  date(expiryDate){
-    return new Date(expiryDate);
   }
 
   userDraw(){
@@ -111,7 +134,6 @@ export class InicioPage implements OnInit {
       this.user_draw.lottery = this.draw.lottery;
       this.user_draw.draw = this.draw.draw;
       this.user_draw.img = this.draw.img;
-      this.user_draw.expiryDate = this.draw.expiryDate;
       this.user_draw.ballsqty = this.draw.ballsqty;
       this.user_draw.Data = [];
     }
@@ -121,11 +143,13 @@ export class InicioPage implements OnInit {
     await this.notify('Para recargar deposite a esta cuenta: null');
   }
 
-  async openNormal(draw, game){
+  async openNormal(draw: AdminDraw, game: number){
+    this.cleanUserDraw();
     this.draw = draw;
     this.game = game;
     this.game? this.draw_type = 'Sorteo Gold' : this.draw_type = 'Sorteo Platinum';
     this.game? this.price = 3 * this.draw.ballsqty : this.price = 5 * this.draw.ballsqty;
+    this.drawfilter = draw.draw;
 
     this.userDraw();
     this.numbers_draws = [];
@@ -149,8 +173,11 @@ export class InicioPage implements OnInit {
     }
   }
 
-  async openRandom(draw){
+  async openRandom(draw: AdminDraw){
+    this.cleanUserDraw();
     this.draw = draw;
+    this.drawfilter = draw.draw;
+
     this.userDraw();
     this.numbers_draws = [];
     this.price = 2 * this.draw.ballsqty;

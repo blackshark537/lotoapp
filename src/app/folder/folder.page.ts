@@ -45,9 +45,9 @@ export class FolderPage implements OnInit {
     return this.platform.is('android') || this.platform.is('desktop')? true : false;
   }
 
-  ngOnInit() {
+  async ngOnInit() {
     this.folder = this.activatedRoute.snapshot.paramMap.get('id');
-    this.store.select('user_state').subscribe(state=>{
+    await this.store.select('user_state').subscribe(state=>{
       this.user = {...state};
       this.user.archived = [...state.archived];
       this.user.recycle = [...state.recycle];

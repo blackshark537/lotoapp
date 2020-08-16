@@ -58,7 +58,9 @@ export class LogginPage implements OnInit {
 
   async signup(user: userLog){
     if(user.password === user.confirmPassword){
+      this.native.showLoading();
       this.store.dispatch(userActions.Signup({user}));
+      this.register = false;
     } else {
       await this.native.showError('Error, las contraseñas no coinciden');
     }

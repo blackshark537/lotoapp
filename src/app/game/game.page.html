@@ -1,33 +1,34 @@
 <ion-header [translucent]="true">
   <ion-toolbar color="tertiary" >
     <ion-buttons slot="start">
-      <!-- <ion-button (click)="goInicio()">
-        <ion-icon [ios]="'chevron-back-outline'" [md]="'arrow-back-sharp'" ></ion-icon>
-        Atrás
-      </ion-button> -->
-      <ion-back-button (click)="goInicio()"></ion-back-button>
+      <ion-back-button ></ion-back-button>
     </ion-buttons>
-
-    <ion-buttons slot="end" >
+    <ion-title>
+      Lista de Números Sorteados
+    </ion-title>
+    <!-- <ion-buttons slot="end" >
         <p class="credit">Crédito Inicial: {{initialCredit | currency}} </p>
         <p class="credit">Débito: {{debit | currency}} </p>
         <p class="credit">Crédito Final: {{user.credits | currency}} </p>
-    </ion-buttons>
+    </ion-buttons> -->
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <h4>
-    Reporte de números seleccionados para el sorteo del {{draw.expiryDate | date :'mediumDate' : '-0400' : 'es-do' }} a las 8:55pm
-  </h4>
-  <div class="t-container">
+  <div class="t-container" *ngFor="let user_draw of user_draws;">
+    <h4>
+      Reporte de números seleccionados para el sorteo de la Loteria {{user_draw.draw | titlecase}}
+    </h4>
+    <h4>
+      Sorteado a la fecha de: {{user_draw.emitDate }}
+    </h4>
     <table class="table">
       <thead class="thead">
         <tr>
           <th class="normal">
             #No
           </th>
-          <th *ngFor="let head of header; index as i" 
+          <th *ngFor="let head of headers(user_draw); index as i" 
           class="{{head == 'L.MAS'? 'lmas' : head == 'S.L.MAS'? 'slmas' : 'normal'}}">
               {{ head }}
 
@@ -43,20 +44,13 @@
       <tbody class="tbody">
         <tr *ngFor="let row of user_draw.Data; index as i;">
           <td style="background-color: blanchedalmond; color: black;">{{i+1 + '.-'}}</td>
-          <td *ngFor="let col of row; index as i">
-            {{col}}
+          <td *ngFor="let col of row; index as j">
+            {{row.length-1 != j? col : col | currency}}
           </td>
-          <!-- <td>-{{price | currency}}</td> -->
         </tr>
       </tbody>
     </table>
+    <ion-item-divider></ion-item-divider>
   </div>
-
-<!-- fab placed to the bottom end -->
-<!-- <ion-fab  vertical="bottom" horizontal="end" slot="fixed">
-  <ion-fab-button (click)="openAction()">
-    <ion-icon name="add"></ion-icon>
-  </ion-fab-button>
-</ion-fab> -->
 
 </ion-content>

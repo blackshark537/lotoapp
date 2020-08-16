@@ -24,7 +24,7 @@
         <h1 style="text-align: center; margin: auto;">Seleccione una lotería!</h1>
       </ion-col>
       <ion-col size="12" size-md="4" *ngFor="let draw of lotteryModel; index as i;">
-        <ion-card type="button" class="card-hover" (click)="filter=draw.lottery; filterLoteries();">
+        <ion-card type="button" class="card-hover" (click)="filter=draw.lottery;  filterLoteries();">
           <img [src]="draw.img" class="lottery"/>
           <ion-card-header class="ion-text-center">
             <ion-card-title class="truncate-text">{{draw.lottery}}</ion-card-title>
@@ -100,4 +100,11 @@
       por favor inténtelo más tarde.
     </p>
   </div>
+
+  <!-- fab placed to the bottom end -->
+<ion-fab  vertical="bottom" horizontal="end" slot="fixed">
+  <ion-fab-button [disabled]="last_draw && last_draw.length==0" color="danger" (click)="openLastDraw()">
+    <ion-icon [ios]="'open-outline'" [md]="'open-sharp'"></ion-icon>
+  </ion-fab-button>
+</ion-fab>
 </ion-content>

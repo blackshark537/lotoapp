@@ -7,8 +7,12 @@ export interface Draw{
     img?: string;
     ballsqty: number;
     Data: any[];
-    emitDate?: Date;
-    expiryDate?: Date;
+    emitDate?: string;
+    expiryDate?: string;
+    updateDate?: string;
+    day?: number;
+    month?: number;
+    year?: number;
 }
 
 export interface AdminDraw{
@@ -24,6 +28,7 @@ export interface AdminDraw{
     Games: Game[];
     emitDate?: Date;
     expiryDate?: Date;
+    updateDate?: string;
 }
 
 export interface Game{

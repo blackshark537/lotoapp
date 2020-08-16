@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Plugins } from '@capacitor/core';
 import { AlertController, ToastController, Platform, LoadingController } from '@ionic/angular';
-import { NgZone } from '@angular/core';
+
 
 const { Storage, Toast, Modals} = Plugins;
 
@@ -37,7 +37,7 @@ export class NativeHelpersService {
     });
   }
 
-  async showToast(text: string){
+  async showToast(text: string, buttons?: any[]){
     const toast = await this.toastCtrl.create({
       message: text,
       position: 'top',
@@ -52,6 +52,8 @@ export class NativeHelpersService {
       translucent: true,
       duration: 4000
     });
+
+    if (buttons) toast.buttons = buttons;
     this.matdesign ? toast.position = 'bottom' : toast.position = 'top';
     await toast.present(); 
   }
@@ -116,23 +118,4 @@ export class NativeHelpersService {
     await error.present();
   }
 
-/*   async showActions(title: string, opt: ActionSheet[]): Promise<number> {
-    let promptRet = await Modals.showActions({
-      title,
-      options: [
-        ...opt,
-        {
-          title: 'Cancelar',
-          icon: 'close',
-          style: ActionSheetOptionStyle.Destructive
-        }
-      ]
-    });
-    return promptRet.index
-  } */
-}
-
-interface ActionSheet{
-  title: string
-  icon: string
 }

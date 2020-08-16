@@ -1,0 +1,31 @@
+<ion-header>
+  <ion-toolbar color="tertiary">
+    <ion-title>Usuario: {{user.name | titlecase}}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-card>
+    <ion-avatar>
+      <img src="assets/avatar-1.png" alt="Avatar">
+    </ion-avatar>
+    <ion-card-content>
+      <ion-label>
+        <h4>Nombre: {{user.name | titlecase}}</h4>
+        <h5>Email: {{user.email}}</h5>
+        <p>Creado: {{user.created | date: 'short'}}</p>
+      </ion-label>
+      <ion-label position="fixed">Credits
+      </ion-label>
+      <input type="number" [(ngModel)]="user.credits" />
+    </ion-card-content>
+  </ion-card>
+</ion-content>
+<ion-footer>
+  <ion-toolbar>
+    <ion-buttons slot="end">
+      <ion-button (click)="dismiss()">Close</ion-button>
+      <ion-button (click)="save()">Save</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-footer>

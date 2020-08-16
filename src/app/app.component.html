@@ -17,7 +17,7 @@
           <ion-menu-toggle auto-hide="false" *ngFor="let p of appPages; let i = index">
             <ion-item
               class="{{p.title === 'Sorteos' && user.role === 'User' || p.title === 'Usuarios' && user.role === 'User'? 'd-none' : 'd-block'}}"
-              [disabled]="is_game_route" routerDirection='root' (click)="selectedIndex = i" [routerLink]="[p.url]"
+               routerDirection='root' (click)="selectedIndex = i" [routerLink]="[p.url]"
               routerLinkActive="selected">
               <ion-icon color="{{p.style}}" slot="start" [ios]="p.icon + '-outline'" [md]="p.icon + '-sharp'"></ion-icon>
               <ion-label>{{ p.title }}</ion-label>
@@ -29,25 +29,6 @@
             <ion-label>Salir</ion-label>
           </ion-item>
         </ion-list>
-
-<!--         <ion-list>
-          <ion-item>
-            <ion-text>Etiquetas</ion-text>
-          </ion-item>
-
-          <ion-item lines="none">
-            <ion-icon slot="start" color="medium" [ios]="'bookmark-outline'" [md]="'bookmark-sharp'"></ion-icon>
-            <ion-label>Platinum</ion-label>
-          </ion-item>
-          <ion-item lines="none">
-            <ion-icon slot="start" color="warning" [ios]="'bookmark-outline'" [md]="'bookmark-sharp'"></ion-icon>
-            <ion-label>Gold</ion-label>
-          </ion-item>
-          <ion-item lines="none">
-            <ion-icon slot="start" color="danger" [ios]="'bookmark-outline'" [md]="'bookmark-sharp'"></ion-icon>
-            <ion-label>Por la maquina</ion-label>
-          </ion-item>
-        </ion-list> -->
 
       </ion-content>
     </ion-menu>

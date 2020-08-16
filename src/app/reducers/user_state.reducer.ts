@@ -49,18 +49,11 @@ export const userReducer = createReducer(user_state,
     on(ARCHIVE_DRAW_SUCCESS, (state, {resp})=>{
         let user = {...state};
         user.archived = [...user.archived];
-        user.archived.push(resp.body._id)
+        if(!user.archived.includes(resp.body._id)){
+            user.archived.push(resp.body._id);
+        }
         return user
     }),
-/*     on(MARK_AS_FAVORITE, (state, {index})=>{
-        let new_state = {...state}; //remove readonly state
-        let new_archive = [...new_state.archived]; //remove readonly archive
-        let new_data = {...new_archive[index]};//remove readonly archive data
-        new_data.favorite = !new_data.favorite;
-        new_archive[index]=new_data;
-        new_state.archived = new_archive;
-        return new_state;
-    }), */
     on(RECICLE, (state, {index})=>{
         let new_state = {...state}; //remove readonly state
         let new_archive = [...new_state.archived]; //remove readonly archive
@@ -91,7 +84,6 @@ export const userReducer = createReducer(user_state,
         return {...state}
     }),
     on(SigninSuccess, (state, {resp})=>{
-
         presentLoading().then(async () => {
             localStorage.setItem('token', resp.body.token)
             localStorage.setItem('role', resp.body.profile.role)

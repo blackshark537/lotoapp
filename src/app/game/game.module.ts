@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
-import { MomentModule } from 'ngx-moment';
 import { GamePageRoutingModule } from './game-routing.module';
 
 import { GamePage } from './game.page';
@@ -14,7 +13,6 @@ import { CustomGameComponent } from './custom-game/custom-game.component';
   imports: [
     CommonModule,
     FormsModule,
-    MomentModule,
     IonicModule,
     GamePageRoutingModule
   ],

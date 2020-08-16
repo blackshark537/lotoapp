@@ -21,7 +21,7 @@
     </ion-avatar>
     <ion-label *ngIf="draw != undefined ">
         <h2>{{ draw? draw.lottery + ' '+ draw.draw : ''}}</h2>
-        <h3>Creada: {{draw.emitDate | date: 'short'}} {{ draw.emitDate | amLocale: 'es-do' | amTimeAgo}}</h3>
+        <h3>Creada: {{draw.emitDate }}</h3>
         <p>id: {{ draw._id}}</p>
     </ion-label>
   </ion-item>

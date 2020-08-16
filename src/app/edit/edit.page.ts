@@ -6,6 +6,7 @@ import { AdminDraw } from '../models/draw.model';
 import { ModalController } from '@ionic/angular';
 import { ModalComponent } from './modal/modal.component';
 import { EDIT } from '../actions/admin_draw.action';
+import { NativeHelpersService } from '../services/native-helpers.service';
 
 
 @Component({
@@ -23,6 +24,7 @@ export class EditPage implements OnInit {
   numbersLmasAvailable: number[] = [];
   numbersSLmasAvailable: number[] = [];
   constructor(
+    private native: NativeHelpersService,
     private modalCtrl: ModalController,
     private router: Router,
     private store: Store<StoreModel>,
@@ -40,6 +42,7 @@ export class EditPage implements OnInit {
     });
 
     if(this.draw){
+      this.fillNumbers();
       this.draw = {...this.draw};
       this.draw.Games = [...this.draw.Games];
       this.draw.Games[this.game] = {...this.draw.Games[this.game]};
@@ -50,6 +53,7 @@ export class EditPage implements OnInit {
       });
       if(this.draw.Games[this.game].Data.length === 0){
         this.wipeData();
+        this.fillNumbers();
       }
     }
 
@@ -61,17 +65,19 @@ export class EditPage implements OnInit {
   }
 
   wipeData(){
+    this.draw.Games[this.game].Data = [];
+  }
+
+  fillNumbers(){
     this.numbersAvailable = [];
     this.numbersLmasAvailable = [];
     this.numbersSLmasAvailable = [];
-    this.draw.Games[this.game].Data = [];
     for(let i = 0; i < this.draw.max_values; i++){
       this.numbersAvailable.push(i+1);
       if(i < 15) this.numbersSLmasAvailable.push(i+1);
       if(i < 10) this.numbersLmasAvailable.push(i+1);
     }
   }
-
 
   async pushOne(){
     let availables = [];
@@ -120,8 +126,12 @@ export class EditPage implements OnInit {
   }
 
   async save(){
-    this.store.dispatch(EDIT({index: 0, Draw: this.draw}));
-    this.router.navigate(['sorteos']);
+    if(this.draw.Games[this.game].Data.length === 0 || this.draw.Games[this.game].Data.length === this.draw.ballsqty){
+      this.store.dispatch(EDIT({index: 0, Draw: this.draw}));
+      this.router.navigate(['sorteos']);
+    } else {
+      this.native.showError(`Este sorteo necesita ${this.draw.ballsqty} lineas de bolos \n y solo tiene ${this.draw.Games[this.game].Data.length}`)
+    }
   }
 
 }

@@ -25,7 +25,7 @@ const routes: Routes = [
     loadChildren: () => import('./inicio/inicio.module').then( m => m.InicioPageModule)
   },
   {
-    path: 'game/:id',
+    path: 'game',
     canActivate: [AuthGuard],
     loadChildren: () => import('./game/game.module').then( m => m.GamePageModule)
   },

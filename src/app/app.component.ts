@@ -92,10 +92,20 @@ export class AppComponent implements OnInit {
       this.router.navigate(['inicio']);
     }
 
-/*     addEventListener('beforeunload', (evt)=>{
+    addEventListener('offline', (evt)=>{
       evt.preventDefault();
-      this.store.dispatch(SAVE_STATE());
-    }); */
+      this.native.showToast('No esta conectado!');
+    });
+
+    addEventListener('online', (evt)=>{
+      evt.preventDefault();
+      this.native.showToast('Se ha restablecido la conexion!', [
+        {
+          icon: 'wifi',
+          side: 'end'
+        }
+      ]);
+    });
 
     this.store.select('user_state').subscribe(state=>{
       this.user = {...state};

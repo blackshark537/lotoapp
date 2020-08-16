@@ -31,11 +31,46 @@ export class userEffects{
         )
     ));
 
+    updateDraw$ = createEffect(() =>
+    this.actions$.pipe(
+        ofType(user.UPDATE_DRAW_BY_ID),
+        exhaustMap(payload =>
+            this.httpService.updateDraw(payload.draw).pipe(
+                map(draw => user.GET_DRAW_BY_ID({id: draw.body._id})),
+                catchError(error => of(user.Error({error})))
+            )
+        )
+    ));
+
+    getDrawById$ = createEffect(() =>
+    this.actions$.pipe(
+        ofType(user.GET_DRAW_BY_ID),
+        exhaustMap(payload =>
+            this.httpService.getDrawById(payload.id).pipe(
+                map(draw => user.DRAW_BY_ID_SUCCESS({draw})),
+                catchError(error => of(user.Error({error})))
+            )
+        )
+    )
+    );
+
+    getDrawsByDate$ = createEffect(() =>
+    this.actions$.pipe(
+        ofType(user.GET_DRAWS_BY_DATE),
+        exhaustMap(payload =>
+            this.httpService.getDrawsByDate(payload.date).pipe(
+                map(draw => user.DRAW_BY_ID_SUCCESS({draw})),
+                catchError(error => of(user.Error({error})))
+            )
+        )
+    )
+    );
+
     createDraw$ = createEffect(() =>
     this.actions$.pipe(
         ofType(user.ARCHIVE_DRAW),
         exhaustMap(payload =>
-            this.httpService.saveDraw(payload.draw).pipe(
+            this.httpService.saveDrawByDate(payload.draw).pipe(
                 map(resp => user.ARCHIVE_DRAW_SUCCESS({resp})),
                 catchError(error => of(user.Error({error})))
             )

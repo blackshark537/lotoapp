@@ -21,6 +21,7 @@ import { AdminEffects } from './effects/admin.effects';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { UsersProfilesReducer } from './reducers/users_profiles.reducer';
+import { drawReducer } from './reducers/draw_state.reducer';
 
 @NgModule({
   declarations: [AppComponent],
@@ -32,6 +33,7 @@ import { UsersProfilesReducer } from './reducers/users_profiles.reducer';
     AppRoutingModule,
     EffectsModule.forRoot([userEffects, AdminEffects]),
     StoreModule.forRoot({
+       draw_state: drawReducer,
        admin_draw: reducerDraw,
        user_state: UserReducer,
        users_profiles: UsersProfilesReducer
