@@ -21,6 +21,7 @@ export const DRAW_BY_ID_SUCCESS = createAction('[user State] Get Draw By Id Succ
 export const UPDATE_DRAW_BY_ID = createAction('[user State] Update Draw By Id', props<{draw: Draw}>());
 
 export const UPDATE = createAction('[user State] patch user', props<{user: UserModel}>());
+export const CHARGE_USER = createAction('[User State] Charge User', props<{ballsQty: number, price: number}>());
 export const MARK_AS_FAVORITE = createAction('[user State] mark draw as favorite', props<{draw: Draw}>());
 export const RECICLE = createAction('[user State] send draw to recicle', props<{index: number}>());
 export const ADMIN_RECICLE = createAction('[user State] send admin_draw to recicle', props<{draw: Draw}>());

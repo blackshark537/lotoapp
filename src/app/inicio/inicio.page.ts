@@ -70,6 +70,7 @@ export class InicioPage implements OnInit {
 
   async ngOnInit() {
     this.cleanUserDraw();
+    this.fetchLastDraw();
     this.draws$ = this.store.select('admin_draw');
     await this.store.select('user_state').subscribe(resp =>{
       this.user = {...resp};
@@ -81,7 +82,6 @@ export class InicioPage implements OnInit {
 
     this.store.dispatch(adminAction.GET());
     this.store.dispatch(userAction.GET());
-    this.fetchLastDraw();
   }
 
   cleanUserDraw(){
@@ -101,6 +101,7 @@ export class InicioPage implements OnInit {
   }
 
   openLastDraw(){
+    this.fetchLastDraw();
     this.router.navigate(['/game']);
   }
 
@@ -111,10 +112,10 @@ export class InicioPage implements OnInit {
   async save_draw(){
     await this.store.dispatch(userAction.ARCHIVE_DRAW({draw: this.user_draw}));
     await this.native.showLoading();
-    await this.updateUser();
-    await this.fetchLastDraw();
+    this.store.dispatch(userAction.GET());
+    this.fetchLastDraw();
     await this.native.showLoading();
-    await this.openLastDraw();
+    this.openLastDraw();
   }
 
   async updateUser(){
@@ -148,15 +149,15 @@ export class InicioPage implements OnInit {
     this.draw = draw;
     this.game = game;
     this.game? this.draw_type = 'Sorteo Gold' : this.draw_type = 'Sorteo Platinum';
-    this.game? this.price = 3 * this.draw.ballsqty : this.price = 5 * this.draw.ballsqty;
+    this.game? this.price = 3 : this.price = 5;
     this.drawfilter = draw.draw;
 
     this.userDraw();
     this.numbers_draws = [];
     if(this.user.credits> this.price){
       if(await this.ask()){
-        this.user.credits -= this.price
-        await this.updateUser();
+        /* charge User*/
+        this.store.dispatch(userAction.CHARGE_USER({ballsQty: this.draw.ballsqty, price: this.price}))
         try{
           await this.normal_draw(0);
           await this.openModal();
@@ -180,12 +181,12 @@ export class InicioPage implements OnInit {
 
     this.userDraw();
     this.numbers_draws = [];
-    this.price = 2 * this.draw.ballsqty;
+    this.price = 2;
     this.draw_type = 'Sorteo por la maquina';
     if(this.user.credits> this.price){
       if(await this.ask()){
-        this.user.credits -= this.price
-        await this.updateUser();
+        /* Charge User*/
+        this.store.dispatch(userAction.CHARGE_USER({ballsQty: this.draw.ballsqty, price: this.price}))
         try{
           await this.random_draw();
           this.openModal();
@@ -199,7 +200,7 @@ export class InicioPage implements OnInit {
   }
 
   async ask(): Promise<boolean>{
-    const msg = `se descontaran  $${this.price}.00 creditos, aceptar para continuar!`;
+    const msg = `se descontaran  $${this.price * this.draw.ballsqty}.00 creditos, aceptar para continuar!`;
     return await this.native.comfirmModal(msg);
   }
 
@@ -263,7 +264,7 @@ export class InicioPage implements OnInit {
     await modal.present();
     const { data } = await modal.onWillDismiss();
     if(data.data.length >0){
-      data.data.push(this.price);
+      data.data.push(this.price*this.draw.ballsqty);
        this.user_draw.Data.push(data.data);
        await this.save_draw()
     };

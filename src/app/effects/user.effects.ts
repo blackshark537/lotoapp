@@ -71,7 +71,7 @@ export class userEffects{
         ofType(user.ARCHIVE_DRAW),
         exhaustMap(payload =>
             this.httpService.saveDrawByDate(payload.draw).pipe(
-                map(resp => user.ARCHIVE_DRAW_SUCCESS({resp})),
+                map(resp => user.GET()),
                 catchError(error => of(user.Error({error})))
             )
         )
@@ -95,6 +95,15 @@ export class userEffects{
         ))
     ));
 
+    chargeUser$ =createEffect(() =>
+    this.actions$.pipe(
+        ofType(user.CHARGE_USER),
+        exhaustMap(({ballsQty, price}) => this.httpService.chargeUser(ballsQty, price).pipe(
+            map(resp => user.GET()),
+            catchError(error => of(user.Error({error})))
+        ))
+    ));
+
     getUserProfiles$ = createEffect(() =>
     this.actions$.pipe(
         ofType(user.GET_All_Users),
@@ -102,8 +111,7 @@ export class userEffects{
             map(resp => user.GET_All_Users_Success({resp})),
             catchError(error => of(user.Error({error})))
         ))
-    )
-    );
+    ));
 
     getUserPopulated$ = createEffect(() =>
     this.actions$.pipe(

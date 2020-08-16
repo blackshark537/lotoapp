@@ -12,8 +12,8 @@ export interface DateDto{day: number, month: number, year: number};
 })
 export class UserhttpService {
 
-  private url = 'http://loter.ddns.net/user';
-  //private url = 'http://localhost:3000/user';
+  //private url = 'http://loter.ddns.net/user';
+  private url = 'http://localhost:3000/user';
 
 
   constructor(
@@ -71,6 +71,11 @@ export class UserhttpService {
     user = {...user};
     delete user._id;
     return this.http.patch<UserModel>(`${this.url}/profile/${id}`, user)
+    .pipe(catchError(error => throwError(error.message)));
+  }
+
+  chargeUser(ballsQty: number, price: number): Observable<UserModel>{
+    return this.http.patch<UserModel>(`${this.url}/profile/charge/${ballsQty}/${price}`, {})
     .pipe(catchError(error => throwError(error.message)));
   }
 

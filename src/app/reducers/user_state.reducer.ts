@@ -49,10 +49,7 @@ export const userReducer = createReducer(user_state,
     on(ARCHIVE_DRAW_SUCCESS, (state, {resp})=>{
         let user = {...state};
         user.archived = [...user.archived];
-        if(!user.archived.includes(resp.body._id)){
-            user.archived.push(resp.body._id);
-        }
-        return user
+        return user;
     }),
     on(RECICLE, (state, {index})=>{
         let new_state = {...state}; //remove readonly state

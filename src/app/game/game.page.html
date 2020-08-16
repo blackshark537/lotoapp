@@ -15,41 +15,43 @@
 </ion-header>
 
 <ion-content>
-  <div class="t-container" *ngFor="let user_draw of user_draws;">
-    <h4>
-      Reporte de números seleccionados para el sorteo de la Loteria {{user_draw.draw | titlecase}}
-    </h4>
-    <h4>
-      Sorteado a la fecha de: {{user_draw.emitDate }}
-    </h4>
-    <table class="table">
-      <thead class="thead">
-        <tr>
-          <th class="normal">
-            #No
-          </th>
-          <th *ngFor="let head of headers(user_draw); index as i" 
-          class="{{head == 'L.MAS'? 'lmas' : head == 'S.L.MAS'? 'slmas' : 'normal'}}">
-              {{ head }}
-
-          </th>
-          <th class="normal">
-              Modo
-          </th>
-          <th class="normal">
-            Créditos
-          </th>
-        </tr>
-      </thead>
-      <tbody class="tbody">
-        <tr *ngFor="let row of user_draw.Data; index as i;">
-          <td style="background-color: blanchedalmond; color: black;">{{i+1 + '.-'}}</td>
-          <td *ngFor="let col of row; index as j">
-            {{row.length-1 != j? col : col | currency}}
-          </td>
-        </tr>
-      </tbody>
-    </table>
+  <div *ngFor="let user_draw of user_draws;">
+      <h4>
+        Reporte de números seleccionados para el sorteo de la Loteria {{user_draw.draw | titlecase}}
+      </h4>
+      <h4>
+        Sorteado a la fecha de: {{user_draw.emitDate }}
+      </h4>
+      <div class="t-container">
+        <table class="table">
+          <thead class="thead">
+            <tr>
+              <th class="normal">
+                #No
+              </th>
+              <th *ngFor="let head of headers(user_draw); index as i" 
+              class="{{head == 'L.MAS'? 'lmas' : head == 'S.L.MAS'? 'slmas' : 'normal'}}">
+                  {{ head }}
+    
+              </th>
+              <th class="normal">
+                  Modo
+              </th>
+              <th class="normal">
+                Créditos
+              </th>
+            </tr>
+          </thead>
+          <tbody class="tbody">
+            <tr *ngFor="let row of user_draw.Data; index as i;">
+              <td style="background-color: blanchedalmond; color: black;">{{i+1 + '.-'}}</td>
+              <td *ngFor="let col of row; index as j">
+                {{row.length-1 != j? col : col | currency}}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     <ion-item-divider></ion-item-divider>
   </div>
 
