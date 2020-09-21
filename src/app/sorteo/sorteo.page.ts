@@ -9,6 +9,7 @@ import { StoreModel } from '../models/store.model';
 import { Observable } from 'rxjs';
 import { NativeHelpersService } from '../services/native-helpers.service';
 import * as EXEL from 'xlsx';
+import { filter } from 'rxjs/operators';
 
 @Component({
   selector: 'app-sorteo',
@@ -19,6 +20,7 @@ export class SorteoPage implements OnInit {
 
   selectedIndex: number
   draw$: Observable<AdminDraw[]>;
+  filtro:string = '';
   draw: Draw;
   edit: boolean;
   currDate = new Date(Date.now());
@@ -36,6 +38,10 @@ export class SorteoPage implements OnInit {
     this.edit= false;
     this.draw$ = this.store.select('admin_draw');
     this.store.dispatch(GET());
+  }
+
+  filter(value){
+    this.filtro = value;
   }
 
   get matdesign(): boolean{

@@ -101,7 +101,7 @@ export class InicioPage implements OnInit {
   }
 
   openLastDraw(){
-    this.fetchLastDraw();
+    if(this.last_draw.length === 0) this.fetchLastDraw();
     this.router.navigate(['/game']);
   }
 
@@ -112,10 +112,10 @@ export class InicioPage implements OnInit {
   async save_draw(){
     await this.store.dispatch(userAction.ARCHIVE_DRAW({draw: this.user_draw}));
     await this.native.showLoading();
-    this.store.dispatch(userAction.GET());
-    this.fetchLastDraw();
+    await this.store.dispatch(userAction.GET());
+    await this.fetchLastDraw();
     await this.native.showLoading();
-    this.openLastDraw();
+    await this.openLastDraw();
   }
 
   async updateUser(){

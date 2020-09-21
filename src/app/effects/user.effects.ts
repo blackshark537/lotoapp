@@ -71,7 +71,8 @@ export class userEffects{
         ofType(user.ARCHIVE_DRAW),
         exhaustMap(payload =>
             this.httpService.saveDrawByDate(payload.draw).pipe(
-                map(resp => user.GET()),
+                map(resp => user.ARCHIVE_DRAW_SUCCESS({resp})),
+                map(()=> user.GET()),
                 catchError(error => of(user.Error({error})))
             )
         )

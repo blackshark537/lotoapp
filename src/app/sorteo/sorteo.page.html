@@ -11,7 +11,7 @@
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
-  <ion-searchbar animated></ion-searchbar>
+  <ion-searchbar (ionChange)="filter($event.target.value)" debounce="500" animated showCancelButton="focus" placeholder="Filtrar"></ion-searchbar>
 </ion-header>
 
 <ion-content>

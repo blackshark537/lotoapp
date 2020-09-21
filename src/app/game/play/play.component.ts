@@ -16,14 +16,14 @@ export class PlayComponent implements OnInit, OnDestroy {
   @Input('draw') draw: number[];
   @Output('data') data: any[];
 
-  soundApi = new Audio();
-  balls: Ball[]=[];
+  soundApi;
+  balls: Ball[];
   tombola: Tombola;
   drawBall: DrawBall;
-  can_save: boolean=false;
-  goforit: boolean = false;
-  finished: boolean = false;
-  webgl: boolean = false;
+  can_save: boolean;
+  goforit: boolean;
+  finished: boolean;
+  webgl: boolean;
   canvas;
 
   constructor(
@@ -33,7 +33,13 @@ export class PlayComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     if(this.canvas) this.canvas.remove();
-    this.data = [];
+    this.data     = [];
+    this.can_save = false;
+    this.goforit  = false;
+    this.finished = false;
+    this.webgl    = false;
+    this.balls    = [];
+    this.soundApi = new Audio();
     this.sketch();
   }
 
@@ -126,11 +132,12 @@ export class PlayComponent implements OnInit, OnDestroy {
         }
 
         if(loop && !this.drawBall.end_drawing){
-          this.balls.map((ball: Ball) =>{
+          for (let i = this.balls.length-1; i > 0; i--) {
+            let ball = this.balls[i];
             ball.force = gvty;
             ball.force = wind;
             ball.draw();
-          });
+          }
         }
 
         this.drawBall.draw();

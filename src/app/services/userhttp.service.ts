@@ -12,8 +12,8 @@ export interface DateDto{day: number, month: number, year: number};
 })
 export class UserhttpService {
 
-  //private url = 'http://loter.ddns.net/user';
-  private url = 'http://localhost:3000/user';
+  private url = 'http://loter.ddns.net/user';
+  //private url = 'http://localhost:3000/user';
 
 
   constructor(
@@ -102,7 +102,7 @@ export class UserhttpService {
   }
 
   getDrawsByDate(date: DateDto): Observable<Draw[]>{
-    return this.http.get<Draw[]>(`${this.url}/draws/date/${date.day}/${date.month}/${date.year}`)
+    return this.http.get<Draw[]>(`${this.url}/draws/today`)
       .pipe(catchError(error => throwError(error.message)));
   }
 

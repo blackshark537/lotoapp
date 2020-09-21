@@ -15,9 +15,23 @@
 </ion-header>
 
 <ion-content>
-  <div *ngFor="let user_draw of user_draws;">
+  <div id="container" *ngIf="user_draws.length === 0; else elseBlock">
+    <h1>
+      <ion-icon size="large" name="beer-outline"></ion-icon>
+    </h1>
+    <strong class="capitalize" >
+      <ion-icon name="leaf-outline"></ion-icon>
+      No existen Sorteos disponibles.
+    </strong>
+    <p>
+      por favor realice un sorteo.
+    </p>
+  </div>
+  <ng-template #elseBlock>
+    <div *ngFor="let user_draw of user_draws;">
       <h4>
-        Reporte de números seleccionados para el sorteo de la Loteria {{user_draw.draw | titlecase}}
+        Reporte de números seleccionados para el sorteo de la draw_balls.push(new Ball(p, val, this.webgl))Loteria
+        {{user_draw.draw | titlecase}}
       </h4>
       <h4>
         Sorteado a la fecha de: {{user_draw.emitDate }}
@@ -29,13 +43,13 @@
               <th class="normal">
                 #No
               </th>
-              <th *ngFor="let head of headers(user_draw); index as i" 
-              class="{{head == 'L.MAS'? 'lmas' : head == 'S.L.MAS'? 'slmas' : 'normal'}}">
-                  {{ head }}
-    
+              <th *ngFor="let head of headers(user_draw); index as i"
+                class="{{head == 'L.MAS'? 'lmas' : head == 'S.L.MAS'? 'slmas' : 'normal'}}">
+                {{ head }}
+  
               </th>
               <th class="normal">
-                  Modo
+                Modo
               </th>
               <th class="normal">
                 Créditos
@@ -52,7 +66,8 @@
           </tbody>
         </table>
       </div>
-    <ion-item-divider></ion-item-divider>
-  </div>
-
-</ion-content>
+      <ion-item-divider></ion-item-divider>
+    </div>
+  </ng-template>
+  
+  </ion-content>
