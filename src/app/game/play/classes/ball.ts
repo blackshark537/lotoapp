@@ -73,6 +73,7 @@ export class Ball{
   }
 
   _draw(pos: { tex: number; x: number; y: number;}){
+    this.num = pos.tex;
     this.p.push();
     this.p.noStroke();
     if(this.webgl){

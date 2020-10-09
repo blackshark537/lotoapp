@@ -4,6 +4,11 @@ import { Ball } from './classes/ball';
 import { Tombola } from './classes/tombola';
 import { DrawBall } from './classes/ball_draw';
 import * as P5 from 'p5';
+import { Router } from '@angular/router';
+import { AdminDraw, Draw, TipoSorteo } from 'src/app/models/draw.model';
+import * as userAction from '../../actions/user.actions';
+import { Store } from '@ngrx/store';
+import { StoreModel } from 'src/app/models/store.model';
 
 @Component({
   selector: 'app-play',
@@ -13,10 +18,17 @@ import * as P5 from 'p5';
 export class PlayComponent implements OnInit, OnDestroy {
 
   @Input('game') game: string;
-  @Input('draw') draw: number[];
+  @Input('credits') credits: number = 0;
+  //@Input('draw') draw: number[];
+  @Input('price') price: number = 0;
+  @Input('UserDraw') UserDraw: Draw;
+  @Input('AdminDraw') AdminDraw: AdminDraw;
   @Output('data') data: any[];
 
+
   soundApi;
+  index: number;
+  draw_type: number;
   balls: Ball[];
   tombola: Tombola;
   drawBall: DrawBall;
@@ -28,19 +40,39 @@ export class PlayComponent implements OnInit, OnDestroy {
 
   constructor(
     private modalCtrl: ModalController,
-    private alertCtrl: AlertController
+    private router: Router,
+    private store: Store<StoreModel>
    ) { }
 
   ngOnInit() {
     if(this.canvas) this.canvas.remove();
     this.data     = [];
+    this.UserDraw = {...this.UserDraw};
+    this.UserDraw.Data = [];
     this.can_save = false;
     this.goforit  = false;
     this.finished = false;
     this.webgl    = false;
     this.balls    = [];
+    this.index    = 0;
+    this.draw_type = this.game === TipoSorteo.GOLD? 0:1;
     this.soundApi = new Audio();
     this.sketch();
+  }
+
+  pickOne(p: P5){
+    setTimeout(async _=>{
+      if(this.index < this.AdminDraw.ballsqty){
+        if(this.game != TipoSorteo.RANDOM){
+          this.data.push( await this.pick_one(this.AdminDraw.Games[0].Data[this.index], p) );
+        } else {
+          this.data.push( await this.pick_random(p) );
+        }
+        this.drawBall.pick_one(this.data[this.index]);
+        this.index++;
+        this.pickOne(p);
+      }
+    }, 1000);
   }
 
   sketch(){
@@ -78,7 +110,9 @@ export class PlayComponent implements OnInit, OnDestroy {
           this.balls.push(new Ball(p, i+15, this.webgl));
         };
         
-        this.draw.map(val=> draw_balls.push(new Ball(p, val, this.webgl)));
+        for(let i=0; i < this.UserDraw.ballsqty; i++){
+          draw_balls.push(new Ball(p, 0, this.webgl));
+        }
         this.drawBall = new DrawBall( p, draw_balls);
         this.tombola = new Tombola(p, img, this.webgl);
         p.frameRate(60);
@@ -88,18 +122,16 @@ export class PlayComponent implements OnInit, OnDestroy {
       
       p.mouseClicked = ()=>{
         if(loop){
-          this.drawBall.pick_one();
           this.keyPressed();
         }
         if(p.mouseX > 100 && p.mouseX < 400-100 && p.mouseY > 100 && p.mouseY < 400-100){
           if(!loop) loop = true;
-          setTimeout(()=> this.drawBall.pick_one(), 500);
+          this.pickOne(p);
         }
       }
 
       p.keyPressed = ()=>{
         if(p.keyCode === 32 && loop){
-          this.drawBall.pick_one();
           this.keyPressed();
         }
         if(!loop) loop = true;
@@ -110,7 +142,6 @@ export class PlayComponent implements OnInit, OnDestroy {
         if(this.webgl){
           p.directionalLight(255,255,30,1,1,-1);
           p.ambientLight(255);
-          //background wallpaper
           p.texture(bgImg);
           p.noStroke();
           p.plane(p.width,p.height);
@@ -118,15 +149,15 @@ export class PlayComponent implements OnInit, OnDestroy {
           p.image(bgImg, 0, 0, p.width*2, p.height*2);
         }
 
-        if(this.drawBall.end_drawing){          
-          p.remove();
+        if(this.drawBall.end_drawing){
+          p.noLoop();
           if(!this.finished){
             this.soundApi.volume = 0.5;
             this.soundApi.src = 'assets/game_won.wav'
             this.soundApi.onloadeddata = () =>{
               this.soundApi.play();
-              this.can_save = true;
               this.finished = true;
+              this.save();
             }
           }
         }
@@ -160,6 +191,28 @@ export class PlayComponent implements OnInit, OnDestroy {
     }, document.getElementById('canvas'));
   }
 
+  openLastDraw(){
+    //this.save();
+    this.dismiss();
+    this.router.navigate(['/game']);
+  }
+
+  async pick_one(list: any[], p: P5) {
+    let i = Math.floor(p.noise(p.mouseX, p.mouseY, Date.now()) * list.length);
+    return list[i];
+  }
+
+  async pick_random(p:P5) {
+    let index = this.data.length//this.numbers_draws.length;
+    if(index === 6){
+      return Math.floor(p.noise(p.mouseX, p.mouseY, Date.now()) * 9) +1
+    } else if(index === 7){
+      return Math.floor(p.noise(p.mouseX, p.mouseY, Date.now()) * 14) +1
+    } else {
+      return Math.floor(p.noise(p.mouseX, p.mouseY, Date.now()) * this.AdminDraw.max_values) +1
+    }
+  }
+
   get saveBtn(): boolean{
     return this.can_save;
   }
@@ -168,44 +221,18 @@ export class PlayComponent implements OnInit, OnDestroy {
     if(!this.finished)this.soundApi.play();
   }
 
-  save(){
-    this.data = this.draw
+  async save(){
+    this.credits -= this.price * this.AdminDraw.ballsqty;
     this.data.push(this.game);
-    this.dismiss()
-  }
-
-  get ask_for_slmas(){
-    return this.show_alert('quieres continuar con super mas');
-  }
-
-  async show_alert(msg){
-    let goforit = false;
-    const alerta = await this.alertCtrl.create({
-      animated: true,
-      translucent: true,
-      backdropDismiss: false,
-      header: "Alerta!",
-      message: msg,
-      buttons: [{
-        text: "Cancelar",
-        role: 'cancel'
-      },{
-        text: "Ok",
-        handler: () => goforit = true
-      }]
-    });
-
-    await alerta.present();
-    await alerta.onWillDismiss();
-    return goforit;
+    this.data.push(this.price * this.AdminDraw.ballsqty);
+    this.UserDraw.Data.push(this.data);
+    await this.store.dispatch(userAction.ARCHIVE_DRAW({draw: this.UserDraw}));
+    await this.store.dispatch(userAction.CHARGE_USER({ballsQty: this.AdminDraw.ballsqty, price: this.price}))
   }
 
   async dismiss() {
-    this.canvas.remove();
-    await this.modalCtrl.dismiss({
-      'dismissed': true,
-      'data': this.data
-    });
+    if(this.canvas) this.canvas.remove();
+    await this.modalCtrl.dismiss({ 'dismissed': true });
   }
 
   ngOnDestroy(){

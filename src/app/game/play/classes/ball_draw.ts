@@ -9,6 +9,7 @@ export class DrawBall{
     private index: number=0;
     private can_withdraw: boolean=false;
     private audio = new Audio();
+    public numero = [];
     private finished = false;
 
     constructor(
@@ -25,13 +26,13 @@ export class DrawBall{
             if (this.x > 0) this.y = this.p.cos(this.angle) * (this.radius * -1); //block y
             if (this.x > -110+(this.index*15)) { // draw the ball
                 let ball = this.data[this.index];
-                ball._draw({ tex: ball.numero, x: this.x, y: this.y });
+                ball._draw({ tex: this.numero[this.index], x: this.x, y: this.y });
             } else {
                 this.can_withdraw = false;
                 this.index += 1;
                 this.audio.volume = 0.5;
                 this.audio.play();
-                setTimeout(()=> this.pick_one(), 300);
+                //setTimeout(()=> this.pick_one(), 300);
                 if(this.index == 6){
                     this.data[this.index].ball_type = 1;
                 }
@@ -46,8 +47,9 @@ export class DrawBall{
         this.p.pop();
     }
 
-    pick_one(){
+    pick_one(numero?: number){
         if(this.index < this.data.length){
+            this.numero.push(numero);
             this.x=-150;
             this.y=-150;
             this.angle=0;
@@ -65,7 +67,7 @@ export class DrawBall{
 
     private withdraw(){
         this.data.map((ball, i)=>{
-            if(i < this.index) ball._draw({ tex: ball.numero, x: -140+(i*25), y: 150});
+            if(i < this.index) ball._draw({ tex: this.numero[i], x: -140+(i*25), y: 150});
         });
     }
     

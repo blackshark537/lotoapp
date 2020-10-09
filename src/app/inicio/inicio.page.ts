@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Draw, AdminDraw } from '../models/draw.model';
+import { Draw, AdminDraw, TipoSorteo } from '../models/draw.model';
 import { StoreModel } from '../models/store.model';
 import { Store } from '@ngrx/store';
 import * as adminAction from '../actions/admin_draw.action';
@@ -110,7 +110,6 @@ export class InicioPage implements OnInit {
   }
 
   async save_draw(){
-    await this.store.dispatch(userAction.ARCHIVE_DRAW({draw: this.user_draw}));
     await this.native.showLoading();
     await this.store.dispatch(userAction.GET());
     await this.fetchLastDraw();
@@ -148,7 +147,7 @@ export class InicioPage implements OnInit {
     this.cleanUserDraw();
     this.draw = draw;
     this.game = game;
-    this.game? this.draw_type = 'Sorteo Gold' : this.draw_type = 'Sorteo Platinum';
+    this.game? this.draw_type = TipoSorteo.GOLD : this.draw_type = TipoSorteo.PLATINUM;
     this.game? this.price = 3 : this.price = 5;
     this.drawfilter = draw.draw;
 
@@ -156,10 +155,7 @@ export class InicioPage implements OnInit {
     this.numbers_draws = [];
     if(this.user.credits> this.price){
       if(await this.ask()){
-        /* charge User*/
-        this.store.dispatch(userAction.CHARGE_USER({ballsQty: this.draw.ballsqty, price: this.price}))
         try{
-          await this.normal_draw(0);
           await this.openModal();
         } catch(error){
           if(error){
@@ -182,13 +178,10 @@ export class InicioPage implements OnInit {
     this.userDraw();
     this.numbers_draws = [];
     this.price = 2;
-    this.draw_type = 'Sorteo por la maquina';
+    this.draw_type = TipoSorteo.RANDOM;
     if(this.user.credits> this.price){
       if(await this.ask()){
-        /* Charge User*/
-        this.store.dispatch(userAction.CHARGE_USER({ballsQty: this.draw.ballsqty, price: this.price}))
         try{
-          await this.random_draw();
           this.openModal();
         } catch(error){
           this.errorAlert(error);
@@ -204,70 +197,23 @@ export class InicioPage implements OnInit {
     return await this.native.comfirmModal(msg);
   }
 
-  async normal_draw(index: number){
-
-    if(this.numbers_draws.length === this.draw.ballsqty) return 0;
-    let num = await this.pick_one(this.draw.Games[this.game].Data[index]);
-    let exist = await this.exist(num);
-
-    if(!exist && num != null){
-      this.numbers_draws.push(num);
-      this.normal_draw(index+=1);
-    } else {
-      this.normal_draw(index);
-    }
-  }
-
-  async random_draw(){
-    if(this.numbers_draws.length === this.draw.ballsqty) return 0;
-    let num = await this.pick_random();
-    let exist = await this.exist(num);
-    if(!exist) this.numbers_draws.push(num);
-    this.random_draw();
-  }
-
-  async pick_one(list: any[]) {
-    let i = Math.floor(Math.random() * list.length);
-    return list[i];
-  }
-
-  async pick_random() {
-    let index = this.numbers_draws.length;
-    if(index === 6){
-      return Math.floor(Math.random() * 9) +1
-    } else if(index === 7){
-      return Math.floor(Math.random() * 14) +1
-    } else {
-      return Math.floor(Math.random() * this.draw.max_values) +1
-    }
-  }
-
-  async exist(num: number){
-    let confirm = false;
-    this.numbers_draws.map(val =>{
-      if(val === num) confirm = true;
-    });
-    return confirm;
-  }
-
   async openModal(){
     const modal = await this.modalCtrl.create({
       component: PlayComponent,
       swipeToClose: false,
       backdropDismiss: false,
       componentProps: {
-        draw: this.numbers_draws,
-        game: this.draw_type
+        price: this.price,
+        game: this.draw_type,
+        credits: this.user.credits,
+        UserDraw: this.user_draw,
+        AdminDraw: this.draw 
       }
     });
 
     await modal.present();
-    const { data } = await modal.onWillDismiss();
-    if(data.data.length >0){
-      data.data.push(this.price*this.draw.ballsqty);
-       this.user_draw.Data.push(data.data);
-       await this.save_draw()
-    };
+    await modal.onWillDismiss();
+    await this.save_draw()
  
   }
 

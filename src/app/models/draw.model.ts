@@ -36,3 +36,9 @@ export interface Game{
     filename?: string;
     Data: any[];
 }
+
+export enum TipoSorteo{
+    GOLD = 'Sorteo Gold',
+    PLATINUM = 'Sorteo Platinum',
+    RANDOM = 'Sorteo por la maquina'
+}

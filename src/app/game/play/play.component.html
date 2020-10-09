@@ -1,11 +1,14 @@
 <ion-header>
     <ion-toolbar>
-        <ion-buttons slot="end">
-            <!-- <ion-button (click)="dismiss()" >
+        <ion-buttons slot="start">
+            <ion-button (click)="dismiss()">
                 <ion-icon color="danger" name="close"></ion-icon>
-            </ion-button> -->
+            </ion-button>
         </ion-buttons>
         <ion-title>{{game}}</ion-title>
+        <ion-buttons slot="end">
+            <p class="credit">Créditos totales: {{credits | currency}} </p>
+        </ion-buttons>
     </ion-toolbar>
 </ion-header>
 <ion-content>
@@ -29,9 +32,12 @@
 </ion-content>
 
 <ion-footer>
-    <ion-toolbar *ngIf="saveBtn">
+    <ion-toolbar >
         <ion-buttons slot="end">
-            <ion-button (click)="save()">Aceptar</ion-button>
+            <ion-button [disabled]="!finished" (click)="openLastDraw()" >Ver resultados</ion-button>
+        </ion-buttons>
+        <ion-buttons slot="end">
+            <ion-button [disabled]="!finished" (click)="ngOnInit()">Volver a sortear</ion-button>
         </ion-buttons>
     </ion-toolbar>
 </ion-footer>
