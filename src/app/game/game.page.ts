@@ -3,6 +3,7 @@ import { StoreModel } from 'src/app/models/store.model';
 import { Store } from '@ngrx/store';
 import { Draw } from '../models/draw.model';
 import { UserModel } from '../models/user.model';
+import { ModalController } from '@ionic/angular';
 
 @Component({
   selector: 'app-game',
@@ -17,6 +18,7 @@ export class GamePage implements OnInit, OnDestroy {
   user_draws: Draw[] = [];
 
   constructor(
+    private modalCtrl: ModalController,
     private store: Store<StoreModel>
   ) { }
 
@@ -24,6 +26,10 @@ export class GamePage implements OnInit, OnDestroy {
     await this.store.select('draw_state').subscribe(resp =>{
       this.user_draws = [...resp];
     });
+  }
+
+  async dismiss(){
+    await this.modalCtrl.dismiss();
   }
 
   headers(draw: Draw){

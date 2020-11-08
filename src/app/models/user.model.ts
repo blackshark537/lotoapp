@@ -11,6 +11,7 @@ export interface UserModel{
     password: string;
     archived?: any[];
     recycle?: any[];
+    active?: boolean;
     created: Date;
     img?: string;
     role?: string;

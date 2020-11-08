@@ -10,7 +10,7 @@
 <ion-content>
   <ion-list>
     <ion-list-header>Lista de usuarios</ion-list-header>
-    <ion-item (click)="modal(user)" detail="true" button *ngFor="let user of user$ | async">
+    <ion-item (click)="modal(user)" detail="false" button *ngFor="let user of user$ | async">
       <ion-avatar slot="start">
         <img src="assets/avatar-1.png" alt="Avatar">
       </ion-avatar>
@@ -20,6 +20,7 @@
         <h5>Credits: {{user.credits | currency}}</h5>
         <p>Creado: {{user.created | date: 'short'}}</p>
       </ion-label>
+      <ion-icon color="{{user.active? 'success' : 'danger'}}" size="large" name="radio-button-on-outline"></ion-icon>
     </ion-item>
   </ion-list>
 

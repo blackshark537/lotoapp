@@ -3,7 +3,7 @@
     <ion-buttons slot="start">
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
-    <ion-title>{{ folder }}</ion-title>
+    <ion-title>Historial de jugadas</ion-title>
     <ion-buttons slot="end">
       <ion-button disabled="{{ user.recycle.length === 0 }}" (click)="this.showAlert(true)" *ngIf="folder === 'Reciclaje'">
         Vaciar

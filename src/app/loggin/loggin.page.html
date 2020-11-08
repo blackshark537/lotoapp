@@ -45,7 +45,7 @@
                     color="{{name.invalid && name.touched? 'danger' : 'success'}}" 
                     name="{{name.invalid && name.touched? 'close' : 'checkmark'}}"></ion-icon>
                 </ion-label>
-                <input type="text" placeholder="Tu Nombre Completo" class="formCtrl {{name.invalid && name.touched? 'badForm': ''}}" required="true" formControlName="name">
+                <input type="text" autocomplete="name" placeholder="Tu Nombre Completo" class="formCtrl {{name.invalid && name.touched? 'badForm': ''}}" required="true" formControlName="name">
               </ion-item>
               <small>Escribe tu nombre completo</small>
 
@@ -55,7 +55,7 @@
                     color="{{email.invalid && email.touched? 'danger' : 'success'}}" 
                     name="{{email.invalid && email.touched? 'close' : 'checkmark'}}"></ion-icon>
                 </ion-label>
-                <input type="email" placeholder="email@example.com" class="formCtrl {{email.invalid && email.touched? 'badForm': ''}}" formControlName="email" required="true">
+                <input type="email" autocomplete="email" placeholder="email@example.com" class="formCtrl {{email.invalid && email.touched? 'badForm': ''}}" formControlName="email" required="true">
               </ion-item>
               <small>Escribe tu email</small>
               <small class="danger" *ngIf="email.invalid">, debe de ser un correo valido</small>
@@ -66,7 +66,7 @@
                     color="{{pswd.invalid && pswd.touched? 'danger' : 'success'}}" 
                     name="{{pswd.invalid && pswd.touched? 'close' : 'checkmark'}}"></ion-icon>
                 </ion-label>
-                <input type="password" placeholder="Contraseña *****" class="formCtrl {{pswd.invalid && pswd.touched? 'badForm': ''}}" formControlName="password" required="true">
+                <input type="password" autocomplete="current-password" placeholder="Contraseña *****" class="formCtrl {{pswd.invalid && pswd.touched? 'badForm': ''}}" formControlName="password" required="true">
               </ion-item>
 
               <small>Escribe una contraseña</small>
@@ -74,7 +74,7 @@
 
               <ion-item >
                 <ion-label position="stacked">Confirmar Contraseña:</ion-label>
-                <input type="password" placeholder="Confirmar Contraseña *****" class="formCtrl" formControlName="confirmPassword" required="true">
+                <input type="password" autocomplete="current-password" placeholder="Confirmar Contraseña *****" class="formCtrl" formControlName="confirmPassword" required="true">
               </ion-item>
               <!-- <small *ngIf="step===1 && f.confirmPassword.errors.required">Confirm Password is required</small>
               <small *ngIf="step===1 && f.confirmPassword.errors.mustMatch">Passwords must match</small> -->
@@ -99,7 +99,7 @@
                     color="{{email.invalid && email.touched? 'danger' : 'success'}}" 
                     name="{{email.invalid && email.touched? 'close' : 'checkmark'}}"></ion-icon>
                   </ion-label>
-                  <input type="email" class="formCtrl {{email.invalid && email.touched? 'badForm': ''}}"
+                  <input type="email" autocomplete="email" class="formCtrl {{email.invalid && email.touched? 'badForm': ''}}"
                   placeholder="email@example.com" formControlName="email" required="true">
                 </ion-item>
                 <small>Escribe tu email</small>
@@ -110,7 +110,8 @@
                     color="{{pswd.invalid && pswd.touched? 'danger' : 'success'}}" 
                     name="{{pswd.invalid && pswd.touched? 'close' : 'checkmark'}}"></ion-icon>
                   </ion-label>
-                  <input type="password" class="formCtrl {{pswd.invalid && pswd.touched? 'badForm': ''}}"
+                  <input (keyup.enter)="loginEnter()" autocomplete="current-password" type="password" 
+                  class="formCtrl {{pswd.invalid && pswd.touched? 'badForm': ''}}"
                   placeholder="Contraseña *****" formControlName="password" required="true">
                 </ion-item>
                 <small>Escribe tu contraseña,  </small>
@@ -120,7 +121,7 @@
                   <!-- <ion-button *ngIf="step2 != 1" class="center" (click)="step2= step2 + 1">
                     Siguiente
                   </ion-button> -->
-                  <ion-button [disabled]="pswd.invalid" class="center" (click)="signin(userForm.value)">
+                  <ion-button #loginButton [disabled]="pswd.invalid" class="center" (click)="signin(userForm.value)">
                     Iniciar Sesion
                   </ion-button>
                 </ion-item>

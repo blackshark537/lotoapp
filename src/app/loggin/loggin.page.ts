@@ -52,6 +52,10 @@ export class LogginPage implements OnInit {
     return this.userForm.get('password');
   }
 
+  loginEnter(){
+    if(this.pswd.valid) this.signin(this.userForm.value);
+  }
+
   async signin(user: userLog){
     this.store.dispatch(userActions.Signin({user}));
   }

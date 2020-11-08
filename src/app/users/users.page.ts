@@ -40,6 +40,7 @@ export class UsersPage implements OnInit {
     });
 
     await m.present();
+    await m.onWillDismiss();
     this.store.dispatch(GET_All_Users());
   }
 

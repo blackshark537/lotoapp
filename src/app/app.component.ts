@@ -31,7 +31,7 @@ export class AppComponent implements OnInit {
       icon: 'home'
     },
     {
-      title: 'Sorteos',
+      title: 'Configuración de Sorteos',
       url: '/sorteos',
       style: 'success',
       icon: 'apps'
@@ -43,7 +43,7 @@ export class AppComponent implements OnInit {
       icon: 'person'
     },
     {
-      title: 'Archivadas',
+      title: 'Historial de jugadas',
       url: '/folder/Archivadas',
       style: 'warning',
       icon: 'archive'

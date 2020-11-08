@@ -22,7 +22,7 @@ export class ModalComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-
+    console.log(this.user);
   }
 
   async save(){

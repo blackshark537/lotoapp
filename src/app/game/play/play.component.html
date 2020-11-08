@@ -1,7 +1,7 @@
 <ion-header>
     <ion-toolbar>
         <ion-buttons slot="start">
-            <ion-button (click)="dismiss()">
+            <ion-button [disabled]="!finished" (click)="dismiss(true)">
                 <ion-icon color="danger" name="close"></ion-icon>
             </ion-button>
         </ion-buttons>
@@ -19,7 +19,7 @@
             Sorteo Terminado
         </strong>
         <p>Los número elegidos son:</p>
-        <p ><strong style="color: #eb445a;" *ngFor="let d of draw; index as i">{{i >= draw.length-1? d : d + ' - '}}</strong></p>
+        <!-- <p ><strong style="color: #eb445a;" *ngFor="let d of draw; index as i">{{i >= draw.length-1? d : d + ' - '}}</strong></p> -->
         <p><strong class="capitalize">
                 Buena Suerte!
         </strong></p>

@@ -11,6 +11,7 @@ import { PlayComponent } from '../game/play/play.component';
 import { ModalController } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { DateDto } from '../services/userhttp.service';
+import { GamePage } from '../game/game.page';
 
 @Component({
   selector: 'app-inicio',
@@ -100,9 +101,18 @@ export class InicioPage implements OnInit {
     this.store.dispatch(userAction.GET_DRAWS_BY_DATE({date: this.date}));
   }
 
-  openLastDraw(){
+  async openLastDraw(){
     if(this.last_draw.length === 0) this.fetchLastDraw();
-    this.router.navigate(['/game']);
+    //this.router.navigate(['/game']);
+    const modal = await this.modalCtrl.create({
+      animated: true,
+      swipeToClose: false,
+      component: GamePage,
+      id: 'game-modal',
+      cssClass: 'fullscreen'
+    });
+
+    await modal.present();
   }
 
   get material(): boolean{
@@ -212,8 +222,9 @@ export class InicioPage implements OnInit {
     });
 
     await modal.present();
-    await modal.onWillDismiss();
-    await this.save_draw()
+    //const {data} = await modal.onWillDismiss();
+    /* if(!data.dismissed)
+        await this.save_draw(); */
  
   }
 

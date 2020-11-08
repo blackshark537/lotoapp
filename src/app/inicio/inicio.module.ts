@@ -9,9 +9,10 @@ import { InicioPageRoutingModule } from './inicio-routing.module';
 
 import { InicioPage } from './inicio.page';
 import { PlayComponent } from '../game/play/play.component';
+import { GamePage } from '../game/game.page';
 
 @NgModule({
-  entryComponents:[PlayComponent],
+  entryComponents:[PlayComponent, GamePage],
   imports: [
     CommonModule,
     FormsModule,
@@ -23,6 +24,6 @@ import { PlayComponent } from '../game/play/play.component';
     IonicModule,
     InicioPageRoutingModule
   ],
-  declarations: [InicioPage, PlayComponent]
+  declarations: [InicioPage, PlayComponent, GamePage]
 })
 export class InicioPageModule {}

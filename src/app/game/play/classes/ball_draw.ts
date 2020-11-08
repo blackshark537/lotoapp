@@ -7,10 +7,9 @@ export class DrawBall{
     private angle:number=0;
     private radius:number=150;
     private index: number=0;
-    private can_withdraw: boolean=false;
     private audio = new Audio();
     public numero = [];
-    private finished = false;
+    can_withdraw: boolean=false;
 
     constructor(
         private p: p5,

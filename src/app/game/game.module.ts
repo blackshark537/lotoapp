@@ -16,6 +16,6 @@ import { CustomGameComponent } from './custom-game/custom-game.component';
     IonicModule,
     GamePageRoutingModule
   ],
-  declarations: [GamePage, CustomGameComponent]
+  declarations: [CustomGameComponent]
 })
 export class GamePageModule {}

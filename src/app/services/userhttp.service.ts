@@ -12,8 +12,8 @@ export interface DateDto{day: number, month: number, year: number};
 })
 export class UserhttpService {
 
-  //private url = 'http://loter.ddns.net/user';
-  private url = 'http://localhost:3000/user';
+  private url = 'http://loter.ddns.net/user';
+  //private url = 'http://localhost:3000/user';
 
 
   constructor(
@@ -32,7 +32,10 @@ export class UserhttpService {
         return throwError('Este usuario no existe');
       } else if(e.status === 400){
         return throwError('La contraseña es incorrecta');
-      } else {
+      } else if(e.status === 403){
+        return throwError('Acceso prohibido: '+ e.error.message);
+      }else {
+        console.log(e);
         return throwError('Ha ocurrido un error desconocido: ' + e.message);
       }
     }));
@@ -46,7 +49,7 @@ export class UserhttpService {
       if(e.status === 400){
         return throwError('El email de usuario ya existe, por favor utilize otro email');
       } else {
-        return throwError('Ha ocurrido un error desconocido: ' + e.message);
+        return throwError('Ha ocurrido un error desconocido: ' + e.error.message);
       }
     }));
   }
