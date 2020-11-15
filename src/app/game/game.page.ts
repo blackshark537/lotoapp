@@ -4,6 +4,7 @@ import { Store } from '@ngrx/store';
 import { Draw } from '../models/draw.model';
 import { UserModel } from '../models/user.model';
 import { ModalController } from '@ionic/angular';
+import * as userAction from '../actions/user.actions';
 
 @Component({
   selector: 'app-game',
@@ -26,6 +27,7 @@ export class GamePage implements OnInit, OnDestroy {
     await this.store.select('draw_state').subscribe(resp =>{
       this.user_draws = [...resp];
     });
+    await this.store.dispatch(userAction.GET_TODAY_DRAWS());
   }
 
   async dismiss(){

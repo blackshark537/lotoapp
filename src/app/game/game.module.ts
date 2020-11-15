@@ -5,17 +5,14 @@ import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { GamePageRoutingModule } from './game-routing.module';
 
-import { GamePage } from './game.page';
-import { CustomGameComponent } from './custom-game/custom-game.component';
-
 @NgModule({
-  entryComponents: [CustomGameComponent],
+  entryComponents: [],
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
     GamePageRoutingModule
   ],
-  declarations: [CustomGameComponent]
+  declarations: []
 })
 export class GamePageModule {}

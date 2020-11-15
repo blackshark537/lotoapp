@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { createEffect, ofType, Actions } from '@ngrx/effects';
 import * as adminActions from '../actions/admin_draw.action';
-import { exhaustMap, mergeMap, map, catchError } from 'rxjs/operators';
+import { exhaustMap, map, catchError } from 'rxjs/operators';
 import { AdminhttpService } from '../services/adminhttp.service';
 import { of } from 'rxjs';
 

@@ -4,6 +4,7 @@ import { createEffect, ofType, Actions } from '@ngrx/effects';
 import * as user from '../actions/user.actions';
 import { of } from 'rxjs';
 import { map, mergeMap, exhaustMap, catchError, tap } from 'rxjs/operators'
+import { Router } from '@angular/router';
 
 @Injectable()
 export class userEffects{
@@ -13,7 +14,10 @@ export class userEffects{
         ofType(user.Signin),
         exhaustMap(payload => 
             this.httpService.signin(payload.user).pipe(
-                map(resp => user.SigninSuccess({resp})),
+                map(resp =>{
+                    //this.router.navigate(['/inicio']);
+                    return user.SigninSuccess({resp})
+                }),
                 catchError(error => of(user.Error({error})))
             )
         )
@@ -56,9 +60,9 @@ export class userEffects{
 
     getDrawsByDate$ = createEffect(() =>
     this.actions$.pipe(
-        ofType(user.GET_DRAWS_BY_DATE),
+        ofType(user.GET_TODAY_DRAWS),
         exhaustMap(payload =>
-            this.httpService.getDrawsByDate(payload.date).pipe(
+            this.httpService.getTodayDraws().pipe(
                 map(draw => user.DRAW_BY_ID_SUCCESS({draw})),
                 catchError(error => of(user.Error({error})))
             )
@@ -137,6 +141,7 @@ export class userEffects{
 
     constructor(
         private actions$: Actions,
+        private router: Router,
         private httpService: UserhttpService
     ) {}
 }

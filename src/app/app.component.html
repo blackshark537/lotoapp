@@ -16,7 +16,7 @@
 
           <ion-menu-toggle auto-hide="false" *ngFor="let p of appPages; let i = index">
             <ion-item
-              class="{{p.title === 'Sorteos' && user.role === 'User' || p.title === 'Usuarios' && user.role === 'User'? 'd-none' : 'd-block'}}"
+              class="{{p.title === 'Configuración de Sorteos' && user.role === 'User' || p.title === 'Usuarios' && user.role === 'User'? 'd-none' : 'd-block'}}"
                routerDirection='root' (click)="selectedIndex = i" [routerLink]="[p.url]"
               routerLinkActive="selected">
               <ion-icon color="{{p.style}}" slot="start" [ios]="p.icon + '-outline'" [md]="p.icon + '-sharp'"></ion-icon>

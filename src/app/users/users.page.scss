@@ -1,0 +1,49 @@
+.t-container{
+    width: 72vw;
+}
+
+.table{
+    width: 100%;
+    align-content: center;
+}
+
+/* .thead{
+
+} */
+
+.normal{
+    border-top: 1px solid white;
+    border-right: 1px solid white;
+}
+
+th,td{
+    padding: 0.8em;
+    width: auto;
+}
+
+tr{
+    cursor: pointer;
+}
+
+tr:nth-child(even) {background-color: #f2f2f2; color: black;}
+
+.tbody{
+    /* align-content: center; */
+    text-align: center;
+}
+
+@media only screen and (max-width: 992px) {
+    .t-container{
+        width: 100vw;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+}
+
+@media only screen and (width: 1024px) {
+    .t-container{
+        width: 72vw;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+}

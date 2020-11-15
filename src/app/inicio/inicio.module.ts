@@ -8,7 +8,7 @@ import { MomentModule } from 'ngx-moment';
 import { InicioPageRoutingModule } from './inicio-routing.module';
 
 import { InicioPage } from './inicio.page';
-import { PlayComponent } from '../game/play/play.component';
+import { PlayComponent } from './play/play.component';
 import { GamePage } from '../game/game.page';
 
 @NgModule({

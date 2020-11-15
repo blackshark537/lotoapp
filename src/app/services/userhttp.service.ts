@@ -4,6 +4,7 @@ import { Observable, throwError } from 'rxjs'
 import { catchError } from 'rxjs/operators';
 import { UserModel, userLog } from '../models/user.model';
 import { Draw } from '../models/draw.model';
+import { NativeHelpersService } from './native-helpers.service';
 
 export interface DateDto{day: number, month: number, year: number};
 
@@ -17,7 +18,8 @@ export class UserhttpService {
 
 
   constructor(
-    private http: HttpClient
+    private http: HttpClient,
+    private native: NativeHelpersService
   ) { }
 /* //================================================================================//
               USER ROUTES
@@ -90,7 +92,7 @@ export class UserhttpService {
             DRAW ROUTES
 //================================================================================// */
   saveDraw(Draw: Draw): Observable<Draw>{
-    return this.http.post<Draw>(`${this.url}/draw`, Draw)
+    return this.http.post<Draw>(`${this.url}/create_draw/id/gametype`, null)
     .pipe(catchError(error => throwError(error.message)));
   }
 
@@ -104,9 +106,19 @@ export class UserhttpService {
       .pipe(catchError(error => throwError(error.message)));
   }
 
+  getTodayDraws(): Observable<Draw[]>{
+    return this.http.get<Draw[]>(`${this.url}/draws/today`)
+      .pipe(catchError(error => throwError(error.message)));
+  }
+
   getDrawsByDate(date: DateDto): Observable<Draw[]>{
     return this.http.get<Draw[]>(`${this.url}/draws/today`)
       .pipe(catchError(error => throwError(error.message)));
+  }
+
+  createDraw(admin_draw_id: string, draw_type: number): Observable<DrawResp>{
+    return this.http.post<DrawResp>(`${this.url}/create_draw/${admin_draw_id}/${draw_type}`, null)
+      .pipe(catchError(error => this.sendError(error)));
   }
 
   favoriteDraw(Draw: Draw): Observable<Draw>{
@@ -135,6 +147,10 @@ export class UserhttpService {
   }
 
   sendError(error: HttpErrorResponse) {
-      throwError(error.message);
+      this.native.showError(error.error.message);
+      this.native.showToast(error.error.message);
+      return throwError(error);
   }
 }
+
+interface DrawResp{head: string; body: {Data: any[], ballsqty: number}}

@@ -16,7 +16,7 @@ export const ARCHIVE_DRAW = createAction('[user State] save user draw', props<{d
 export const ARCHIVE_DRAW_SUCCESS = createAction('[user State] successfully saved user draw', props<{resp: any}>());
 
 export const GET_DRAW_BY_ID = createAction('[user State] Get Draw By Id', props<{id: string}>());
-export const GET_DRAWS_BY_DATE = createAction('[user State] Get Draws By Date', props<{date: DateDto}>());
+export const GET_TODAY_DRAWS = createAction('[user State] Get today`s Draws');
 export const DRAW_BY_ID_SUCCESS = createAction('[user State] Get Draw By Id Success', props<{draw: any}>());
 export const UPDATE_DRAW_BY_ID = createAction('[user State] Update Draw By Id', props<{draw: Draw}>());
 

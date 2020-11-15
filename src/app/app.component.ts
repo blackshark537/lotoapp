@@ -46,7 +46,7 @@ export class AppComponent implements OnInit {
       title: 'Historial de jugadas',
       url: '/folder/Archivadas',
       style: 'warning',
-      icon: 'archive'
+      icon: 'stats-chart'
     },
     {
       title: 'Favoritas',
@@ -88,9 +88,9 @@ export class AppComponent implements OnInit {
 
   ngOnInit() {
 
-    if(localStorage.getItem('token')){
+/*     if(localStorage.getItem('token')){
       this.router.navigate(['inicio']);
-    }
+    } */
 
     addEventListener('offline', (evt)=>{
       evt.preventDefault();

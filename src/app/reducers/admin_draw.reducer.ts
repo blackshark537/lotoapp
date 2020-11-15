@@ -16,9 +16,7 @@ const DrawReducer = createReducer(initial_state,
         localStorage.setItem('admin_draw', JSON.stringify(state));
         return state;
     }),
-    on(HttpResponse, (state, {draws}) =>{
-        return [...draws];
-    }),
+    on(HttpResponse, (state, {draws}) => draws),
     on(Error, (state, {error})=>{
         console.error(error);
         return state

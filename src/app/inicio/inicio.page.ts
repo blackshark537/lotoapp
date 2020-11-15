@@ -7,9 +7,8 @@ import * as adminAction from '../actions/admin_draw.action';
 import * as userAction from '../actions/user.actions';
 import { UserModel } from '../models/user.model';
 import { NativeHelpersService } from '../services/native-helpers.service';
-import { PlayComponent } from '../game/play/play.component';
+import { PlayComponent } from './play/play.component';
 import { ModalController } from '@ionic/angular';
-import { Router } from '@angular/router';
 import { DateDto } from '../services/userhttp.service';
 import { GamePage } from '../game/game.page';
 
@@ -20,17 +19,10 @@ import { GamePage } from '../game/game.page';
 })
 export class InicioPage implements OnInit {
 
-  date: DateDto={
-    day: new Date(Date.now()).getDate(),
-    month: new Date(Date.now()).getMonth()+1,
-    year: new Date(Date.now()).getFullYear()
-  };
 
-  dateNow=new Date(Date.now());
   draw_type: string;
   draw: AdminDraw = null;
   price = 15;
-  numbers_draws: number[] = [];
   game: number = 0;
 
   draws$: Observable<AdminDraw[]>
@@ -40,7 +32,7 @@ export class InicioPage implements OnInit {
   drawfilter: string = null;
   loteriesFilters: any[] = [];
   lastDrawLoaded: boolean = false;
-
+  colors = ['danger', 'success', 'warning', 'primary']
   user_draw: Draw;
 
   lotteryModel = [
@@ -63,24 +55,16 @@ export class InicioPage implements OnInit {
   ];
 
   constructor(
-    private router: Router,
     private modalCtrl: ModalController,
     private native: NativeHelpersService,
     private store: Store<StoreModel>
   ) { }
 
   async ngOnInit() {
-    this.cleanUserDraw();
-    this.fetchLastDraw();
     this.draws$ = this.store.select('admin_draw');
     await this.store.select('user_state').subscribe(resp =>{
       this.user = {...resp};
     });
-
-    await this.store.select('draw_state').subscribe(resp => {
-      this.last_draw = [...resp]
-    });
-
     this.store.dispatch(adminAction.GET());
     this.store.dispatch(userAction.GET());
   }
@@ -97,16 +81,12 @@ export class InicioPage implements OnInit {
     };
   }
 
-  fetchLastDraw(){
-    this.store.dispatch(userAction.GET_DRAWS_BY_DATE({date: this.date}));
-  }
 
   async openLastDraw(){
-    if(this.last_draw.length === 0) this.fetchLastDraw();
-    //this.router.navigate(['/game']);
+    
     const modal = await this.modalCtrl.create({
       animated: true,
-      swipeToClose: false,
+      swipeToClose: true,
       component: GamePage,
       id: 'game-modal',
       cssClass: 'fullscreen'
@@ -122,7 +102,6 @@ export class InicioPage implements OnInit {
   async save_draw(){
     await this.native.showLoading();
     await this.store.dispatch(userAction.GET());
-    await this.fetchLastDraw();
     await this.native.showLoading();
     await this.openLastDraw();
   }
@@ -157,12 +136,11 @@ export class InicioPage implements OnInit {
     this.cleanUserDraw();
     this.draw = draw;
     this.game = game;
-    this.game? this.draw_type = TipoSorteo.GOLD : this.draw_type = TipoSorteo.PLATINUM;
-    this.game? this.price = 3 : this.price = 5;
+    this.draw_type = this.game? TipoSorteo.GOLD : TipoSorteo.PLATINUM;
+    this.price = this.game? 5 : 10;
     this.drawfilter = draw.draw;
-
     this.userDraw();
-    this.numbers_draws = [];
+
     if(this.user.credits> this.price){
       if(await this.ask()){
         try{
@@ -183,11 +161,11 @@ export class InicioPage implements OnInit {
   async openRandom(draw: AdminDraw){
     this.cleanUserDraw();
     this.draw = draw;
+    this.game = 2;
     this.drawfilter = draw.draw;
-
     this.userDraw();
-    this.numbers_draws = [];
-    this.price = 2;
+
+    this.price = 1;
     this.draw_type = TipoSorteo.RANDOM;
     if(this.user.credits> this.price){
       if(await this.ask()){
@@ -213,10 +191,9 @@ export class InicioPage implements OnInit {
       swipeToClose: false,
       backdropDismiss: false,
       componentProps: {
-        price: this.price,
-        game: this.draw_type,
+        game: this.game,
+        drawType: this.draw_type,
         credits: this.user.credits,
-        UserDraw: this.user_draw,
         AdminDraw: this.draw 
       }
     });

@@ -44,13 +44,16 @@
           <th class="normal">
             Créditos
           </th>
+          <th class="normal">
+            Hora
+          </th>
         </tr>
       </thead>
       <tbody class="tbody">
         <tr *ngFor="let row of draw.Data; index as i;">
           <td style="background-color: blanchedalmond; color: black;">{{i+1 + '.-'}}</td>
           <td *ngFor="let col of row; index as j">
-            <span *ngIf="j === row.length-1; else elseBlock">{{col | currency}}</span>
+            <span *ngIf="j === row.length-2; else elseBlock">{{col | currency}}</span>
             <ng-template #elseBlock>
               {{col}}
             </ng-template>
