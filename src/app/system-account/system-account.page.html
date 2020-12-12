@@ -1,0 +1,58 @@
+<ion-header>
+  <ion-toolbar color="tertiary">
+    <ion-back-button color="light" slot="start"></ion-back-button>
+    <ion-title>SystemAccount</ion-title>
+    <ion-title slot="end">
+      Total: {{Total | currency}}
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-list>
+    <ion-list-header>Movimientos</ion-list-header>
+
+    <div class="t-container">
+      <table class="table">
+        <thead class="thead">
+          <tr>
+            <th class="normal">
+              #No
+            </th>
+            <th class="normal">
+              Usuario
+            </th>
+            <th class="normal">
+              Importe
+            </th>
+            <th class="normal">
+              Concepto
+            </th>
+            <th class="normal">
+              Crédito Inicial
+            </th>
+            <th class="normal">
+              Crédito Final
+            </th>
+            <th class="normal">
+              fecha
+            </th>
+          </tr>
+        </thead>
+        <tbody class="tbody">
+          <tr *ngFor="let entry of systemAccount; index as i">
+            <td dir="rtl">{{i+1}}</td>
+            <td dir="ltr">{{entry.usuario }}</td>
+            <td dir="rtl">{{entry.importe | currency}}</td>
+            <td dir="ltr">{{entry.concepto}}</td>
+            <td dir="rtl">{{entry.creditoInicial | currency}}</td>
+            <td dir="rtl">{{entry.creditoFinal | currency}}</td>
+            <td dir="ltr">{{entry.fecha}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </ion-list>
+
+</ion-content>

@@ -6,7 +6,7 @@ import { AdminGuard } from './guards/admin.guard';
 const routes: Routes = [
   {
     path: '',
-    redirectTo: 'login',
+    redirectTo: 'inicio',
     pathMatch: 'full'
   },
   {

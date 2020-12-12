@@ -34,6 +34,7 @@ export class UsersPage implements OnInit {
       animated: true,
       swipeToClose: true,
       component: ModalComponent,
+      cssClass: 'fullscreen',
       componentProps: {
         user: {...user}
       }
@@ -41,7 +42,7 @@ export class UsersPage implements OnInit {
 
     await m.present();
     await m.onWillDismiss();
-    this.store.dispatch(GET_All_Users());
+    //this.store.dispatch(GET_All_Users());
   }
 
 }

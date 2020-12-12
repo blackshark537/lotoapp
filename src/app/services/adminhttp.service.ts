@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { AdminDraw, Draw } from '../models/draw.model';
 import { catchError } from 'rxjs/operators';
+import { SystemAccounting } from '../models/user.model';
 
 interface httpInterface{
   head: string,
@@ -14,8 +15,9 @@ interface httpInterface{
 })
 export class AdminhttpService {
 
-  private url = 'http://loter.ddns.net/admin';
-  //private url = 'http://localhost:3000/admin';
+  //private url = 'http://loter.ddns.net/admin';
+  private url = 'http://localhost:3000/admin';
+  private baseUrl = 'http://localhost:3000';
   
   constructor(
     private http: HttpClient
@@ -23,6 +25,11 @@ export class AdminhttpService {
 
   get URL(){
     return this.url;
+  }
+
+  getSysAccounting(): Observable<SystemAccounting[]>{
+    return this.http.get<SystemAccounting[]>(`${this.baseUrl}/system/account`)
+    .pipe(catchError(error => throwError(error.message)));
   }
 
   getDraws(): Observable<httpInterface>{

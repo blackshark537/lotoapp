@@ -138,6 +138,16 @@ export class userEffects{
         )
     ));
 
+    updateCredits$ = createEffect(() =>
+    this.actions$.pipe(
+        ofType(user.UpdateCredits),
+        exhaustMap(payload =>
+            this.httpService.updateCredits(payload.userPreferences).pipe(
+                map(() => user.GET()),
+                catchError(error => of(user.Error({error})))
+            )
+        )
+    ));
 
     constructor(
         private actions$: Actions,

@@ -1,0 +1,44 @@
+<ion-header [translucent]="false">
+    <ion-toolbar>
+        <ion-buttons slot="start">
+            <ion-button [disabled]="!finished" (click)="dismiss(true)">
+                <ion-icon color="danger" name="close"></ion-icon>
+            </ion-button>
+        </ion-buttons>
+        <ion-title>{{drawType}}</ion-title>
+        <ion-buttons slot="end">
+            <p class="credit">Balance: {{credits | currency}} </p>
+        </ion-buttons>
+    </ion-toolbar>
+</ion-header>
+<ion-content >
+
+    <div #canvas id="canvas"></div>
+
+    <div id="container" *ngIf="can_save">
+        <strong class="capitalize" color="primary">
+            Sorteo Terminado
+        </strong>
+        <p>Los número elegidos son:</p>
+        <!-- <p ><strong style="color: #eb445a;" *ngFor="let d of draw; index as i">{{i >= draw.length-1? d : d + ' - '}}</strong></p> -->
+        <p><strong class="capitalize">
+                Buena Suerte!
+        </strong></p>
+        <p>
+          <ion-icon name="game-controller"></ion-icon>
+          Presione Aceptar para continuar.
+        </p>
+        <ion-button (click)="ngOnInit()" color="primary" fill="expand">Volver a Sortear</ion-button>
+    </div>
+</ion-content>
+
+<ion-footer>
+    <ion-toolbar >
+        <ion-buttons slot="end">
+            <ion-button [disabled]="!finished" (click)="openLastDraw()" >Ver resultados</ion-button>
+        </ion-buttons>
+        <ion-buttons slot="end">
+            <ion-button [disabled]="!finished" color="danger" (click)="ngOnInit()">Volver a sortear</ion-button>
+        </ion-buttons>
+    </ion-toolbar>
+</ion-footer>

@@ -29,7 +29,9 @@ import { drawReducer } from './reducers/draw_state.reducer';
   imports: [
     BrowserModule,
     HttpClientModule,
-    IonicModule.forRoot(),
+    IonicModule.forRoot({
+      hardwareBackButton: false,
+    }),
     AppRoutingModule,
     EffectsModule.forRoot([userEffects, AdminEffects]),
     StoreModule.forRoot({

@@ -2,9 +2,10 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http'
 import { Observable, throwError } from 'rxjs'
 import { catchError } from 'rxjs/operators';
-import { UserModel, userLog } from '../models/user.model';
+import { UserModel, userLog, UserAccounting } from '../models/user.model';
 import { Draw } from '../models/draw.model';
 import { NativeHelpersService } from './native-helpers.service';
+import { UpdateUserInterface } from '../models/user.model';
 
 export interface DateDto{day: number, month: number, year: number};
 
@@ -13,8 +14,9 @@ export interface DateDto{day: number, month: number, year: number};
 })
 export class UserhttpService {
 
-  private url = 'http://loter.ddns.net/user';
-  //private url = 'http://localhost:3000/user';
+  //private url = 'http://loter.ddns.net/user';
+  private url = 'http://localhost:3000/user';
+  private baseUrl = 'http://localhost:3000';
 
 
   constructor(
@@ -68,6 +70,16 @@ export class UserhttpService {
 
   getPopulateUser(): Observable<UserModel>{
     return this.http.get<UserModel>(`${this.url}/profile/populated`)
+    .pipe(catchError(error => throwError(error.message)));
+  }
+
+  getAccountInfo(email: string): Observable<UserAccounting[]>{
+    return this.http.get<UserAccounting[]>(`${this.baseUrl}/account/user/${email}`)
+    .pipe(catchError(error => throwError(error.message)));
+  }
+
+  updateCredits(userPreferences: UpdateUserInterface): Observable<UserModel>{
+    return this.http.put<UserModel>(`${this.url}/profile/credits`, userPreferences)
     .pipe(catchError(error => throwError(error.message)));
   }
 

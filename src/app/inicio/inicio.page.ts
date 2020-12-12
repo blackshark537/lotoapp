@@ -9,7 +9,6 @@ import { UserModel } from '../models/user.model';
 import { NativeHelpersService } from '../services/native-helpers.service';
 import { PlayComponent } from './play/play.component';
 import { ModalController } from '@ionic/angular';
-import { DateDto } from '../services/userhttp.service';
 import { GamePage } from '../game/game.page';
 
 @Component({
