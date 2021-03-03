@@ -1,25 +1,25 @@
-<ion-header [translucent]="true">
-  <ion-toolbar >
-    <!-- <ion-buttons slot="start">
+<ion-header>
+  <ion-toolbar color="tertiary">
+    <ion-buttons slot="start">
       <ion-menu-button *ngIf="!filter"></ion-menu-button>
       <ion-button *ngIf="filter" (click)="filter=null">
         <ion-icon name="arrow-back-outline"></ion-icon>
         Atras
       </ion-button>
-    </ion-buttons> -->
+    </ion-buttons>
     <ion-title *ngIf="!filter && material">Inicio</ion-title>
-    <!-- <ion-buttons slot="end" >
+    <ion-buttons slot="end" >
       <p class="credit">Balance: {{user? user.credits : 0 | currency}} </p>
       <ion-button color="warning" (click)="buyCredits()">
         comprar
       </ion-button>
-    </ion-buttons> -->
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
+<ion-content >
 
-  <ion-header collapse="condense">
+  <!-- <ion-header collapse="condense">
     <ion-toolbar >
       <ion-buttons slot="start">
         <ion-menu-button *ngIf="!filter"></ion-menu-button>
@@ -36,7 +36,7 @@
         </ion-button>
     </ion-buttons>
     </ion-toolbar>
-  </ion-header>
+  </ion-header> -->
   
   <ion-grid>
     <ion-row *ngIf="!filter">
@@ -73,7 +73,7 @@
             <ion-label>
               <strong>Sorteo Platinum</strong>
               <br>
-              <small>Se descontarán $10.00 por cada bola</small>
+              <small>Se descontarán {{prices.plat | currency}} por cada bola</small>
             </ion-label>
             <ion-buttons slot="end">
               <ion-button [disabled]="draw.Games[0].Data.length === 0" fill="solid" color="primary" (click)="openNormal(draw, 0)">Sortear</ion-button>
@@ -87,7 +87,7 @@
             <ion-label>
               <strong>Sorteo Gold</strong>
               <br>
-              <small>Se descontarán $5.00 por cada bola</small>
+              <small>Se descontarán {{prices.gold | currency}} por cada bola</small>
             </ion-label>
             <ion-buttons slot="end">
               <ion-button [disabled]="draw.Games[1].Data.length === 0" fill="solid" color="primary" (click)="openNormal(draw, 1)">Sortear</ion-button>
@@ -101,7 +101,7 @@
             <ion-label>
               <strong>Sorteo por la máquina [Aleatorio]</strong>
               <br>
-              <small>Se descontarán $1.00 por cada bola</small>
+              <small>Se descontarán {{prices.rand | currency}} por cada bola</small>
             </ion-label>
             <ion-buttons slot="end">
               <ion-button fill="solid" color="primary" (click)="openRandom(draw)">Sortear</ion-button>

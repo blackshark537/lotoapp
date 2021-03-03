@@ -49,6 +49,12 @@ export class AppComponent implements OnInit {
       icon: 'stats-chart'
     },
     {
+      title: 'Registro de sorteos',
+      url: '/publish',
+      style: 'medium',
+      icon: 'reader'
+    },
+    {
       title: 'Favoritas',
       url: '/folder/Favoritas',
       style: 'tertiary',
@@ -87,10 +93,6 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit() {
-
-/*     if(localStorage.getItem('token')){
-      this.router.navigate(['inicio']);
-    } */
 
     addEventListener('offline', (evt)=>{
       evt.preventDefault();

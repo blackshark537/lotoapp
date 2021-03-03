@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { AdminDraw, Draw } from '../models/draw.model';
 import { catchError } from 'rxjs/operators';
@@ -15,7 +15,8 @@ interface httpInterface{
 })
 export class AdminhttpService {
 
-  //private url = 'http://loter.ddns.net/admin';
+  /* private url = 'http://loter.ddns.net/admin';
+  private baseUrl = 'http://loter.ddns.net'; */
   private url = 'http://localhost:3000/admin';
   private baseUrl = 'http://localhost:3000';
   
@@ -60,5 +61,15 @@ export class AdminhttpService {
   deleteDraw(id: string): Observable<AdminDraw>{
     return this.http.delete<AdminDraw>(`${this.url}/draw/${id}`)
     .pipe(catchError(error => throwError(error.message)));
+  }
+
+  postDrawDataFile(DrawData): Observable<any>{
+    return this.http.post(`${this.url}/draw/data`, DrawData)
+    .pipe(catchError(error => throwError(error.message)))
+  }
+
+  getHistoryData(): Observable<{msg: string, data: any[]}>{
+    return this.http.get<{msg: string, data: any[]}>(`${this.url}/history/leidsa`)
+    .pipe(catchError(error => throwError(error.message)))
   }
 }

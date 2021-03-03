@@ -1,15 +1,16 @@
 <ion-header [translucent]="false">
     <ion-toolbar>
         <ion-buttons slot="start">
-            <ion-button [disabled]="!finished" (click)="dismiss(true)">
-                <ion-icon color="danger" name="close"></ion-icon>
+            <ion-label class="credit"><h3>Balance: {{credits | currency}} </h3></ion-label>
+        </ion-buttons>
+
+        <ion-buttons slot="end">
+            <ion-button color="danger" fill="solid" [disabled]="!finished" (click)="dismiss(true)">
+                <ion-icon  name="close"></ion-icon>
             </ion-button>
         </ion-buttons>
-        <ion-title>{{drawType}}</ion-title>
-        <ion-buttons slot="end">
-            <p class="credit">Balance: {{credits | currency}} </p>
-        </ion-buttons>
     </ion-toolbar>
+    <ion-title>{{drawType}}</ion-title>
 </ion-header>
 <ion-content >
 
@@ -34,6 +35,10 @@
 
 <ion-footer>
     <ion-toolbar >
+        <ion-buttons slot="start">
+            <ion-label>automatico:</ion-label>
+            <ion-input type="number" [ngModel]="drawQty" min="1" max="99" ></ion-input>
+        </ion-buttons>
         <ion-buttons slot="end">
             <ion-button [disabled]="!finished" (click)="openLastDraw()" >Ver resultados</ion-button>
         </ion-buttons>

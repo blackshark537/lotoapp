@@ -9,7 +9,7 @@ import { StoreModel } from '../models/store.model';
 import { Observable } from 'rxjs';
 import { NativeHelpersService } from '../services/native-helpers.service';
 import * as EXEL from 'xlsx';
-import { filter } from 'rxjs/operators';
+import { AdminhttpService } from '../services/adminhttp.service';
 
 @Component({
   selector: 'app-sorteo',
@@ -30,6 +30,7 @@ export class SorteoPage implements OnInit {
     private native: NativeHelpersService,
     private actionController: ActionSheetController,
     private modalController: ModalController,
+    private adminHttp: AdminhttpService,
     private store: Store<StoreModel>
   ) { }
 
@@ -135,9 +136,17 @@ export class SorteoPage implements OnInit {
         return initial;
       }, {});
 
-      let col = [];
-      let row = [];
-      for (let i = 0; i < draw.ballsqty; i++) {
+      /* let col = [];
+      let row = []; */
+      jsonData['SORTEOS']
+      this.adminHttp.postDrawDataFile(jsonData['SORTEOS']).subscribe(async resp =>{
+        await this.native.showLoading();
+        console.log(resp)
+        await this.native.showToast(resp.msg);
+      });
+
+
+/*       for (let i = 0; i < draw.ballsqty; i++) {
         col = [];
         jsonData['data'].map(val =>{ 
           if(val[this.labels[i]] !== null && val[this.labels[i]] !== undefined){
@@ -149,7 +158,8 @@ export class SorteoPage implements OnInit {
       draw.Games[gameType].Data = row;
       this.store.dispatch(EDIT({index: 0, Draw: draw}));
       await this.native.showLoading();
-      await this.native.showToast('Archivo guardado!!!')
+      await this.native.showToast('Archivo guardado!!!') */
+
     }
 
     if(file.type === type){

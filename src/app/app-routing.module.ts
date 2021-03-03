@@ -48,6 +48,10 @@ const routes: Routes = [
     path: 'login',
     //canActivate: [IsAuthGuard],
     loadChildren: () => import('./loggin/loggin.module').then( m => m.LogginPageModule)
+  },
+  {
+    path: 'publish',
+    loadChildren: () => import('./publish/publish.module').then( m => m.PublishPageModule)
   }
 ];
 

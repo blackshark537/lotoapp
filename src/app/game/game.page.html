@@ -1,14 +1,14 @@
 <ion-header [translucent]="true">
   <ion-toolbar color="tertiary" >
-    <ion-buttons slot="start">
-      <ion-button (click)="dismiss()">
-        <ion-icon name="arrow-back-outline"></ion-icon>
-        Atras
-      </ion-button>
-    </ion-buttons>
+    
     <ion-title>
       Lista de Números Sorteados
     </ion-title>
+    <ion-buttons slot="end">
+      <ion-button fill="solid" color="danger" (click)="dismiss()">
+        <ion-icon name="close"></ion-icon>
+      </ion-button>
+    </ion-buttons>
     <!-- <ion-buttons slot="end" >
         <p class="credit">Crédito Inicial: {{initialCredit | currency}} </p>
         <p class="credit">Débito: {{debit | currency}} </p>
@@ -51,10 +51,11 @@
                 {{ head }}
   
               </th>
-              <th class="normal">
+              <th class="normal d-none">
                 Modo
               </th>
-              <th class="normal">
+              
+              <th class="normal d-none">
                 Créditos
               </th>
               <th class="normal">
@@ -65,7 +66,7 @@
           <tbody class="tbody">
             <tr *ngFor="let row of user_draw.Data; index as i;">
               <td style="background-color: blanchedalmond; color: black;">{{i+1 + '.-'}}</td>
-              <td *ngFor="let col of row; index as j">
+              <td *ngFor="let col of row; index as j" class="{{j<row.length-3 || j > row.length-2? '' : 'd-none'}}">
                 {{row.length-2 != j? col : col | currency}}
               </td>
             </tr>

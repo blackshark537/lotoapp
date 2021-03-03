@@ -30,3 +30,49 @@ ion-modal.fullscreen {
     --height: 100%;
     --border-radius: 0;
 }
+
+.t-container{
+    width: 72vw;
+    height: 90vh;
+    overflow: auto;
+}
+
+.table{
+    width: 98%;
+    align-content: center;
+}
+
+
+th,td{
+    padding: 0.8em;
+    width: auto;
+}
+
+th {
+    background-color: var(--ion-color-primary);
+    color: white;
+    position: sticky;
+    top: 0; 
+}
+
+tr:nth-child(even) {background-color: #f2f2f2; color: black;}
+
+.tbody{
+    text-align: center;
+}
+
+@media only screen and (max-width: 992px) {
+    .t-container{
+        width: 100vw;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+}
+
+@media only screen and (width: 1024px) {
+    .t-container{
+        width: 72vw;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+}

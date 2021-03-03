@@ -20,6 +20,8 @@ export class PlayComponent implements OnInit, OnDestroy {
   @Input('drawType') drawType: string;
   @Input('AdminDraw') AdminDraw: AdminDraw;
 
+  drawQty = 1;
+
   soundApi;
   data: {Data: any[], ballsqty: number};
   index: number;
@@ -38,7 +40,7 @@ export class PlayComponent implements OnInit, OnDestroy {
     private http: UserhttpService
    ) { }
 
-  ngOnInit() {
+  async ngOnInit() {
     if(this.canvas) this.canvas.remove();
     
     this.can_save = false;
@@ -48,13 +50,14 @@ export class PlayComponent implements OnInit, OnDestroy {
     this.balls    = [];
     this.index    = 0;
     
-    this.http.createDraw(this.AdminDraw._id, this.game).subscribe(resp =>{
+    await this.http.createDraw(this.AdminDraw._id, this.game).subscribe(resp =>{
       this.data = resp.body;
+      console.log(resp);
+      this.soundApi = new Audio();
+      this.sketch();
     }, error =>{
       this.dismiss(false);
     });
-    this.soundApi = new Audio();
-    this.sketch();
   }
 
   sketch(){
@@ -125,6 +128,7 @@ export class PlayComponent implements OnInit, OnDestroy {
       }
   
       p.draw = ()=>{
+        
         p.background(250);
         new_sec = new Date().getSeconds();
         if(new_sec === old_sec+2){

@@ -34,6 +34,12 @@ export class InicioPage implements OnInit {
   colors = ['danger', 'success', 'warning', 'primary']
   user_draw: Draw;
 
+  prices ={
+    gold: 2,
+    plat: 3,
+    rand: 1
+  }
+
   lotteryModel = [
     {
       lottery: 'Leidsa',
@@ -136,7 +142,7 @@ export class InicioPage implements OnInit {
     this.draw = draw;
     this.game = game;
     this.draw_type = this.game? TipoSorteo.GOLD : TipoSorteo.PLATINUM;
-    this.price = this.game? 5 : 10;
+    this.price = this.game? this.prices.gold : this.prices.plat;
     this.drawfilter = draw.draw;
     this.userDraw();
 
@@ -164,7 +170,7 @@ export class InicioPage implements OnInit {
     this.drawfilter = draw.draw;
     this.userDraw();
 
-    this.price = 1;
+    this.price = this.prices.rand;
     this.draw_type = TipoSorteo.RANDOM;
     if(this.user.credits> this.price){
       if(await this.ask()){
