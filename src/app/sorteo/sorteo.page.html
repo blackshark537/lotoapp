@@ -40,8 +40,8 @@
             </ion-label>
             <ion-buttons slot="end">
               <ion-button [routerLink]="['edit/0', draw._id]" fill="solid" color="primary">manual</ion-button>
-              <ion-button fill="solid" (click)="file1.click()" color="success">auto</ion-button>
-              <input #file1 (change)="readfile($event.target, draw, 0)" style="display: none;" type="file">
+              <!-- <ion-button fill="solid" (click)="file1.click()" color="success">auto</ion-button>
+              <input #file1 (change)="readfile($event.target, draw, 0)" style="display: none;" type="file"> -->
             </ion-buttons>
           </ion-item>
 
@@ -57,8 +57,8 @@
             </ion-label>
             <ion-buttons slot="end">
               <ion-button [routerLink]="['edit/1', draw._id]" fill="solid" color="primary">manual</ion-button>
-              <ion-button fill="solid" (click)="file2.click()" color="success">auto</ion-button>
-              <input #file2 (change)="readfile($event.target, draw, 1)" style="display: none;" type="file">
+              <!-- <ion-button fill="solid" (click)="file2.click()" color="success">auto</ion-button>
+              <input #file2 (change)="readfile($event.target, draw, 1)" style="display: none;" type="file"> -->
             </ion-buttons>
           </ion-item>
         </ion-list>

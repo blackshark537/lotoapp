@@ -42,13 +42,18 @@ export async function presentAlert(head, sub_head, msg) {
 
 export const userReducer = createReducer(user_state,
     on(GET_Success, (state ,{resp})=>{
+        console.log(resp)
         let user = {...resp.body}
-        user.archived = [...user.archived].reverse();
+        if(!user.archived.length){
+            user.archived = [user.archived]
+        } else {
+            user.archived = [...user.archived].reverse();
+        }
         return {...user};
     }),
     on(ARCHIVE_DRAW_SUCCESS, (state, {resp})=>{
         let user = {...state};
-        user.archived = [...user.archived];
+        user.archived = user.archived? [...user.archived] : [];
         return user;
     }),
     on(RECICLE, (state, {index})=>{
