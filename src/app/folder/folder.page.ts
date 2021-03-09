@@ -9,6 +9,7 @@ import { UserModel } from '../models/user.model';
 import { Draw } from '../models/draw.model';
 import { NativeHelpersService } from '../services/native-helpers.service';
 import { GET_Populated, MARK_AS_FAVORITE } from '../actions/user.actions';
+import { UserhttpService } from '../services/userhttp.service';
 
 @Component({
   selector: 'app-folder',
@@ -37,6 +38,7 @@ export class FolderPage implements OnInit {
     private actionCtrl: ActionSheetController,
     private platform: Platform,
     private store: Store<StoreModel>,
+    private userHttp: UserhttpService,
     private activatedRoute: ActivatedRoute,
     private router: Router) { }
 
@@ -47,19 +49,16 @@ export class FolderPage implements OnInit {
 
   async ngOnInit() {
     this.folder = this.activatedRoute.snapshot.paramMap.get('id');
-    await this.store.select('user_state').subscribe(state=>{
-      this.user = {...state};
-      this.user.archived = [...state.archived];
-      this.user.recycle = [...state.recycle];
-    });
-
-    this.store.dispatch(GET_Populated());
+    this.userHttp.getDraws().subscribe(resp => {
+      this.user.archived = resp.body.reverse()
+    })
   }
 
   // one click to select a folder OR double click to open the selected folder
   async openFolder(index: number){
     if(this.indexSelected === index){
       this.router.navigate(['/file', index]);
+      this.userHttp.draw$.next(this.user.archived[index]);
     }else{
       this.indexSelected = index;
     }

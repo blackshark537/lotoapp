@@ -4,6 +4,8 @@ import { AdminhttpService } from '../services/adminhttp.service';
 import { NativeHelpersService } from '../services/native-helpers.service';
 import * as EXEL from 'xlsx';
 import { AdminDraw } from '../models/draw.model';
+import { ModalController } from '@ionic/angular';
+import { PublishFormComponent } from './publish-form/publish-form.component';
 
 
 @Component({
@@ -15,7 +17,8 @@ export class PublishPage implements OnInit, OnDestroy {
   data: any[] = []
   constructor(
     private native: NativeHelpersService,
-    private adminService: AdminhttpService
+    private adminService: AdminhttpService,
+    private modalCtrl: ModalController
   ) { }
 
   ngOnInit() {
@@ -68,4 +71,15 @@ export class PublishPage implements OnInit, OnDestroy {
     }
   }
 
+
+  async openForm(){
+    const modal = await this.modalCtrl.create({
+      component: PublishFormComponent,
+      componentProps:{
+        lottery: ''
+      }
+    });
+
+    await modal.present();
+  }
 }

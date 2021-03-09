@@ -46,6 +46,8 @@ ion-modal.fullscreen {
 th,td{
     padding: 0.8em;
     width: auto;
+    border-left: 1px solid var(--ion-color-medium);
+    border-right: 1px solid var(--ion-color-medium);
 }
 
 th {

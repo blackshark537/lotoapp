@@ -43,11 +43,9 @@ export class Tombola{
         this.p.text("4",135, this.p.height-20);
         this.p.text("5",160, this.p.height-20);
         this.p.text("6",185, this.p.height-20);
-        this.p.fill(0,0,255);
-        this.p.fill(0,0,255);
+        this.p.fill(255,0,0);
         this.p.text("7",210, this.p.height-20);
-        this.p.fill(255,0,0);
-        this.p.fill(255,0,0);
+        this.p.fill(0,0,255);
         this.p.text("8",235, this.p.height-20);
     }
 

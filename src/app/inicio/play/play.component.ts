@@ -40,7 +40,7 @@ export class PlayComponent implements OnInit, OnDestroy {
     private http: UserhttpService
    ) { }
 
-  async ngOnInit() {
+  async ngOnInit(auto?: boolean) {
     if(this.canvas) this.canvas.remove();
     
     this.can_save = false;
@@ -49,24 +49,23 @@ export class PlayComponent implements OnInit, OnDestroy {
     this.webgl    = false;
     this.balls    = [];
     this.index    = 0;
-    
+
     await this.http.createDraw(this.AdminDraw._id, this.game).subscribe(resp =>{
       this.data = resp.body;
-      console.log(resp);
       this.soundApi = new Audio();
-      this.sketch();
+      this.sketch(auto);
     }, error =>{
       this.dismiss(false);
     });
   }
 
-  sketch(){
+  sketch(auto?: boolean){
     
     this.canvas = new P5((p: P5)=>{
 
       const gvty = p.createVector(0,0.9);
       const wind = p.createVector(0.01,0);
-      let loop = false;
+      let loop = auto;
       let img;
       let bgImg;
       let playButton;
@@ -106,6 +105,8 @@ export class PlayComponent implements OnInit, OnDestroy {
         p.frameRate(60);
         p.textFont(myFont, 18);
         p.noFill();
+        if(this.drawQty > 0 && loop) --this.drawQty;
+        if(loop) onStart();
       }
       
       p.mouseClicked = ()=>{
@@ -115,9 +116,14 @@ export class PlayComponent implements OnInit, OnDestroy {
 
         //play button
         if(p.mouseX > 100 && p.mouseX < 400-100 && p.mouseY > 100 && p.mouseY < 400-100){
-          old_sec = new Date().getSeconds();
-          if(!loop) loop = true;
+          onStart();
         }
+      }
+
+      let onStart = ()=>{
+        old_sec = new Date().getSeconds();
+        if(this.drawQty > 0 && !loop) --this.drawQty;
+        if(!loop) loop = true;
       }
 
       p.keyPressed = ()=>{
@@ -131,7 +137,7 @@ export class PlayComponent implements OnInit, OnDestroy {
         
         p.background(250);
         new_sec = new Date().getSeconds();
-        if(new_sec === old_sec+2){
+        if(new_sec === old_sec+3){
           withdraw = true;
           old_sec = new_sec;
         }
@@ -158,6 +164,7 @@ export class PlayComponent implements OnInit, OnDestroy {
             this.soundApi.volume = 0.5;
             this.soundApi.src = 'assets/game_won.wav';
             this.finished = true;
+            if(this.drawQty > 0) this.ngOnInit(true)
             //this.save();
             this.soundApi.onloadeddata = () =>{
               this.soundApi.play();
@@ -201,6 +208,9 @@ export class PlayComponent implements OnInit, OnDestroy {
       swipeToClose: true,
       backdropDismiss: false,
       component: GamePage,
+      componentProps: {
+        lottery: this.AdminDraw.lottery
+      },
       id: 'game-modal',
       cssClass: 'fullscreen'
     });

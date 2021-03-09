@@ -51,7 +51,7 @@ export class AppComponent implements OnInit {
     {
       title: 'Registro de sorteos',
       url: '/publish',
-      style: 'warning',
+      style: 'success',
       icon: 'reader'
     },
     {

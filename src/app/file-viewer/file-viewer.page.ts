@@ -5,6 +5,7 @@ import { Store } from '@ngrx/store';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MARK_AS_FAVORITE, RECICLE } from '../actions/user.actions';
 import { ActionSheetController, ToastController, Platform } from '@ionic/angular';
+import { UserhttpService } from '../services/userhttp.service';
 
 @Component({
   selector: 'app-file-viewer',
@@ -22,6 +23,7 @@ export class FileViewerPage implements OnInit {
     private toastCtrl: ToastController,
     private actionCtrl: ActionSheetController,
     private store: Store<StoreModel>,
+    private userHttp: UserhttpService,
     private activeRoute: ActivatedRoute,
     private platform: Platform,
     private router: Router
@@ -29,10 +31,9 @@ export class FileViewerPage implements OnInit {
 
   async ngOnInit() {
     this.index = parseInt(this.activeRoute.snapshot.paramMap.get('id'));
-    
-    await this.store.select('user_state').subscribe(resp=>{
-      let d = {...resp}
-      this.draw = d.archived[this.index];
+
+    this.userHttp.draw$.subscribe(draw =>{
+      if(draw)this.draw = draw;
     });
     this.dateExp = this.draw.expiryDate;
   }

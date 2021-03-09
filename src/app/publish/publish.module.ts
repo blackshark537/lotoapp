@@ -7,6 +7,7 @@ import { IonicModule } from '@ionic/angular';
 import { PublishPageRoutingModule } from './publish-routing.module';
 
 import { PublishPage } from './publish.page';
+import { PublishFormComponent } from './publish-form/publish-form.component';
 
 @NgModule({
   imports: [
@@ -15,6 +16,6 @@ import { PublishPage } from './publish.page';
     IonicModule,
     PublishPageRoutingModule
   ],
-  declarations: [PublishPage]
+  declarations: [PublishPage, PublishFormComponent]
 })
 export class PublishPageModule {}

@@ -2,7 +2,8 @@
   <ion-toolbar color="tertiary" >
     
     <ion-title>
-      Lista de Números Sorteados
+      Reporte de Números Sorteados para el sorteo de
+        {{!user_draws[0]? '' : user_draws[0].draw | titlecase}}
     </ion-title>
     <ion-buttons slot="end">
       <ion-button fill="solid" color="danger" (click)="dismiss()">
@@ -33,8 +34,14 @@
   <ng-template #elseBlock>
     <div *ngFor="let user_draw of user_draws;">
       <h4>
-        Reporte de números seleccionados para el sorteo de la Loteria
-        {{user_draw.draw | titlecase}}
+        <!-- Reporte de números seleccionados para el sorteo de la Loteria
+        {{user_draw.draw | titlecase}} -->
+        Platimun 
+        <ion-checkbox [(ngModel)]="entry[0].isChecked"></ion-checkbox> 
+        Gold 
+        <ion-checkbox [(ngModel)]="entry[1].isChecked"></ion-checkbox> 
+        Aleatorio 
+        <ion-checkbox [(ngModel)]="entry[2].isChecked"></ion-checkbox> 
       </h4>
       <h4>
         Sorteado a la fecha de: {{user_draw.emitDate }}
@@ -51,7 +58,7 @@
                 {{ head }}
   
               </th>
-              <th class="normal d-none">
+              <th class="normal">
                 Modo
               </th>
               
@@ -64,9 +71,9 @@
             </tr>
           </thead>
           <tbody class="tbody">
-            <tr *ngFor="let row of user_draw.Data; index as i;">
+            <tr *ngFor="let row of user_draw.Data; index as i;"  class="{{ row[8]===filter()? '' : 'd-none' }}">
               <td style="background-color: blanchedalmond; color: black;">{{i+1 + '.-'}}</td>
-              <td *ngFor="let col of row; index as j" class="{{j<row.length-3 || j > row.length-2? '' : 'd-none'}}">
+              <td *ngFor="let col of row; index as j" class="{{j<row.length-2 || j > row.length-2? '' : 'd-none'}}" >
                 {{row.length-2 != j? col : col | currency}}
               </td>
             </tr>

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http'
-import { Observable, throwError } from 'rxjs'
+import { BehaviorSubject, Observable, throwError } from 'rxjs'
 import { catchError } from 'rxjs/operators';
 import { UserModel, userLog, UserAccounting } from '../models/user.model';
 import { Draw } from '../models/draw.model';
@@ -19,6 +19,7 @@ export class UserhttpService {
   private url = 'http://localhost:3000/user';
   private baseUrl = 'http://localhost:3000';
 
+  public draw$ = new BehaviorSubject(null);
 
   constructor(
     private http: HttpClient,
@@ -126,6 +127,11 @@ export class UserhttpService {
 
   getDrawsByDate(date: DateDto): Observable<Draw[]>{
     return this.http.get<Draw[]>(`${this.url}/draws/today`)
+      .pipe(catchError(error => throwError(error.message)));
+  }
+
+  getDraws(): Observable<any>{
+    return this.http.get<any>(`${this.url}/draws`)
       .pipe(catchError(error => throwError(error.message)));
   }
 

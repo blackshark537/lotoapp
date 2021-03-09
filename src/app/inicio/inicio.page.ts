@@ -93,6 +93,9 @@ export class InicioPage implements OnInit {
       animated: true,
       swipeToClose: true,
       component: GamePage,
+      componentProps: {
+        lottery: this.filter
+      },
       id: 'game-modal',
       cssClass: 'fullscreen'
     });
@@ -186,7 +189,7 @@ export class InicioPage implements OnInit {
   }
 
   async ask(): Promise<boolean>{
-    const msg = `se descontaran  $${this.price * this.draw.ballsqty}.00 creditos, aceptar para continuar!`;
+    const msg = `se descontaran  $${this.price}.00 creditos, aceptar para continuar!`;
     return await this.native.comfirmModal(msg);
   }
 

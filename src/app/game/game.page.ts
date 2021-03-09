@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { StoreModel } from 'src/app/models/store.model';
 import { Store } from '@ngrx/store';
 import { Draw } from '../models/draw.model';
@@ -13,10 +13,17 @@ import * as userAction from '../actions/user.actions';
 })
 export class GamePage implements OnInit, OnDestroy {
 
+  @Input('lottery') lottery: string;
   user: UserModel;
   price = 15;
   initialCredit = 0;
   user_draws: Draw[] = [];
+
+  public entry = [
+    { val: 'Sorteo Platinum', isChecked: true },
+    { val: 'Sorteo Gold', isChecked: false },
+    { val: 'Sorteo por la maquina', isChecked: false }
+  ];
 
   constructor(
     private modalCtrl: ModalController,
@@ -24,10 +31,16 @@ export class GamePage implements OnInit, OnDestroy {
   ) { }
 
   async ngOnInit() {
-    await this.store.select('draw_state').subscribe(resp =>{
-      this.user_draws = [...resp];
+    console.log(this.lottery)
+    this.store.select('draw_state').subscribe(resp =>{
+      this.user_draws = [...resp].filter(val => val.lottery == this.lottery);
     });
-    await this.store.dispatch(userAction.GET_TODAY_DRAWS());
+    this.store.dispatch(userAction.GET_TODAY_DRAWS());
+  }
+
+  filter(): string{
+    if(this.entry.filter(x => x.isChecked)[0]) return  this.entry.filter(x => x.isChecked)[0].val;
+    return null;
   }
 
   async dismiss(){
@@ -39,6 +52,7 @@ export class GamePage implements OnInit, OnDestroy {
     headers.splice(draw.ballsqty, headers.length-draw.ballsqty)
     return headers;
   }
+
 
   async ngOnDestroy(){
 
