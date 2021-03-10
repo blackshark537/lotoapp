@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Draw } from '../models/draw.model';
 import { StoreModel } from '../models/store.model';
 import { Store } from '@ngrx/store';
@@ -6,18 +6,19 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { MARK_AS_FAVORITE, RECICLE } from '../actions/user.actions';
 import { ActionSheetController, ToastController, Platform } from '@ionic/angular';
 import { UserhttpService } from '../services/userhttp.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-file-viewer',
   templateUrl: './file-viewer.page.html',
   styleUrls: ['./file-viewer.page.scss'],
 })
-export class FileViewerPage implements OnInit {
+export class FileViewerPage implements OnInit, OnDestroy {
 
   draw: Draw;
   index: number;
-  public dateNow = new Date(Date.now());
-  public dateExp;
+  private subs: Subscription;
+  
 
   constructor(
     private toastCtrl: ToastController,
@@ -32,10 +33,14 @@ export class FileViewerPage implements OnInit {
   async ngOnInit() {
     this.index = parseInt(this.activeRoute.snapshot.paramMap.get('id'));
 
-    this.userHttp.draw$.subscribe(draw =>{
+    this.subs = this.userHttp.draw$.subscribe(draw =>{
       if(draw)this.draw = draw;
     });
-    this.dateExp = this.draw.expiryDate;
+    
+  }
+
+  ngOnDestroy(){
+    this.subs.unsubscribe();
   }
 
   get headers(){
@@ -67,17 +72,6 @@ export class FileViewerPage implements OnInit {
             this.router.navigate(['folder', 'Archivadas']);
           }
         },
-/*         {
-          text: 'reciclar',
-          icon: 'trash',
-          cssClass: 'delete',
-          role: 'destructive',
-          handler: ()=>{ 
-            this.store.dispatch(RECICLE({index}));
-            this.showToast('Enviado a la papelera de reciclaje');
-            this.router.navigate(['folder', 'Archivadas']);
-          }
-        }, */
         {
           text: 'cancelar',
           icon: 'close',

@@ -1,76 +1,39 @@
 <ion-header>
   <ion-toolbar color="tertiary">
     <ion-buttons slot="start">
-      <ion-menu-button></ion-menu-button>
+      <ion-menu-button *ngIf="!filter"></ion-menu-button>
+      <ion-button *ngIf="filter" fill="solid" color="danger" (click)="filter=null;">
+        <ion-icon name="close"></ion-icon>
+      </ion-button>
     </ion-buttons>
-    <ion-title>Registro de sorteos</ion-title>
-    <ion-buttons slot="end" (click)="openForm()">
-      <ion-button>Registrar</ion-button>
-      <!-- <ion-button fill="solid" (click)="file2.click()" color="success">auto</ion-button>
-              <input #file2 (change)="readfile($event.target, draw, 1)" style="display: none;" type="file"> -->
+    <ion-title>Historico de sorteos {{filter? filter : ''}}</ion-title>
+    <ion-buttons slot="end" >
+      <ion-button (click)="openForm()">Registrar</ion-button>
+      
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
   <ion-grid>
-    <ion-row>
+    <ion-row *ngIf="!filter">
       <ion-col size="12">
-          <div class="t-container">
-            <table class="table">
-              <thead class="thead">
-                <tr>
-                  <th class="normal">
-                    Sorteo
-                  </th>
-                  <th>
-                    Fecha
-                  </th>
-                  <th class="normal">
-                    1ro
-                  </th>
-                  <th class="normal">
-                    2do
-                  </th>
-                  <th class="normal">
-                    3ro
-                  </th>
-                  <th class="normal">
-                    4to
-                  </th>
-                  <th class="normal">
-                    5to
-                  </th>
-                  <th class="normal">
-                    6to
-                  </th>
-                  <th class="normal">
-                    LOTO MAS
-                  </th>
-                  <th class="normal">
-                    S. LOTO MAS
-                  </th>
-                </tr>
-              </thead>
-              <tbody class="tbody">
-                <tr *ngFor="let el of data; index as i;">
-                  <td>{{el['Sorteo']}}</td>
-                  <td>{{el['Fecha']}}</td>
-                  <td>{{el['1er']}}</td>
-                  <td>{{el['2do']}}</td>
-                  <td>{{el['3er']}}</td>
-                  <td>{{el['4to']}}</td>
-                  <td>{{el['5to']}}</td>
-                  <td>{{el['6to']}}</td>
-                  <td>{{el['LOTO_MAS']}}</td>
-                  <td>{{el['S_LOTO_MAS']}}</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-          <ion-item-divider></ion-item-divider>
-
+        <h1 style="text-align: center; margin: auto;">Seleccione una lotería!</h1>
+      </ion-col>
+      <ion-col size="12" size-md="4" *ngFor="let draw of lotteryModel; index as i;">
+        <ion-card type="button" class="card-hover" (click)="filter=draw.lottery">
+          <img [src]="'assets/logo.png'" class="lottery"/>
+          <ion-card-header class="ion-text-center" style="background-color: #1a1a1a;">
+            <ion-card-title [color]="colors[i]" class="truncate-text">{{draw.lottery}}</ion-card-title>
+          </ion-card-header>
+        </ion-card>
       </ion-col>
     </ion-row>
+
+    <app-leidsa-loto *ngIf="filter==='Leidsa'"></app-leidsa-loto>
+    <ion-row *ngIf="filter==='Nacional'">
+      <iframe allowfullscreen="allowfullscreen" frameborder="0" height="800px" scrolling="no" src="https://loterianacional.gob.do/sort-resutados/b-noche.html" width="100%"></iframe>
+    </ion-row>
   </ion-grid>
+  
 </ion-content>

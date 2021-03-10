@@ -1,0 +1,59 @@
+
+  <ion-row>
+    <ion-col size="12">
+        <div class="t-container">
+          <table class="table">
+            <thead class="thead">
+              <tr>
+                <th class="normal">
+                  Sorteo
+                </th>
+                <th>
+                  Fecha
+                </th>
+                <th class="normal">
+                  1ro
+                </th>
+                <th class="normal">
+                  2do
+                </th>
+                <th class="normal">
+                  3ro
+                </th>
+                <th class="normal">
+                  4to
+                </th>
+                <th class="normal">
+                  5to
+                </th>
+                <th class="normal">
+                  6to
+                </th>
+                <th class="normal">
+                  LOTO MAS
+                </th>
+                <th class="normal">
+                  S. LOTO MAS
+                </th>
+              </tr>
+            </thead>
+            <tbody class="tbody">
+              <tr *ngFor="let el of data; index as i;">
+                <td>{{el['Sorteo']}}</td>
+                <td>{{el['Fecha']}}</td>
+                <td>{{el['1er']}}</td>
+                <td>{{el['2do']}}</td>
+                <td>{{el['3er']}}</td>
+                <td>{{el['4to']}}</td>
+                <td>{{el['5to']}}</td>
+                <td>{{el['6to']}}</td>
+                <td>{{el['LOTO_MAS']}}</td>
+                <td>{{el['S_LOTO_MAS']}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <ion-item-divider></ion-item-divider>
+
+    </ion-col>
+  </ion-row>

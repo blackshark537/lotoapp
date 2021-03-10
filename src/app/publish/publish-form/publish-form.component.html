@@ -7,7 +7,8 @@
 <ion-content>
   <ion-grid>
     <ion-row>
-      
+      <ion-button fill="solid" (click)="file2.click()" color="success">Desde Archivo</ion-button>
+      <input #file2 (change)="readfile($event.target, draw, 1)" style="display: none;" type="file">
     </ion-row>
   </ion-grid>
 </ion-content>

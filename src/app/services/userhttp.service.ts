@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http'
 import { BehaviorSubject, Observable, throwError } from 'rxjs'
-import { catchError } from 'rxjs/operators';
+import { catchError, shareReplay } from 'rxjs/operators';
 import { UserModel, userLog, UserAccounting } from '../models/user.model';
 import { Draw } from '../models/draw.model';
 import { NativeHelpersService } from './native-helpers.service';
@@ -14,10 +14,10 @@ export interface DateDto{day: number, month: number, year: number};
 })
 export class UserhttpService {
 
-  /* private url = 'http://loter.ddns.net/user';
-  private baseUrl = 'http://loter.ddns.net'; */
-  private url = 'http://localhost:3000/user';
-  private baseUrl = 'http://localhost:3000';
+  private url = 'http://loter.ddns.net/user';
+  private baseUrl = 'http://loter.ddns.net';
+  /* private url = 'http://localhost:3000/user';
+  private baseUrl = 'http://localhost:3000'; */
 
   public draw$ = new BehaviorSubject(null);
 
@@ -131,8 +131,9 @@ export class UserhttpService {
   }
 
   getDraws(): Observable<any>{
-    return this.http.get<any>(`${this.url}/draws`)
-      .pipe(catchError(error => throwError(error.message)));
+    return this.http.get<any>(`${this.url}/draws`).pipe(
+    shareReplay(1),
+    catchError(error => throwError(error.message)));
   }
 
   createDraw(admin_draw_id: string, draw_type: number): Observable<DrawResp>{

@@ -93,6 +93,7 @@ export class PlayComponent implements OnInit, OnDestroy {
         this.soundApi.volume = 1;
         x = p.width;
         y = p.height;
+        
         for(let i=0; i<15; i++){
           this.balls.push(new Ball(p, i+15, this.webgl));
         };
@@ -100,6 +101,7 @@ export class PlayComponent implements OnInit, OnDestroy {
         for(let i=0; i < this.data.ballsqty; i++){
           draw_balls.push(new Ball(p, this.data.Data[i], this.webgl));
         }
+
         this.drawBall = new DrawBall( p, draw_balls);
         this.tombola = new Tombola(p, img, this.webgl);
         p.frameRate(60);
@@ -137,7 +139,7 @@ export class PlayComponent implements OnInit, OnDestroy {
         
         p.background(250);
         new_sec = new Date().getSeconds();
-        if(new_sec === old_sec+3){
+        if(new_sec >= old_sec+3){
           withdraw = true;
           old_sec = new_sec;
         }

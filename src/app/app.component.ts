@@ -30,12 +30,12 @@ export class AppComponent implements OnInit {
       style: 'tertiary',
       icon: 'home'
     },
-    {
+/*     {
       title: 'Configuración de Sorteos',
       url: '/sorteos',
       style: 'success',
       icon: 'apps'
-    },
+    }, */
     {
       title: 'Usuarios',
       url: '/users',
@@ -49,7 +49,7 @@ export class AppComponent implements OnInit {
       icon: 'stats-chart'
     },
     {
-      title: 'Registro de sorteos',
+      title: 'Historico de sorteos',
       url: '/publish',
       style: 'success',
       icon: 'reader'

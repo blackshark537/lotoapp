@@ -20,9 +20,9 @@ export class GamePage implements OnInit, OnDestroy {
   user_draws: Draw[] = [];
 
   public entry = [
-    { val: 'Sorteo Platinum', isChecked: true },
+    { val: 'Sorteo Platinum', isChecked: false },
     { val: 'Sorteo Gold', isChecked: false },
-    { val: 'Sorteo por la maquina', isChecked: false }
+    { val: 'Sorteo por la maquina', isChecked: true }
   ];
 
   constructor(
