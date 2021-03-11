@@ -21,7 +21,7 @@ export class LeidsaLotoComponent implements OnInit, OnDestroy {
     this.subs = this.adminService.getHistoryData().pipe(
       map(resp => resp.data.map(el => {
         return el
-      }).slice(200).reverse())
+      }).slice(100).reverse())
     ).subscribe(resp => {
       this.data = resp;
     });

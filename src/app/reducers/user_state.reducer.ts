@@ -42,7 +42,7 @@ export async function presentAlert(head, sub_head, msg) {
 
 export const userReducer = createReducer(user_state,
     on(GET_Success, (state ,{resp})=>{
-        console.log(resp)
+        
         let user = {...resp.body}
         if(!user.archived.length){
             user.archived = [user.archived]
