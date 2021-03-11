@@ -46,7 +46,8 @@ export class ModalComponent implements OnInit {
   }
 
   async save(){
-    await this.store.dispatch(UserActions.UpdateCredits({userPreferences: this.userPreference}));
+    if(this.user.role === 'Admin' || !this.userPreference.active) this.userPreference.active = true;
+    this.store.dispatch(UserActions.UpdateCredits({userPreferences: this.userPreference}));
     await this.native.showLoading();
     this.hasChanged = false;
   }

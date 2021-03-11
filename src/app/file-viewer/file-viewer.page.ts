@@ -7,6 +7,8 @@ import { MARK_AS_FAVORITE, RECICLE } from '../actions/user.actions';
 import { ActionSheetController, ToastController, Platform } from '@ionic/angular';
 import { UserhttpService } from '../services/userhttp.service';
 import { Subscription } from 'rxjs';
+import { AdminhttpService } from '../services/adminhttp.service';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-file-viewer',
@@ -16,8 +18,9 @@ import { Subscription } from 'rxjs';
 export class FileViewerPage implements OnInit, OnDestroy {
 
   draw: Draw;
+  wondraw = [];
   index: number;
-  private subs: Subscription;
+  private subs: Subscription[] = [];
   
 
   constructor(
@@ -25,6 +28,7 @@ export class FileViewerPage implements OnInit, OnDestroy {
     private actionCtrl: ActionSheetController,
     private store: Store<StoreModel>,
     private userHttp: UserhttpService,
+    private adminHttp: AdminhttpService,
     private activeRoute: ActivatedRoute,
     private platform: Platform,
     private router: Router
@@ -33,14 +37,26 @@ export class FileViewerPage implements OnInit, OnDestroy {
   async ngOnInit() {
     this.index = parseInt(this.activeRoute.snapshot.paramMap.get('id'));
 
-    this.subs = this.userHttp.draw$.subscribe(draw =>{
+    this.subs.push(this.userHttp.draw$.subscribe(draw =>{
       if(draw)this.draw = draw;
-    });
-    
+    }));
+    this.subs.push(this.adminHttp.getHistoryData().pipe(
+      map(x => {
+        return x.data.reverse()[0]
+      })
+    ).subscribe(resp =>{
+      console.log(Object.values(resp).slice(3))
+      const data = Object.values(resp);
+      this.wondraw = data.slice(3)
+    }))
   }
 
   ngOnDestroy(){
-    this.subs.unsubscribe();
+    this.subs.forEach(sub => sub.unsubscribe());
+  }
+
+  compare(col){
+    return this.wondraw.includes(col);
   }
 
   get headers(){

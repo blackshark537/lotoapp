@@ -1,5 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
+import { AdminGuard } from '../guards/admin.guard';
 import { PublishFormComponent } from './publish-form/publish-form.component';
 
 
@@ -32,6 +33,7 @@ export class PublishPage implements OnInit, OnDestroy {
   ];
 
   constructor(
+    public adminGuard: AdminGuard,
     private modalCtrl: ModalController
   ) { }
 

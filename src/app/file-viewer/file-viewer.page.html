@@ -52,7 +52,7 @@
       <tbody class="tbody">
         <tr *ngFor="let row of draw.Data; index as i;">
           <td style="background-color: blanchedalmond; color: black;">{{i+1 + '.-'}}</td>
-          <td *ngFor="let col of row; index as j">
+          <td *ngFor="let col of row; index as j" class="{{j < row.length-2 && compare(col)? 'won' : ''}}">
             <span *ngIf="j === row.length-2; else elseBlock">{{col | currency}}</span>
             <ng-template #elseBlock>
               {{col}}

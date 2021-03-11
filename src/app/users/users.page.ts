@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { StoreModel } from '../models/store.model';
-import { GET_All_Users } from '../actions/user.actions';
+import { GET_All_Users, DELETE_USER } from '../actions/user.actions';
 import { Observable } from 'rxjs';
 import { UserModel } from '../models/user.model';
-import { NativeHelpersService } from '../services/native-helpers.service';
 import { ModalController } from '@ionic/angular';
 import { ModalComponent } from './modal/modal.component';
+import { NativeHelpersService } from '../services/native-helpers.service';
 
 @Component({
   selector: 'app-users',
@@ -18,6 +18,7 @@ export class UsersPage implements OnInit {
   user$: Observable<UserModel[]>;
 
   constructor(
+    private native: NativeHelpersService,
     private store: Store<StoreModel>,
     private modalCtrl: ModalController
   ) { }
@@ -27,6 +28,12 @@ export class UsersPage implements OnInit {
     this.user$ = this.store.select('users_profiles');
 
     this.store.dispatch(GET_All_Users());
+  }
+
+  async deleteOne(user){
+    if(user.role === 'Admin') return
+    const answer = await this.native.comfirmModal('Estas seguro que deseas eliminar este usuario?', 'Alerta!!!')
+    if(answer) this.store.dispatch(DELETE_USER({user}));
   }
 
   async modal(user: UserModel){

@@ -71,10 +71,10 @@ export class NativeHelpersService {
   }
 
 //====================================================================================
-  async comfirmModal(msg): Promise<boolean>{
+  async comfirmModal(msg: string, header?: string): Promise<boolean>{
     let aggre = false;
     const modal = await this.alertCtl.create({
-      header: 'Confirmar Sorteo!',
+      header: header || 'Confirmar Sorteo!',
       message: msg,
       animated: true,
       backdropDismiss: false,

@@ -38,7 +38,7 @@ export class FolderPage implements OnInit, OnDestroy {
   async ngOnInit() {
     this.folder = this.activatedRoute.snapshot.paramMap.get('id');
     this.subs = this.userHttp.getDraws().subscribe(resp => {
-      this.archived = resp.body.reverse()
+      this.archived = resp.body
       this.archivedCp = resp.body.reverse()
     });
   }

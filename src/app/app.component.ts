@@ -43,16 +43,16 @@ export class AppComponent implements OnInit {
       icon: 'person'
     },
     {
-      title: 'Historial de jugadas',
-      url: '/folder/Archivadas',
-      style: 'warning',
-      icon: 'stats-chart'
-    },
-    {
       title: 'Historico de sorteos',
       url: '/publish',
       style: 'success',
       icon: 'reader'
+    },
+    {
+      title: 'Historial de jugadas',
+      url: '/folder/Archivadas',
+      style: 'warning',
+      icon: 'stats-chart'
     },
     {
       title: 'Favoritas',

@@ -3,7 +3,7 @@ import { UserhttpService } from '../services/userhttp.service';
 import { createEffect, ofType, Actions } from '@ngrx/effects';
 import * as user from '../actions/user.actions';
 import { of } from 'rxjs';
-import { map, mergeMap, exhaustMap, catchError, tap } from 'rxjs/operators'
+import { map, mergeMap, exhaustMap, catchError } from 'rxjs/operators'
 import { Router } from '@angular/router';
 
 @Injectable()
@@ -143,10 +143,20 @@ export class userEffects{
         ofType(user.UpdateCredits),
         exhaustMap(payload =>
             this.httpService.updateCredits(payload.userPreferences).pipe(
-                map(() => user.GET()),
+                map(() => user.GET_All_Users()),
                 catchError(error => of(user.Error({error})))
             )
         )
+    ));
+
+    deleteUser$ = createEffect(() =>
+    this.actions$.pipe(
+        ofType(user.DELETE_USER),
+        exhaustMap(payload => 
+            this.httpService.deleteUser(payload.user._id).pipe(
+                map(() => user.GET_All_Users()),
+                catchError(error => of(user.Error({error})))
+            ))
     ));
 
     constructor(

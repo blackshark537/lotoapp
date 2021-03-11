@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Subscription } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { SystemAccounting } from '../models/user.model';
 import { AdminhttpService } from '../services/adminhttp.service';
 
@@ -7,18 +9,25 @@ import { AdminhttpService } from '../services/adminhttp.service';
   templateUrl: './system-account.page.html',
   styleUrls: ['./system-account.page.scss'],
 })
-export class SystemAccountPage implements OnInit {
+export class SystemAccountPage implements OnInit, OnDestroy {
 
   systemAccount: SystemAccounting[] = [];
+  sub$: Subscription;
 
   constructor(
     private adminHttpService: AdminhttpService
   ) { }
 
   ngOnInit() {
-    this.adminHttpService.getSysAccounting().subscribe(resp => {
+    this.sub$ = this.adminHttpService.getSysAccounting().pipe(
+      map(x => x.reverse())
+    ).subscribe(resp => {
       this.systemAccount = resp;
     });
+  }
+
+  ngOnDestroy() {
+    this.sub$.unsubscribe();
   }
 
   get Total(){

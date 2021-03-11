@@ -10,7 +10,7 @@
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
-  <ion-searchbar (ionInput)="onSearch($event.target.value)" debounce="500" *ngIf="folder != 'Reciclaje'" animated></ion-searchbar>
+  <ion-searchbar (ionInput)="onSearch($event.target.value)" debounce="500" *ngIf="folder === 'Archivadas'" animated></ion-searchbar>
 </ion-header>
 
 <ion-content>
