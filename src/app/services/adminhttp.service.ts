@@ -15,10 +15,10 @@ interface httpInterface{
 })
 export class AdminhttpService {
 
-  private url = 'http://loter.ddns.net/admin';
-  private baseUrl = 'http://loter.ddns.net';
-  /* private url = 'http://localhost:3000/admin';
-  private baseUrl = 'http://localhost:3000'; */
+  /* private url = 'http://loter.ddns.net/admin';
+  private baseUrl = 'http://loter.ddns.net'; */
+  private url = 'http://localhost:3000/admin';
+  private baseUrl = 'http://localhost:3000';
   
   constructor(
     private http: HttpClient
@@ -63,8 +63,26 @@ export class AdminhttpService {
     .pipe(catchError(error => throwError(error.message)));
   }
 
-  postDrawDataFile(DrawData): Observable<any>{
-    return this.http.post(`${this.url}/draw/data`, DrawData)
+  /**
+   * Create from an array of data
+   * @param DrawData DataFile
+   * @param lottery leidsa by default 
+   * @returns Observable
+   */
+  postDrawDataFile(DrawData: any[], lottery?: string): Observable<any>{
+    return this.http.post(`${this.url}/draw/${lottery || 'leidsa'}/data`, DrawData)
+    .pipe(catchError(error => throwError(error.message)))
+  }
+
+  /**
+   * Create One
+   * @param DrawData DataFile
+   * @param lottery leidsa by default 
+   * @param draw loto by default
+   * @returns Observable
+   */
+  postOneDrawData(DrawData, lottery?: string, draw?: string): Observable<any>{
+    return this.http.post(`${this.url}/history/${lottery || 'leidsa'}/${draw || 'loto'}`, DrawData)
     .pipe(catchError(error => throwError(error.message)))
   }
 

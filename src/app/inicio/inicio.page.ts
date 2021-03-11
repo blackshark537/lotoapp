@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Observable, Subscription } from 'rxjs';
 import { Draw, AdminDraw, TipoSorteo } from '../models/draw.model';
 import { StoreModel } from '../models/store.model';
 import { Store } from '@ngrx/store';
@@ -16,7 +16,7 @@ import { GamePage } from '../game/game.page';
   templateUrl: './inicio.page.html',
   styleUrls: ['./inicio.page.scss'],
 })
-export class InicioPage implements OnInit {
+export class InicioPage implements OnInit, OnDestroy {
 
 
   draw_type: string;
@@ -59,19 +59,25 @@ export class InicioPage implements OnInit {
     }
   ];
 
+  private subs: Subscription;
+
   constructor(
     private modalCtrl: ModalController,
     private native: NativeHelpersService,
     private store: Store<StoreModel>
   ) { }
 
-  async ngOnInit() {
+  ngOnInit() {
     this.draws$ = this.store.select('admin_draw');
-    await this.store.select('user_state').subscribe(resp =>{
+    this.subs = this.store.select('user_state').subscribe(resp =>{
       this.user = {...resp};
     });
     this.store.dispatch(adminAction.GET());
     this.store.dispatch(userAction.GET());
+  }
+
+  ngOnDestroy(){
+    this.subs.unsubscribe();
   }
 
   cleanUserDraw(){
@@ -207,10 +213,6 @@ export class InicioPage implements OnInit {
     });
 
     await modal.present();
-    //const {data} = await modal.onWillDismiss();
-    /* if(!data.dismissed)
-        await this.save_draw(); */
- 
   }
 
   async errorAlert(msg: string) {

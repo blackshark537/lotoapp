@@ -1,14 +1,65 @@
 <ion-header>
   <ion-toolbar color="primary">
-
+    <ion-buttons slot="end">
+      <ion-button fill="solid" color="danger" (click)="closeModal()">
+        <ion-icon name="close"></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
+  <ion-list>
+    <ion-item>
+      <ion-label>Loteria</ion-label>
+      <ion-select (ionChange)="selectedLottery($event.target.value)">
+        <ion-select-option *ngFor="let lot of lotteryModel; index as i" [value]="lot | json">{{lot.lottery}}</ion-select-option>
+      </ion-select>
+    </ion-item>
+    <ion-item>
+      <ion-label>Sorteo</ion-label>
+      <ion-select [disabled]="Draws.length === 0" (ionChange)="selectedDraw($event.target.value)">
+        <ion-select-option *ngFor="let d of Draws" [value]="d | json">{{d.name}}</ion-select-option>
+      </ion-select>
+    </ion-item>
+  </ion-list>
+  
   <ion-grid>
     <ion-row>
-      <ion-button fill="solid" (click)="file2.click()" color="success">Desde Archivo</ion-button>
-      <input #file2 (change)="readfile($event.target, draw, 1)" style="display: none;" type="file">
+      <ion-col size="12">
+        <ion-segment [(ngModel)]="segment">
+          <ion-segment-button value="Manual">
+            <ion-label>Manual</ion-label>
+          </ion-segment-button>
+          <ion-segment-button value="FromFile">
+            <ion-label>Desde archivo</ion-label>
+          </ion-segment-button>
+        </ion-segment>
+      </ion-col>
+    </ion-row>
+    <ion-row *ngIf="segment==='Manual'" >
+
+        <ion-col size="6">
+            <ion-input type="number" [(ngModel)]="publishModel.Sorteo" placeholder="No. Sorteo"></ion-input>
+        </ion-col>
+        <ion-col size="6">
+            <ion-input type="date" [(ngModel)]="publishModel.Fecha"></ion-input>
+        </ion-col>
+        <ion-col size="3" *ngFor="let model of modelList">
+            <ion-input type="number" [(ngModel)]="publishModel[model]" [placeholder]="model"></ion-input>
+        </ion-col>
+
+    </ion-row>
+    <ion-row *ngIf="segment==='FromFile'">
+      <ion-button class="ion-center" fill="solid" (click)="file2.click()" color="success">Desde Archivo</ion-button>
+      <input #file2 (change)="readfile($event.target)" style="display: none;" type="file">
     </ion-row>
   </ion-grid>
 </ion-content>
+<ion-footer>
+  <ion-toolbar>
+    <ion-buttons slot="end">
+      <ion-button (click)="saveData()">Guardar</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-footer>

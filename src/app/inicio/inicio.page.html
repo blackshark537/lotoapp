@@ -18,26 +18,6 @@
 </ion-header>
 
 <ion-content >
-
-  <!-- <ion-header collapse="condense">
-    <ion-toolbar >
-      <ion-buttons slot="start">
-        <ion-menu-button *ngIf="!filter"></ion-menu-button>
-        <ion-button *ngIf="filter" (click)="filter=null">
-          <ion-icon name="arrow-back-outline"></ion-icon>
-          Atras
-        </ion-button>
-      </ion-buttons>
-      <ion-title *ngIf="!filter && material">Inicio</ion-title>
-      <ion-buttons slot="end" >
-        <p class="credit">Balance: {{user? user.credits : 0 | currency}} </p>
-        <ion-button color="warning" (click)="buyCredits()">
-          comprar
-        </ion-button>
-    </ion-buttons>
-    </ion-toolbar>
-  </ion-header> -->
-  
   <ion-grid>
     <ion-row *ngIf="!filter">
       <ion-col size="12">

@@ -139,7 +139,7 @@ export class PlayComponent implements OnInit, OnDestroy {
         
         p.background(250);
         new_sec = new Date().getSeconds();
-        if(new_sec >= old_sec+3){
+        if(new_sec > old_sec+2){
           withdraw = true;
           old_sec = new_sec;
         }
