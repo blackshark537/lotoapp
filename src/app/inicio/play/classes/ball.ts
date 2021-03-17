@@ -35,7 +35,8 @@ export class Ball{
 
     if(this.ball_type == 0){ 
       this.pg.fill(0);
-      this.pg.stroke(0);
+      //this.pg.stroke(0);
+      this.pg.noStroke();
     } else {
       this.pg.fill(250);
       this.pg.stroke(250);

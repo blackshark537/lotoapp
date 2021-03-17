@@ -123,7 +123,7 @@ export class PlayComponent implements OnInit, OnDestroy {
       }
 
       let onStart = ()=>{
-        old_sec = new Date().getSeconds();
+        old_sec = new Date().getTime();
         if(this.drawQty > 0 && !loop) --this.drawQty;
         if(!loop) loop = true;
       }
@@ -138,8 +138,8 @@ export class PlayComponent implements OnInit, OnDestroy {
       p.draw = ()=>{
         
         p.background(250);
-        new_sec = new Date().getSeconds();
-        if(new_sec > old_sec+2){
+        new_sec = new Date().getTime();
+        if(new_sec > old_sec+3000){
           withdraw = true;
           old_sec = new_sec;
         }
@@ -211,7 +211,7 @@ export class PlayComponent implements OnInit, OnDestroy {
       backdropDismiss: false,
       component: GamePage,
       componentProps: {
-        lottery: this.AdminDraw.lottery
+        draw: this.AdminDraw.draw
       },
       id: 'game-modal',
       cssClass: 'fullscreen'

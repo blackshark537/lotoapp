@@ -1,8 +1,60 @@
 // Ionic Variables and Theming. For more info, please see:
 // http://ionicframework.com/docs/theming/
 
+.ion-color-gold {
+  --ion-color-base: var(--ion-color-gold);
+  --ion-color-base-rgb: var(--ion-color-gold-rgb);
+  --ion-color-contrast: var(--ion-color-gold-contrast);
+  --ion-color-contrast-rgb: var(--ion-color-gold-contrast-rgb);
+  --ion-color-shade: var(--ion-color-gold-shade);
+  --ion-color-tint: var(--ion-color-gold-tint);
+}
+
+.ion-color-platinum {
+  --ion-color-base: var(--ion-color-platinum);
+  --ion-color-base-rgb: var(--ion-color-platinum-rgb);
+  --ion-color-contrast: var(--ion-color-platinum-contrast);
+  --ion-color-contrast-rgb: var(--ion-color-platinum-contrast-rgb);
+  --ion-color-shade: var(--ion-color-platinum-shade);
+  --ion-color-tint: var(--ion-color-platinum-tint);
+}
+
+.ion-color-cobre {
+  --ion-color-base: var(--ion-color-cobre);
+  --ion-color-base-rgb: var(--ion-color-cobre-rgb);
+  --ion-color-contrast: var(--ion-color-cobre-contrast);
+  --ion-color-contrast-rgb: var(--ion-color-cobre-contrast-rgb);
+  --ion-color-shade: var(--ion-color-cobre-shade);
+  --ion-color-tint: var(--ion-color-cobre-tint);
+}
+
 /** Ionic CSS Variables **/
 :root {
+
+  /** cobre*/
+  --ion-color-cobre: #D98566;
+  --ion-color-cobre-rgb: 217,133,102;
+  --ion-color-cobre-contrast: #000000;
+  --ion-color-cobre-contrast-rgb: 0,0,0;
+  --ion-color-cobre-shade: #bf755a;
+  --ion-color-cobre-tint: #dd9175;
+
+  /** Platinum*/
+  --ion-color-platinum: #BFCDD9;
+  --ion-color-platinum-rgb: 191,205,217;
+  --ion-color-platinum-contrast: #000000;
+  --ion-color-platinum-contrast-rgb: 0,0,0;
+  --ion-color-platinum-shade: #a8b4bf;
+  --ion-color-platinum-tint: #c5d2dd;
+
+  /** Gold */
+  --ion-color-gold: #F2CE1B;
+  --ion-color-gold-rgb: 242,206,27;
+  --ion-color-gold-contrast: #000000;
+  --ion-color-gold-contrast-rgb: 0,0,0;
+  --ion-color-gold-shade: #d5b518;
+  --ion-color-gold-tint: #f3d332;
+
   /** primary **/
   --ion-color-primary: #3880ff;
   --ion-color-primary-rgb: 56, 128, 255;

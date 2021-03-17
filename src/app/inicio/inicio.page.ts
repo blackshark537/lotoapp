@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
 import { Draw, AdminDraw, TipoSorteo } from '../models/draw.model';
 import { StoreModel } from '../models/store.model';
@@ -10,6 +10,7 @@ import { NativeHelpersService } from '../services/native-helpers.service';
 import { PlayComponent } from './play/play.component';
 import { ModalController } from '@ionic/angular';
 import { GamePage } from '../game/game.page';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-inicio',
@@ -18,7 +19,7 @@ import { GamePage } from '../game/game.page';
 })
 export class InicioPage implements OnInit, OnDestroy {
 
-
+  selected: number =null;
   draw_type: string;
   draw: AdminDraw = null;
   price = 15;
@@ -29,7 +30,7 @@ export class InicioPage implements OnInit, OnDestroy {
   user: UserModel;
   filter: string = null;
   drawfilter: string = null;
-  loteriesFilters: any[] = [];
+  loteriesFilters: AdminDraw[] = [];
   lastDrawLoaded: boolean = false;
   colors = ['danger', 'success', 'warning', 'primary']
   user_draw: Draw;
@@ -64,16 +65,19 @@ export class InicioPage implements OnInit, OnDestroy {
   constructor(
     private modalCtrl: ModalController,
     private native: NativeHelpersService,
+    private _activeRoute: ActivatedRoute,
     private store: Store<StoreModel>
   ) { }
 
   ngOnInit() {
+    this.filter = this._activeRoute.snapshot.paramMap.get('lottery');
     this.draws$ = this.store.select('admin_draw');
     this.subs = this.store.select('user_state').subscribe(resp =>{
       this.user = {...resp};
     });
     this.store.dispatch(adminAction.GET());
     this.store.dispatch(userAction.GET());
+    this.filterLoteries();
   }
 
   ngOnDestroy(){
@@ -100,7 +104,7 @@ export class InicioPage implements OnInit, OnDestroy {
       swipeToClose: true,
       component: GamePage,
       componentProps: {
-        lottery: this.filter
+        draw: this.loteriesFilters[0].draw
       },
       id: 'game-modal',
       cssClass: 'fullscreen'
@@ -115,13 +119,13 @@ export class InicioPage implements OnInit, OnDestroy {
 
   async save_draw(){
     await this.native.showLoading();
-    await this.store.dispatch(userAction.GET());
+    this.store.dispatch(userAction.GET());
     await this.native.showLoading();
     await this.openLastDraw();
   }
 
   async updateUser(){
-    await this.store.dispatch(userAction.UPDATE({user: this.user}));
+    this.store.dispatch(userAction.UPDATE({user: this.user}));
   }
 
   filterLoteries(){

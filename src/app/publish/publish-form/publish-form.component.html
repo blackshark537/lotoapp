@@ -25,7 +25,7 @@
   </ion-list>
   
   <ion-grid>
-    <ion-row>
+    <ion-row *ngIf="activeFile">
       <ion-col size="12">
         <ion-segment [(ngModel)]="segment">
           <ion-segment-button value="Manual">
@@ -50,7 +50,7 @@
         </ion-col>
 
     </ion-row>
-    <ion-row *ngIf="segment==='FromFile'">
+    <ion-row *ngIf="segment==='FromFile' && activeFile">
       <ion-button class="ion-center" fill="solid" (click)="file2.click()" color="success">Desde Archivo</ion-button>
       <input #file2 (change)="readfile($event.target)" style="display: none;" type="file">
     </ion-row>

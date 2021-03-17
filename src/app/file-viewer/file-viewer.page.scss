@@ -2,3 +2,24 @@
     background-color: var(--ion-color-success);
     color: white;
 }
+
+.won-plus{
+    background-color: var(--ion-color-danger);
+    color: white;
+}
+
+.wondraw{
+    border-radius: 10px;
+    border: 1px double var(--ion-color-success);
+    margin: 5px;
+    padding: 3px;
+    display: inline;
+}
+
+.checkBox{
+    margin: 1rem;
+}
+
+.d-none{
+    display: none;
+}

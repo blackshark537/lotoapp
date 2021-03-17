@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
-import { Draw } from 'src/app/models/draw.model';
 import { AdminhttpService } from 'src/app/services/adminhttp.service';
 import { NativeHelpersService } from 'src/app/services/native-helpers.service';
+import { environment } from 'src/environments/environment'
 import * as EXEL from 'xlsx';
 
 @Component({
@@ -108,6 +108,10 @@ export class PublishFormComponent implements OnInit {
   ) { }
 
   ngOnInit() {}
+
+  get activeFile(){
+    return !environment.production
+  }
 
   async readfile(evt){
     

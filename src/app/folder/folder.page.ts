@@ -7,6 +7,7 @@ import { Draw } from '../models/draw.model';
 import {  MARK_AS_FAVORITE } from '../actions/user.actions';
 import { UserhttpService } from '../services/userhttp.service';
 import { Subscription } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-folder',
@@ -16,6 +17,7 @@ import { Subscription } from 'rxjs';
 export class FolderPage implements OnInit, OnDestroy {
   
   public folder: string;
+  public filter: string;
   public indexSelected: number;
   public archived: Draw[] = [];
   private archivedCp: Draw[] = [];
@@ -37,10 +39,15 @@ export class FolderPage implements OnInit, OnDestroy {
 
   async ngOnInit() {
     this.folder = this.activatedRoute.snapshot.paramMap.get('id');
+    this.filter = this.activatedRoute.snapshot.paramMap.get('lottery');
+
     this.subs = this.userHttp.getDraws().subscribe(resp => {
-      this.archived = resp.body
-      this.archivedCp = resp.body.reverse()
+      this.archived = resp.body.filter(val => val.lottery.toLowerCase().includes(this.filter.toLowerCase()))
+      this.archivedCp = this.archived.reverse();
     });
+
+    console.log(this.filter);
+    
   }
 
   async ngOnDestroy(){

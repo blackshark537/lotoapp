@@ -13,16 +13,18 @@ import * as userAction from '../actions/user.actions';
 })
 export class GamePage implements OnInit, OnDestroy {
 
+  @Input('lottery') draw: string;
   @Input('lottery') lottery: string;
+
   user: UserModel;
   price = 15;
   initialCredit = 0;
   user_draws: Draw[] = [];
 
   public entry = [
-    { val: 'Sorteo Platinum', isChecked: false },
+    { val: 'Sorteo Platinum', isChecked: true },
     { val: 'Sorteo Gold', isChecked: false },
-    { val: 'Sorteo por la maquina', isChecked: true }
+    { val: 'Sorteo por la maquina', isChecked: false }
   ];
 
   constructor(
@@ -31,11 +33,17 @@ export class GamePage implements OnInit, OnDestroy {
   ) { }
 
   async ngOnInit() {
-    console.log(this.lottery)
+
     this.store.select('draw_state').subscribe(resp =>{
-      this.user_draws = [...resp].filter(val => val.lottery == this.lottery);
+      this.user_draws = [...resp].filter(val => val.draw == this.draw);
     });
     this.store.dispatch(userAction.GET_TODAY_DRAWS());
+  }
+
+  activeCheck(indx){
+    this.entry.forEach(check => {
+      if(check.val != this.entry[indx].val) check.isChecked = false;
+    });
   }
 
   filter(): string{

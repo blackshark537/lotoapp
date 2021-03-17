@@ -17,6 +17,12 @@ import { map } from 'rxjs/operators';
 })
 export class FileViewerPage implements OnInit, OnDestroy {
 
+  public entry = [
+    { val: 'Sorteo Platinum', isChecked: true },
+    { val: 'Sorteo Gold', isChecked: false },
+    { val: 'Sorteo por la maquina', isChecked: false }
+  ];
+
   draw: Draw;
   wondraw = [];
   index: number;
@@ -38,25 +44,41 @@ export class FileViewerPage implements OnInit, OnDestroy {
     this.index = parseInt(this.activeRoute.snapshot.paramMap.get('id'));
 
     this.subs.push(this.userHttp.draw$.subscribe(draw =>{
-      if(draw)this.draw = draw;
+      this.draw = draw;
+      
+      if(this.draw.draw.includes('Loto')){
+        this.subs.push(this.adminHttp.getLastLotoHistoryData().pipe(
+          map(x => {
+            return x.data[0]
+          })
+        ).subscribe(resp =>{
+          const data: any[] = Object.values(resp);
+          this.wondraw = data.slice(3)//this.draw.day <= data[2].split(' ')[0]? data.slice(3) : [];
+        }));
+      }
+
     }));
-    this.subs.push(this.adminHttp.getHistoryData().pipe(
-      map(x => {
-        return x.data.reverse()[0]
-      })
-    ).subscribe(resp =>{
-      console.log(Object.values(resp).slice(3))
-      const data = Object.values(resp);
-      this.wondraw = data.slice(3)
-    }))
+
+    
   }
 
   ngOnDestroy(){
     this.subs.forEach(sub => sub.unsubscribe());
   }
 
+  activeCheck(indx){
+    this.entry.forEach(check => {
+      if(check.val != this.entry[indx].val) check.isChecked = false;
+    });
+  }
+
+  filter(): string{
+    if(this.entry.filter(x => x.isChecked)[0]) return  this.entry.filter(x => x.isChecked)[0].val;
+    return null;
+  }
+
   compare(col){
-    return this.wondraw.includes(col);
+    return this.wondraw.slice(0,6).includes(col);
   }
 
   get headers(){
@@ -118,5 +140,7 @@ export class FileViewerPage implements OnInit, OnDestroy {
     this.matdesign? toast.position = 'bottom' : toast.position = 'top';
     await toast.present();
   }
+
+  
 
 }

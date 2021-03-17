@@ -90,6 +90,10 @@ tr:nth-child(even) {background-color: #f2f2f2; color: black}
     display: none;
 }
 
+.ml-2{
+    margin-left: 0.5rem;
+}
+
 .truncate-text{
     flex: 1;
     white-space: nowrap;

@@ -25,6 +25,19 @@
         <p>id: {{ draw._id}}</p>
     </ion-label>
   </ion-item>
+  <ion-item>
+    <ion-label>
+      Ganadores del ultimo sorteo
+      <div class="wondraw" *ngFor="let won of wondraw; index as idx">{{idx < wondraw.length-1? won < 10? '0' + won : won : ''}}</div>
+    </ion-label>
+  </ion-item>
+  
+  <div class="checkBox">
+    <span *ngFor="let check of entry; index as i">
+      {{check.val}}
+      <ion-checkbox (ionFocus)="activeCheck(i)" [(ngModel)]="check.isChecked"></ion-checkbox> 
+    </span>
+  </div>
 
   <div class="t-container">
     <table class="table">
@@ -36,7 +49,6 @@
           <th *ngFor="let head of headers; index as i" 
           class="{{head == 'L.MAS'? 'lmas' : head == 'S.L.MAS'? 'slmas' : 'normal'}}">
               {{ head }}
-
           </th>
           <th class="normal">
               Modo
@@ -50,9 +62,9 @@
         </tr>
       </thead>
       <tbody class="tbody">
-        <tr *ngFor="let row of draw.Data; index as i;">
+        <tr *ngFor="let row of draw.Data; index as i;" class="{{row[row.length-3]==filter()? '' : 'd-none'}}">
           <td style="background-color: blanchedalmond; color: black;">{{i+1 + '.-'}}</td>
-          <td *ngFor="let col of row; index as j" class="{{j < row.length-2 && compare(col)? 'won' : ''}}">
+          <td *ngFor="let col of row; index as j" class="{{ j < row.length-5 && compare(col)? 'won' : j < row.length-2 && wondraw[j] === col? 'won-plus' :  '' }}" >
             <span *ngIf="j === row.length-2; else elseBlock">{{col | currency}}</span>
             <ng-template #elseBlock>
               {{col}}

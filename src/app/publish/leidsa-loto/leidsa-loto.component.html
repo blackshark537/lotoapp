@@ -35,6 +35,7 @@
                 <th class="normal">
                   S. LOTO MAS
                 </th>
+                <th *ngIf="adminGuard.canActivate()">Borrar</th>
               </tr>
             </thead>
             <tbody class="tbody">
@@ -49,6 +50,9 @@
                 <td>{{el['6to']}}</td>
                 <td>{{el['LOTO_MAS']}}</td>
                 <td>{{el['S_LOTO_MAS']}}</td>
+                <td *ngIf="adminGuard.canActivate()" class="btn btn-danger" (click)="deleteOne(el['_id'])">
+                    borrar
+                </td>
               </tr>
             </tbody>
           </table>

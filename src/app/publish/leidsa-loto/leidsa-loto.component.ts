@@ -1,6 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { AdminGuard } from 'src/app/guards/admin.guard';
 import { AdminhttpService } from '../../services/adminhttp.service';
 
 @Component({
@@ -14,6 +15,7 @@ export class LeidsaLotoComponent implements OnInit, OnDestroy {
   subs: Subscription
 
   constructor(
+    public adminGuard: AdminGuard,
     private adminService: AdminhttpService,
   ) { }
 
@@ -29,5 +31,9 @@ export class LeidsaLotoComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(){
     this.subs.unsubscribe();
+  }
+
+  deleteOne(id: string){  
+    console.log(id)
   }
 }

@@ -2,16 +2,17 @@
   <ion-toolbar color="tertiary">
     <ion-buttons slot="start">
       <ion-menu-button *ngIf="!filter"></ion-menu-button>
-      <ion-button *ngIf="filter" (click)="filter=null">
+      <ion-back-button></ion-back-button>
+      <!-- <ion-button *ngIf="filter" (click)="filter=null">
         <ion-icon name="arrow-back-outline"></ion-icon>
         Atras
-      </ion-button>
+      </ion-button> -->
     </ion-buttons>
     <ion-title *ngIf="!filter && material">Inicio</ion-title>
     <ion-buttons slot="end" >
-      <p class="credit">Balance: {{user? user.credits : 0 | currency}} </p>
+      <h3 class="credit">Balance: {{user? user.credits : 0 | currency}} </h3>
       <ion-button color="warning" (click)="buyCredits()">
-        comprar
+        <h3>recargar</h3>
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
@@ -19,58 +20,62 @@
 
 <ion-content >
   <ion-grid>
-    <ion-row *ngIf="!filter">
+    <!-- <ion-row *ngIf="!filter">
       <ion-col size="12">
-        <h1 style="text-align: center; margin: auto;">Seleccione una lotería!</h1>
+        <h1 style="text-align: center; margin: auto;">Seleccione una lotería</h1>
       </ion-col>
-      <ion-col size="12" size-md="4" *ngFor="let draw of lotteryModel; index as i;">
-        <ion-card type="button" class="card-hover" (click)="filter=draw.lottery;  filterLoteries();">
-          <img [src]="'assets/logo.png'" class="lottery"/>
-          <ion-card-header class="ion-text-center" style="background-color: #1a1a1a;">
-            <ion-card-title [color]="colors[i]" class="truncate-text">{{draw.lottery}}</ion-card-title>
-          </ion-card-header>
-        </ion-card>
+      <ion-col size="12" >
+        <ion-item *ngFor="let draw of lotteryModel; index as i;" button (click)="filter=draw.lottery; filterLoteries(); selected=i">
+          <ion-thumbnail slot="start">
+            <img [src]="'assets/logo.png'"/>
+          </ion-thumbnail>
+          <h1 class="l-{{i}}">{{draw.lottery}}</h1>
+          <ion-buttons slot="end">
+            <ion-button fill="solid" color="tertiary" shape="round">
+              Jugar
+            </ion-button>
+          </ion-buttons>
+        </ion-item>
       </ion-col>
-    </ion-row>
+    </ion-row> -->
 
     <ion-row *ngIf="filter">
       <ion-col size="12">
-        <h1 style="text-align: center; margin: auto;">A seleccionado {{filter}}</h1>
-        <h2 style="text-align: center; margin: auto;">A continuación seleccione un sorteo!</h2>
-        <h3 style="text-align: center; margin: auto;">Sorteos disponibles</h3>
+        <h1 style="text-align: center; margin: auto;">Lotería {{filter}}</h1>
+        <h2 style="text-align: center; margin: auto;">A continuación seleccione uno de los sorteos disponibles</h2>
       </ion-col>
       <ion-col size="12" size-md="12">
         
         <ion-list *ngFor="let draw of loteriesFilters; index as i;">
           <ion-list-header>
-            <h2>Sorteo: {{draw.draw}}</h2>
+            <h2 class="l-{{selected}}">{{draw.draw}}</h2>
           </ion-list-header>
 
-          <ion-item [disabled]="draw.Games[0].Data.length === 0" >
+          <ion-item >
             <!-- <ion-thumbnail slot="start">
               <img [src]="draw.img" />
             </ion-thumbnail> -->
             <ion-label>
               <strong>Sorteo Platinum</strong>
-              <br>
-              <small>Se descontarán {{prices.plat | currency}} por este sorteo</small>
+              <!-- <br>
+              <small>Se descontarán {{prices.plat | currency}} por este sorteo</small> -->
             </ion-label>
             <ion-buttons slot="end">
-              <ion-button [disabled]="draw.Games[0].Data.length === 0" fill="solid" color="primary" (click)="openNormal(draw, 0)">Sortear</ion-button>
+              <ion-button fill="solid" color="platinum" (click)="openNormal(draw, 0)">Sortear</ion-button>
             </ion-buttons>
           </ion-item>
 
-          <ion-item [disabled]="draw.Games[1].Data.length === 0">
+          <ion-item >
             <!-- <ion-thumbnail slot="start">
               <img [src]="draw.img" />
             </ion-thumbnail> -->
             <ion-label>
-              <strong>Sorteo Gold</strong>
-              <br>
-              <small>Se descontarán {{prices.gold | currency}} por este sorteo</small>
+              <strong>Sorteo Oro</strong>
+              <!-- <br>
+              <small>Se descontarán {{prices.gold | currency}} por este sorteo</small> -->
             </ion-label>
             <ion-buttons slot="end">
-              <ion-button [disabled]="draw.Games[1].Data.length === 0" fill="solid" color="primary" (click)="openNormal(draw, 1)">Sortear</ion-button>
+              <ion-button fill="solid" color="gold" (click)="openNormal(draw, 1)">Sortear</ion-button>
             </ion-buttons>
           </ion-item>
 
@@ -80,11 +85,11 @@
             </ion-thumbnail> -->
             <ion-label>
               <strong>Sorteo por la máquina [Aleatorio]</strong>
-              <br>
-              <small>Se descontarán {{prices.rand | currency}} por este sorteo</small>
+              <!-- <br>
+              <small>Se descontarán {{prices.rand | currency}} por este sorteo</small> -->
             </ion-label>
             <ion-buttons slot="end">
-              <ion-button fill="solid" color="primary" (click)="openRandom(draw)">Sortear</ion-button>
+              <ion-button fill="solid" color="cobre" (click)="openRandom(draw)">Sortear</ion-button>
             </ion-buttons>
           </ion-item>
 

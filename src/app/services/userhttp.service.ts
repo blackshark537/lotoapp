@@ -6,6 +6,7 @@ import { UserModel, userLog, UserAccounting } from '../models/user.model';
 import { Draw } from '../models/draw.model';
 import { NativeHelpersService } from './native-helpers.service';
 import { UpdateUserInterface } from '../models/user.model';
+import { environment } from 'src/environments/environment';
 
 export interface DateDto{day: number, month: number, year: number};
 
@@ -14,10 +15,8 @@ export interface DateDto{day: number, month: number, year: number};
 })
 export class UserhttpService {
 
-  private url = 'http://loter.ddns.net/user';
-  private baseUrl = 'http://loter.ddns.net';
-  /* private url = 'http://localhost:3000/user';
-  private baseUrl = 'http://localhost:3000'; */
+  private url = environment.baseUrl+'/user';
+  private baseUrl = environment.baseUrl;
 
   public draw$ = new BehaviorSubject(null);
 

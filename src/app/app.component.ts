@@ -7,9 +7,9 @@ import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { StoreModel } from './models/store.model';
 import { UserModel } from './models/user.model';
 import { Store } from '@ngrx/store';
-import * as userAction from './actions/user.actions';
 import { Router } from '@angular/router';
 import { NativeHelpersService } from './services/native-helpers.service';
+import { environment } from '../environments/environment'
 
 registerLocaleData(localeEs, 'es-Do')
 
@@ -26,16 +26,10 @@ export class AppComponent implements OnInit {
   public appPages = [
     {
       title: 'Inicio',
-      url: '/inicio',
+      url: 'lottery/inicio',
       style: 'tertiary',
       icon: 'home'
     },
-/*     {
-      title: 'Configuración de Sorteos',
-      url: '/sorteos',
-      style: 'success',
-      icon: 'apps'
-    }, */
     {
       title: 'Usuarios',
       url: '/users',
@@ -43,23 +37,23 @@ export class AppComponent implements OnInit {
       icon: 'person'
     },
     {
-      title: 'Historico de sorteos',
-      url: '/publish',
+      title: 'Histórico de Sorteos',
+      url: 'lottery/publish',
       style: 'success',
       icon: 'reader'
     },
     {
-      title: 'Historial de jugadas',
-      url: '/folder/Archivadas',
+      title: 'Histórico de jugadas',
+      url: 'lottery/folder', ///Archivadas
       style: 'warning',
       icon: 'stats-chart'
     },
-    {
+    /* {
       title: 'Favoritas',
-      url: '/folder/Favoritas',
+      url: '/folder/null/Favoritas',
       style: 'tertiary',
       icon: 'heart'
-    },
+    }, */
     {
       title: 'Configuración',
       url: '/config',
@@ -93,6 +87,15 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit() {
+
+    if(!environment.production){
+      this.appPages.push({
+        title: 'Configuración de Sorteos',
+        url: '/sorteos',
+        style: 'success',
+        icon: 'apps'
+      })
+    }
 
     addEventListener('offline', (evt)=>{
       evt.preventDefault();

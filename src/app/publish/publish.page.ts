@@ -1,4 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { ModalController } from '@ionic/angular';
 import { AdminGuard } from '../guards/admin.guard';
 import { PublishFormComponent } from './publish-form/publish-form.component';
@@ -12,33 +13,15 @@ import { PublishFormComponent } from './publish-form/publish-form.component';
 export class PublishPage implements OnInit, OnDestroy {
   
   filter: string = null;
-  colors = ['danger', 'success', 'warning', 'primary']
-  lotteryModel = [
-    {
-      lottery: 'Leidsa',
-      img: 'assets/leidsa.png'
-    },
-    {
-      lottery: 'Nacional',
-      img: 'assets/loteria-nacional.png'
-    },
-    {
-      lottery: 'Real',
-      img: 'assets/loteria-real.png'
-    },
-    {
-      lottery: 'Loteka',
-      img: 'assets/loteka.png'
-    }
-  ];
 
   constructor(
     public adminGuard: AdminGuard,
-    private modalCtrl: ModalController
+    private modalCtrl: ModalController,
+    private _activeRoute: ActivatedRoute
   ) { }
 
   ngOnInit() {
-
+    this.filter = this._activeRoute.snapshot.paramMap.get('lottery');
   }
 
   ngOnDestroy(){

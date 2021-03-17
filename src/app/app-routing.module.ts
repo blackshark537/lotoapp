@@ -6,11 +6,11 @@ import { AdminGuard } from './guards/admin.guard';
 const routes: Routes = [
   {
     path: '',
-    redirectTo: 'inicio',
+    redirectTo: 'lottery/inicio',
     pathMatch: 'full'
   },
   {
-    path: 'folder/:id',
+    path: 'folder/:lottery/:id',
     canActivate: [AuthGuard],
     loadChildren: () => import('./folder/folder.module').then( m => m.FolderPageModule)
   },
@@ -20,7 +20,7 @@ const routes: Routes = [
     loadChildren: () => import('./sorteo/sorteo.module').then( m => m.SorteoPageModule)
   },
   {
-    path: 'inicio',
+    path: 'inicio/:lottery',
     canActivate: [AuthGuard],
     loadChildren: () => import('./inicio/inicio.module').then( m => m.InicioPageModule)
   },
@@ -50,8 +50,12 @@ const routes: Routes = [
     loadChildren: () => import('./loggin/loggin.module').then( m => m.LogginPageModule)
   },
   {
-    path: 'publish',
+    path: 'publish/:lottery',
     loadChildren: () => import('./publish/publish.module').then( m => m.PublishPageModule)
+  },
+  {
+    path: 'lottery/:route',
+    loadChildren: () => import('./lottery/lottery.module').then( m => m.LotteryPageModule)
   }
 ];
 

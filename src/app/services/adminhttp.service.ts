@@ -4,6 +4,7 @@ import { Observable, throwError } from 'rxjs';
 import { AdminDraw } from '../models/draw.model';
 import { catchError } from 'rxjs/operators';
 import { SystemAccounting } from '../models/user.model';
+import { environment } from '../../environments/environment';
 
 interface httpInterface{
   head: string,
@@ -15,10 +16,8 @@ interface httpInterface{
 })
 export class AdminhttpService {
 
-  private url = 'http://loter.ddns.net/admin';
-  private baseUrl = 'http://loter.ddns.net';
-  /* private url = 'http://localhost:3000/admin';
-  private baseUrl = 'http://localhost:3000'; */
+  private url = environment.baseUrl+'/admin';
+  private baseUrl = environment.baseUrl;
   
   constructor(
     private http: HttpClient
@@ -88,6 +87,11 @@ export class AdminhttpService {
 
   getHistoryData(): Observable<DrawResponse>{
     return this.http.get<DrawResponse>(`${this.url}/history/leidsa`)
+    .pipe(catchError(error => throwError(error.message)))
+  }
+
+  getLastLotoHistoryData(): Observable<DrawResponse>{
+    return this.http.get<DrawResponse>(`${this.url}/history/leidsa/last/loto`)
     .pipe(catchError(error => throwError(error.message)))
   }
 }
