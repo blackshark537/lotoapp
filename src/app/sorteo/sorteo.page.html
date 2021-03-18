@@ -11,7 +11,7 @@
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
-  <ion-searchbar (ionChange)="filter($event.target.value)" debounce="500" animated showCancelButton="focus" placeholder="Filtrar"></ion-searchbar>
+  <!-- <ion-searchbar (ionChange)="filter($event.target.value)" debounce="500" animated showCancelButton="focus" placeholder="Filtrar"></ion-searchbar> -->
 </ion-header>
 
 <ion-content>
@@ -20,19 +20,22 @@
       <ion-col size="12">
         <ion-list *ngFor="let draw of draw$ | async; index as i">
           <ion-list-header>
+            <ion-avatar style="position: relative; top: 1em;" >
+              <ion-icon color="medium" size="large" [ios]="'document-outline'" [md]="'document-sharp'"></ion-icon>
+            </ion-avatar>
             <ion-label>
-              <h2>Lotería: {{draw.lottery | titlecase}}</h2>
+              <h1>Lotería: {{draw.lottery | titlecase}}</h1>
               <h4>Sorteo: {{ draw.draw}}</h4>
             </ion-label>
-            <ion-buttons style="position: absolute; right: 1em;">
+            <!-- <ion-buttons style="position: absolute; right: 1em;">
               <ion-button (click)="openActions(i, draw)">
                 <ion-icon color="medium" size="large" [ios]="'ellipsis-vertical-outline'" [md]="'ellipsis-vertical-sharp'"></ion-icon>
               </ion-button>
-            </ion-buttons>
+            </ion-buttons> -->
           </ion-list-header>
-          <ion-item lines="none">
+
+          <!-- <ion-item lines="none">
             <ion-avatar slot="start" >
-              <!-- <img src="assets/leidsa.png" > -->
               <ion-icon color="medium" size="large" [ios]="'document-outline'" [md]="'document-sharp'"></ion-icon>
             </ion-avatar>
             <ion-label>
@@ -40,27 +43,25 @@
             </ion-label>
             <ion-buttons slot="end">
               <ion-button [routerLink]="['edit/0', draw._id]" fill="solid" color="primary">manual</ion-button>
-              <!-- <ion-button fill="solid" (click)="file1.click()" color="success">auto</ion-button>
-              <input #file1 (change)="readfile($event.target, draw, 0)" style="display: none;" type="file"> -->
+              <ion-button fill="solid" (click)="file1.click()" color="success">auto</ion-button>
+              <input #file1 (change)="readfile($event.target, draw, 0)" style="display: none;" type="file">
             </ion-buttons>
           </ion-item>
 
           <ion-item>
             <ion-avatar slot="start" >
-              <!-- <img src="assets/leidsa.png" > -->
               <ion-icon color="warning" size="large" [ios]="'document-outline'" [md]="'document-sharp'"></ion-icon>
             </ion-avatar>
             <ion-label>
               <h3>Gold</h3>
-              <!-- <h4>Sorteo: {{ draw.draw}}</h4> -->
               <p>Creada: {{ draw.emitDate | date: 'short'}} {{ draw.emitDate | amLocale: 'es-do' | amTimeAgo}}</p>
             </ion-label>
             <ion-buttons slot="end">
               <ion-button [routerLink]="['edit/1', draw._id]" fill="solid" color="primary">manual</ion-button>
-              <!-- <ion-button fill="solid" (click)="file2.click()" color="success">auto</ion-button>
-              <input #file2 (change)="readfile($event.target, draw, 1)" style="display: none;" type="file"> -->
+              <ion-button fill="solid" (click)="file2.click()" color="success">auto</ion-button>
+              <input #file2 (change)="readfile($event.target, draw, 1)" style="display: none;" type="file">
             </ion-buttons>
-          </ion-item>
+          </ion-item> -->
         </ion-list>
       </ion-col>
     </ion-row>

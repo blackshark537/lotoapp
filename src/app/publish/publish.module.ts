@@ -9,6 +9,7 @@ import { PublishPageRoutingModule } from './publish-routing.module';
 import { PublishPage } from './publish.page';
 import { PublishFormComponent } from './publish-form/publish-form.component';
 import { LeidsaLotoComponent } from './leidsa-loto/leidsa-loto.component';
+import { NacionalComponent } from './nacional/nacional.component';
 
 @NgModule({
   imports: [
@@ -17,6 +18,11 @@ import { LeidsaLotoComponent } from './leidsa-loto/leidsa-loto.component';
     IonicModule,
     PublishPageRoutingModule
   ],
-  declarations: [PublishPage, PublishFormComponent, LeidsaLotoComponent]
+  declarations: [
+    PublishPage, 
+    PublishFormComponent, 
+    LeidsaLotoComponent,
+    NacionalComponent
+  ]
 })
 export class PublishPageModule {}

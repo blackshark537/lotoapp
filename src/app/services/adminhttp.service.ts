@@ -85,8 +85,18 @@ export class AdminhttpService {
     .pipe(catchError(error => throwError(error.message)))
   }
 
+  postOneQuinielaHistoryDraw(DrawData): Observable<any>{
+    return this.http.post(`${this.url}/history/quiniela`, DrawData)
+    .pipe(catchError(error => throwError(error.message)))
+  }
+
   getHistoryData(): Observable<DrawResponse>{
     return this.http.get<DrawResponse>(`${this.url}/history/leidsa`)
+    .pipe(catchError(error => throwError(error.message)))
+  }
+
+  getQuinielaHistoryData(lottery: string, draw: string): Observable<DrawResponse>{
+    return this.http.get<DrawResponse>(`${this.url}/history/quiniela?lottery=${lottery}&draw=${draw}`)
     .pipe(catchError(error => throwError(error.message)))
   }
 

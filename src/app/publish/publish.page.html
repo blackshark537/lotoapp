@@ -14,9 +14,10 @@
 <ion-content>
   <ion-grid>
     <app-leidsa-loto *ngIf="filter==='Leidsa'"></app-leidsa-loto>
-    <ion-row *ngIf="filter==='Nacional'">
+    <app-nacional *ngIf="filter==='Nacional'"></app-nacional>
+    <!-- <ion-row *ngIf="filter==='Nacional'">
       <iframe allowfullscreen="allowfullscreen" frameborder="0" height="800px" scrolling="no" src="https://loterianacional.gob.do/sort-resutados/b-noche.html" width="100%"></iframe>
-    </ion-row>
+    </ion-row> -->
   </ion-grid>
   
 </ion-content>

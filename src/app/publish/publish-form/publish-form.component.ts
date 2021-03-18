@@ -14,6 +14,9 @@ export class PublishFormComponent implements OnInit {
   
   segment = 'Manual'
   Draws: any[] = [];
+  
+  _selectedLottery: string;
+  _selectedDraw: string;
 
   publishModel = {
     Sorteo: null,
@@ -26,6 +29,8 @@ export class PublishFormComponent implements OnInit {
     '6to': null,
     'LOTO_MAS': null,
     'S_LOTO_MAS': null,
+    lottery: null,
+    draw: null,
   }
 
   modelList=[];
@@ -60,7 +65,7 @@ export class PublishFormComponent implements OnInit {
         } */
       ]
     },
-/*     {
+    {
       lottery: 'Nacional',
       draws: [
         {
@@ -69,15 +74,15 @@ export class PublishFormComponent implements OnInit {
           max_values: 100,
           img: 'assets/loteria-nacional.png'
         },
-        {
+        /* {
           name: 'Ganamás',
           balls_qty: 3,
           max_values: 100,
           img: 'assets/loteria-nacional-gana-mas.png'
-        }
+        } */
       ]
     },
-    {
+    /*{
       lottery: 'Real',
       draws: [
         {
@@ -130,12 +135,22 @@ export class PublishFormComponent implements OnInit {
         return initial;
       }, {});
 
-      console.log(jsonData['SORTEOS'])
-      this.adminService.postDrawDataFile(jsonData['SORTEOS']).subscribe(async resp =>{
+      jsonData['SORTEOS'].forEach(element => {
+        element.lottery = this._selectedLottery;
+        element.draw = this._selectedDraw;
+      });
+      
+      let lotter = null;
+
+      if(!Object.keys(jsonData['SORTEOS'][0]).includes('LOTO_MAS')){
+        lotter='quiniela'  
+      } 
+
+      this.adminService.postDrawDataFile(jsonData['SORTEOS'], lotter).subscribe(async resp =>{
         await this.native.showLoading();
         console.log(resp)
         await this.native.showToast(resp.msg);
-      }, async error => await this.native.showToast(error));
+      }, async error => await this.native.showToast(error)); 
 
     }
 
@@ -147,22 +162,47 @@ export class PublishFormComponent implements OnInit {
   }
 
   selectedLottery(value: string){
-    this.Draws = JSON.parse(value).draws
+    const lotter = JSON.parse(value);
+    this._selectedLottery = lotter.lottery;
+    this.Draws = lotter.draws
   }
 
   selectedDraw(value: string){
     const draw = JSON.parse(value);
+    this._selectedDraw = draw.name
     const list = Object.keys(this.publishModel).slice(2);
     this.modelList = [...list.slice(0,draw.balls_qty)]
   }
 
   saveData(){
-    
-    this.adminService.postOneDrawData(this.publishModel).subscribe(async resp =>{
+    this.publishModel.lottery = this._selectedLottery;
+    this.publishModel.draw = this._selectedDraw;
+
+    if(this._selectedLottery === 'Leidsa'){
+      
+      this.adminService.postOneDrawData(this.publishModel).subscribe(async resp =>{
         await this.native.showLoading();
         await this.native.showToast(resp.msg);
         this.closeModal();
-    }, async error => await this.native.showToast(error));
+      }, async error => await this.native.showToast(error));
+
+    } else {
+      
+      delete this.publishModel['Sorteo'];
+      delete this.publishModel['4to'];
+      delete this.publishModel['5to'];
+      delete this.publishModel['6to'];
+      delete this.publishModel['LOTO_MAS'];
+      delete this.publishModel['S_LOTO_MAS'];
+
+      this.adminService.postOneQuinielaHistoryDraw(this.publishModel).subscribe(async resp =>{
+        await this.native.showLoading();
+        await this.native.showToast(resp.msg);
+        this.closeModal();
+      }, async error => await this.native.showToast(error));
+
+    }
+    /* */
   }
 
   async closeModal(){

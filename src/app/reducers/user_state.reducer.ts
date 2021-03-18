@@ -89,7 +89,7 @@ export const userReducer = createReducer(user_state,
         presentLoading().then(async () => {
             localStorage.setItem('token', resp.body.token)
             localStorage.setItem('role', resp.body.profile.role)
-            window.location.href = '/#/inicio'
+            window.location.href = '/#/lottery/inicio'
         });
         return resp.body.profile;
     }),
