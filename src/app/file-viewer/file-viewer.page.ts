@@ -55,6 +55,10 @@ export class FileViewerPage implements OnInit, OnDestroy {
           const data: any[] = Object.values(resp);
           this.wondraw = data.slice(3)//this.draw.day <= data[2].split(' ')[0]? data.slice(3) : [];
         }));
+      } else {
+        this.subs.push(this.adminHttp.getQuinielaHistoryData(this.draw.lottery, this.draw.draw, true).subscribe(resp=>{
+          this.wondraw = [resp.data['1ro'], resp.data['2do'], resp.data['3ro'], '' ]
+        }))
       }
 
     }));
