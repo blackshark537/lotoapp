@@ -129,7 +129,7 @@ export class AppComponent implements OnInit {
   }
 
   async removeToken(){
-    const result = await this.native.comfirmModal('Seguro que quieres salir!');
+    const result = await this.native.comfirmModal('Estas a punto de salir!', 'Salir');
     if(result){
       localStorage.removeItem('token');
       localStorage.removeItem('role');

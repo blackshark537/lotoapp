@@ -101,6 +101,7 @@ export const userReducer = createReducer(user_state,
         return state
     }),
     on(Error, (state, {error} )=>{
+        console.error(error)
         presentAlert('Error!', 'Lo sentimos a ocurrido un error', `<strong>${error}</strong>`);
         return state
     })

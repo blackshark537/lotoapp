@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  baseUrl: 'http://localhost:3000'
+  baseUrl: 'https://www.loter.do'//baseUrl: 'http://localhost:3000'
 };
 
 /*

@@ -82,6 +82,7 @@ export class InicioPage implements OnInit, OnDestroy {
 
   ngOnDestroy(){
     this.subs.unsubscribe();
+    this.modalCtrl.dismiss();
   }
 
   cleanUserDraw(){

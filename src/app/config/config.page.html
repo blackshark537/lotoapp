@@ -21,7 +21,7 @@
       <ion-avatar slot="start">
         <img src="assets/avatar-1.png" alt="user">
       </ion-avatar>
-      <ion-label>Administrador</ion-label>
+      <ion-label>{{user.name | titlecase}}</ion-label>
     </ion-item>
     <ion-item>
       <ion-label>Nombres: {{user.name | titlecase}}</ion-label>

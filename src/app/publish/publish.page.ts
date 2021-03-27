@@ -25,7 +25,7 @@ export class PublishPage implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(){
-    
+    this.modalCtrl.dismiss();
   }
 
   async openForm(){

@@ -46,15 +46,16 @@ const routes: Routes = [
   },
   {
     path: 'login',
-    //canActivate: [IsAuthGuard],
     loadChildren: () => import('./loggin/loggin.module').then( m => m.LogginPageModule)
   },
   {
     path: 'publish/:lottery',
+    canActivate: [AuthGuard],
     loadChildren: () => import('./publish/publish.module').then( m => m.PublishPageModule)
   },
   {
     path: 'lottery/:route',
+    canActivate: [AuthGuard],
     loadChildren: () => import('./lottery/lottery.module').then( m => m.LotteryPageModule)
   }
 ];

@@ -22,4 +22,6 @@ export class NacionalComponent implements OnInit {
     })
   }
 
+  deleteOne(id: string){}
+
 }
