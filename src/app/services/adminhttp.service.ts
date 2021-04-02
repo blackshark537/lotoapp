@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, throwError } from 'rxjs';
+import { from, Observable, of, throwError } from 'rxjs';
 import { AdminDraw } from '../models/draw.model';
-import { catchError } from 'rxjs/operators';
+import { catchError, map, switchMap } from 'rxjs/operators';
 import { SystemAccounting } from '../models/user.model';
 import { environment } from '../../environments/environment';
+import { NativeHelpersService } from './native-helpers.service';
 
 interface httpInterface{
   head: string,
@@ -20,7 +21,8 @@ export class AdminhttpService {
   private baseUrl = environment.baseUrl;
   
   constructor(
-    private http: HttpClient
+    private http: HttpClient,
+    private native: NativeHelpersService
   ) { }
 
   get URL(){
@@ -90,6 +92,54 @@ export class AdminhttpService {
     .pipe(catchError(error => throwError(error.message)))
   }
 
+  /**
+   * 
+   * Delete
+   */
+  async deleteOneDrawData(id: string) {
+    const resp = await this.native.comfirmModal('Al confirmar no se podran reestablecer los datos','Confirmar para borrar');
+    if(resp){
+      await this.native._loading();
+      this.deleteLoto(id).subscribe(_=>{
+        this.native._loadingDismiss();
+        this.native.showToast('Elemento borrado');
+      }, error =>{
+        this.native._loadingDismiss();
+        this.native.showToast(error);
+      })
+    }
+  }
+
+  private deleteLoto(id): Observable<any>{
+    return this.http.delete(`${this.url}/history/leidsa/loto/${id}`).pipe(
+      catchError(error => throwError(error.message))
+    );
+  }
+
+  async deleteOneQuinielaHistoryDraw(id: string) {
+    const resp = await this.native.comfirmModal('Al confirmar no se podran reestablecer los datos','Confirmar para borrar');
+    if(resp){
+      await this.native._loading();
+      this.deleteQuiniela(id).subscribe(_=>{
+        this.native._loadingDismiss();
+        this.native.showToast('Elemento borrado');
+      }, error =>{
+        this.native._loadingDismiss();
+        this.native.showToast(error);
+      });
+    }
+  }
+
+  private deleteQuiniela(id: string): Observable<any>{
+    return this.http.delete(`${this.url}/history/quiniela/${id}`).pipe(
+      catchError(error => throwError(error.message))
+    );
+  }
+
+  /**
+   * 
+   * Get
+   */
   getHistoryData(): Observable<DrawResponse>{
     return this.http.get<DrawResponse>(`${this.url}/history/leidsa`)
     .pipe(catchError(error => throwError(error.message)))

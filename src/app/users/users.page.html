@@ -19,9 +19,12 @@
         <thead class="thead">
           <tr  class="normal">
             <th>
-              #
+              No.
             </th>
             <th>Avatar</th>
+            <th >
+              Fecha de ingreso
+            </th>
             <th>
               Nombres
             </th>
@@ -31,25 +34,22 @@
             <th>
               Créditos
             </th>
-            <th >
-              Fecha de ingreso
-            </th>
             <th>Activo</th>
             <th>Accion</th>
           </tr>
         </thead>
-        <tbody class="tbody">
+        <tbody >
           <tr *ngFor="let user of user$ | async; index as i">
             <td>{{i+1}}</td>
             <td>
               <ion-avatar slot="center">
-                <img src="assets/avatar-1.png" alt="Avatar">
+                <img src="assets/avatar-1.png" alt="Avatar" class="avatar">
               </ion-avatar>
             </td>
+            <td>{{user.created | date: 'short'}}</td>
             <td>{{user.name | titlecase}}</td>
             <td>{{user.email}}</td>
             <td>{{user.credits | currency}}</td>
-            <td>{{user.created | date: 'short'}}</td>
             <td>
               <ion-icon color="{{user.active? 'success' : 'danger'}}" size="large" name="radio-button-on-outline"></ion-icon>
             </td>

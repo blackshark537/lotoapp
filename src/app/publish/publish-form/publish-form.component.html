@@ -40,13 +40,17 @@
     <ion-row *ngIf="segment==='Manual'" >
 
         <ion-col size="6">
-            <ion-input type="number" [(ngModel)]="publishModel.Sorteo" placeholder="No. Sorteo"></ion-input>
+            <input type="number" [(ngModel)]="publishModel.Sorteo" placeholder="No. Sorteo">
         </ion-col>
         <ion-col size="6">
-            <ion-input type="date" [(ngModel)]="publishModel.Fecha"></ion-input>
+            <input type="date" [(ngModel)]="publishModel.Fecha" placeholder="Fecha de Sorteo">
         </ion-col>
         <ion-col size="3" *ngFor="let model of modelList">
-            <ion-input type="number" [(ngModel)]="publishModel[model]" [placeholder]="model"></ion-input>
+            <!-- <ion-label >{{model}}</ion-label> -->
+            <label for="{{model}}" style="margin-left: 10px;">{{model}}</label>
+            <br>
+            <input type="number" min="0" max="99" [id]="model" [(ngModel)]="publishModel[model]">
+            <!-- <ion-input type="number" min="0" max="99" [(ngModel)]="publishModel[model]" ></ion-input> -->
         </ion-col>
 
     </ion-row>

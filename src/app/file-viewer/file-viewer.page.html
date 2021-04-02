@@ -13,22 +13,20 @@
 </ion-header>
 
 <ion-content>
-  <ion-item lines="none">
-    <ion-avatar slot="start">
+  <ion-item lines="none" class="ion-text-center">
+    
+    <ion-label *ngIf="draw != undefined " >
       <ion-icon color="danger" size="large" [ios]="'document-outline'"
           [md]="'document-sharp'"></ion-icon>
-        <!-- <img [src]="draw.img" alt="logo"> -->
-    </ion-avatar>
-    <ion-label *ngIf="draw != undefined ">
-        <h2>{{ draw? draw.lottery + ' '+ draw.draw : ''}}</h2>
-        <h3>Creada: {{draw.emitDate }}</h3>
-        <p>id: {{ draw._id}}</p>
+        <h1>{{ draw? draw.lottery + ' '+ draw.draw : ''}}</h1>
+        <h3>Sorteada el: {{draw.emitDate }}</h3>
     </ion-label>
   </ion-item>
   <ion-item>
-    <ion-label>
-      Ganadores del ultimo sorteo
-      <div class="wondraw" *ngFor="let won of wondraw; index as idx">{{idx < wondraw.length-1? won < 10? '0' + won : won : ''}}</div>
+    <ion-label class="ion-text-center ">
+      <h1>Resultados del ultimo sorteo</h1>
+      <div class="wondraw" *ngFor="let won of wondraw; index as idx"><h1 style="display: inline;" >
+        {{idx < wondraw.length-1? won < 10? '0' + won : won : ''}}</h1></div>
     </ion-label>
   </ion-item>
   
@@ -51,22 +49,16 @@
               {{ head }}
           </th>
           <th class="normal">
-              Modo
-          </th>
-          <th class="normal">
-            Créditos
-          </th>
-          <th class="normal">
             Hora
           </th>
         </tr>
       </thead>
       <tbody class="tbody">
         <tr *ngFor="let row of draw.Data; index as i;" class="{{row[row.length-3]==filter()? '' : 'd-none'}}">
-          <td style="background-color: blanchedalmond; color: black;">{{i+1 + '.-'}}</td>
-          <td *ngFor="let col of row; index as j" class="{{ j < row.length-5 && compare(col)? 'won' : j < row.length-2 && wondraw[j] === col? 'won-plus' :  '' }}" >
+          <td style="border-right: 5px solid grey;">{{i+1 + '-'}}</td>
+          <td *ngFor="let col of row; index as j" class="{{ j < row.length-5 && compare(col)? 'won' :j > row.length-5 && j < row.length-1 && wondraw[j] === col? 'won-plus' : j > row.length-6 && j < row.length-2 && wondraw[j] === col? 'won-s-plus' : j > row.length-4 && j < row.length-1? 'd-none' : '' }}" >
             <span *ngIf="j === row.length-2; else elseBlock">{{col | currency}}</span>
-            <ng-template #elseBlock>
+            <ng-template #elseBlock >
               {{col}}
             </ng-template>
           </td>

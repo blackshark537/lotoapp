@@ -10,7 +10,7 @@
             </ion-button>
         </ion-buttons>
     </ion-toolbar>
-    <ion-title>{{drawType}}</ion-title>
+    <ion-title id="title">{{drawType}}</ion-title>
 </ion-header>
 <ion-content >
 
@@ -34,16 +34,19 @@
 </ion-content>
 
 <ion-footer>
-    <ion-toolbar >
-        <ion-buttons slot="start">
-            <ion-label>No.Jugada Automaticas:</ion-label>
-            <ion-input type="number" [(ngModel)]="drawQty" min="1" max="99" ></ion-input>
-        </ion-buttons>
+    <ion-toolbar>
         <ion-buttons slot="end">
-            <ion-button [disabled]="!finished" (click)="openLastDraw()" >Ver resultados</ion-button>
+            <ion-label>Cant. de Sorteos:</ion-label>
+            <!-- <ion-input type="number" [(ngModel)]="drawQty" min="1" max="99" ></ion-input> -->
+            <input type="number" [(ngModel)]="drawQty" min="1" max="99">
         </ion-buttons>
         <ion-buttons slot="end">
             <ion-button [disabled]="!finished" color="danger" (click)="ngOnInit()">Volver a sortear</ion-button>
+        </ion-buttons>
+    </ion-toolbar>
+    <ion-toolbar >
+        <ion-buttons slot="end">
+            <ion-button [disabled]="!finished" (click)="openLastDraw()" >Ver resultados</ion-button>
         </ion-buttons>
     </ion-toolbar>
 </ion-footer>

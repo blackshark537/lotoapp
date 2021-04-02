@@ -2,6 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { AdminGuard } from 'src/app/guards/admin.guard';
+import { NativeHelpersService } from 'src/app/services/native-helpers.service';
 import { AdminhttpService } from '../../services/adminhttp.service';
 
 @Component({
@@ -34,6 +35,6 @@ export class LeidsaLotoComponent implements OnInit, OnDestroy {
   }
 
   deleteOne(id: string){  
-    console.log(id)
+    this.adminService.deleteOneDrawData(id);
   }
 }

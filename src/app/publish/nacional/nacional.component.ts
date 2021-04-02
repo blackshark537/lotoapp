@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Observable, Subscription } from 'rxjs';
+import { map, shareReplay } from 'rxjs/operators';
 import { AdminGuard } from 'src/app/guards/admin.guard';
 import { AdminhttpService } from 'src/app/services/adminhttp.service';
 
@@ -7,9 +9,10 @@ import { AdminhttpService } from 'src/app/services/adminhttp.service';
   templateUrl: './nacional.component.html',
   styleUrls: ['./nacional.component.scss'],
 })
-export class NacionalComponent implements OnInit {
+export class NacionalComponent implements OnInit, OnDestroy {
 
-  data = []  
+  data$: Observable<any>;
+  
 
   constructor(
     public adminGuard: AdminGuard,
@@ -17,11 +20,18 @@ export class NacionalComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this._adminService.getQuinielaHistoryData('Nacional', 'Nacional').subscribe(resp =>{
-      this.data = resp.data.reverse()
-    })
+    this.data$ = this._adminService.getQuinielaHistoryData('Nacional', 'Nacional').pipe(
+      shareReplay(1),
+      map(actions => actions.data.reverse())
+    );
   }
 
-  deleteOne(id: string){}
+  ngOnDestroy(){
+    
+  }
+
+  deleteOne(id: string){
+    this._adminService.deleteOneQuinielaHistoryDraw(id);
+  }
 
 }

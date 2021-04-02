@@ -94,7 +94,7 @@ export class PlayComponent implements OnInit, OnDestroy {
         x = p.width;
         y = p.height;
         
-        for(let i=0; i<15; i++){
+        for(let i=0; i<13; i++){
           this.balls.push(new Ball(p, i+15, this.webgl));
         };
         
@@ -128,12 +128,12 @@ export class PlayComponent implements OnInit, OnDestroy {
         if(!loop) loop = true;
       }
 
-      p.keyPressed = ()=>{
+      /* p.keyPressed = ()=>{
         if(p.keyCode === 32 && loop){
           this.keyPressed();
         }
         if(!loop) loop = true;
-      }
+      } */
   
       p.draw = ()=>{
         

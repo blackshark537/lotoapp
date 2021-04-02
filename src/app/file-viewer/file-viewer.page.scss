@@ -4,6 +4,11 @@
 }
 
 .won-plus{
+    background-color: var(--ion-color-tertiary);
+    color: white;
+}
+
+.won-s-plus{
     background-color: var(--ion-color-danger);
     color: white;
 }
@@ -16,10 +21,25 @@
     display: inline;
 }
 
-.checkBox{
-    margin: 1rem;
-}
+/* .checkBox{
+    margin-left: 13em;
+    margin-right: 13em;
+} */
 
 .d-none{
     display: none;
+}
+
+.slmas{
+    background-color: var(--ion-color-tertiary);
+}
+.lmas{
+    background-color: var(--ion-color-danger);
+}
+
+.text-slmas{
+    color: var(--ion-color-tertiary);
+}
+.text-lmas{
+    color: var(--ion-color-danger);
 }

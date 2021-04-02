@@ -70,9 +70,15 @@ export class NativeHelpersService {
     await load.onWillDismiss();
   }
 
+  async _loading(){
+    return await this.loading.create();
+  }
+  async _loadingDismiss(){
+    return await this.loading.dismiss();
+  }
 //====================================================================================
-  async comfirmModal(msg: string, header?: string): Promise<boolean>{
-    let aggre = false;
+  async comfirmModal(msg: string, header?: string): Promise<any>{
+    let conf=false;
     const modal = await this.alertCtl.create({
       header: header || 'Confirmar Sorteo!',
       message: msg,
@@ -82,11 +88,12 @@ export class NativeHelpersService {
       buttons:[
         {
           text: 'Cancelar',
-          role: 'cancel'
+          role: 'cancel',
+          handler: ()=> {conf = false}
         },
         {
-          text: 'Ok',
-          handler: ()=> aggre = true
+          text: 'Aceptar',
+          handler: ()=>{ conf = true}
         }
       ]
     });
@@ -97,7 +104,7 @@ export class NativeHelpersService {
     }
     await modal.present();
     await modal.onWillDismiss();
-    return aggre;
+    return conf;
   }
 //====================================================================================
   async showError(message: string) {
