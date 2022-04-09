@@ -29,7 +29,7 @@
     "@ngrx/store": "^11.0.1",
     "@ngrx/store-devtools": "^11.0.1",
     "core-js": "^3.9.1",
-    "moment": "^2.29.1",
+    "moment": "^2.29.2",
     "ngx-moment": "^5.0.0",
     "p5": "^1.2.0",
     "rxjs": "~6.6.6",
